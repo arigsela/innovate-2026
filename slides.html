@@ -202,7 +202,7 @@ table.claims tr.claim.ok { background: #23345C; }
 <h1 class="rise" style="--i:1">Same app.<br>Three ways to ask.</h1>
 <div class="spacer"></div>
 <p class="lead rise" style="--i:3">One scoreboard, built three times by AI. Then one button that nobody understands.</p>
-<aside>Open with the question: if you ask an AI to build something, what decides whether it works? Today the same small app gets built three times, and only one thing changes between each run. In the second half we use an AI agent to explain and debug code we did not write. Keys: Right or Space for the next step, Left to go back, N for these notes, F for full screen. After clicking inside a live page, move the mouse off it before using the keys.</aside>
+<aside>Open with the question: if you ask an AI to build something, what decides whether it works? Today the same small app gets built three times by the same AI model, and only one thing changes between each run. In the second half we use an AI agent to explain and debug code we did not write. Keys: Right or Space for the next step, Left to go back, N for these notes, F for full screen. After clicking inside a live page, move the mouse off it before using the keys.</aside>
 </section>
 
 <section class="slide light" id="about">
@@ -224,9 +224,90 @@ table.claims tr.claim.ok { background: #23345C; }
 <aside>Introduce yourself in two sentences. Tell students they do not need to take notes on the prompts: everything shown today is in the public repo, and the link comes back on the last slide.</aside>
 </section>
 
+
+<section class="slide" id="runs">
+<p class="eyebrow">THE EXPERIMENT</p>
+<h2>Three runs, one change at a time</h2>
+<div class="cards">
+<div class="card fragment">
+<p class="card-tag">RUN 1</p>
+<h3>One-line prompt</h3>
+<p class="card-text">A powerful AI model and one quick sentence.</p>
+</div>
+<div class="card fragment">
+<p class="card-tag">RUN 2</p>
+<h3>Better prompt</h3>
+<p class="card-text">The same model with a clear request. One try.</p>
+</div>
+<div class="card fragment">
+<p class="card-tag">RUN 3</p>
+<h3>Better harness</h3>
+<p class="card-text">The same model and request, plus a rules file that lives in the project.</p>
+</div>
+</div>
+<div class="spacer"></div>
+<p class="small">Same model every time. Each run was made three times, and every page was tested the same way: 8 checks for the app we wanted, 6 checks from the school’s own rules.</p>
+<aside>Click once per run. Stress that only one thing changes each time, like a science experiment, and that the model never changes: it is Claude Fable 5.2 in Claude Code in all three runs. So whatever gets better today, it is not because the AI got smarter. “Harness” means everything around the model: the rules it reads and the tools it can use.</aside>
+</section>
+
+<!-- ===================== RUN 1: ONE-LINE PROMPT ===================== -->
+<section class="slide light" id="r1-prompt">
+<p class="eyebrow">RUN 1 · ONE-LINE PROMPT</p>
+<h2>Just ask for it</h2>
+<p class="prompt rise" style="--i:1; font-size:52px">make a scoreboard web page for spirit week</p>
+<p class="body rise" style="--i:2; margin-top:28px">That is the whole request. Eight words.</p>
+<div class="spacer"></div>
+<div class="cards">
+<div class="card fragment"><p class="card-tag">WHO IS PLAYING?</p><p class="card-text">We did not say.</p></div>
+<div class="card fragment"><p class="card-tag">HOW DO POINTS GET IN?</p><p class="card-text">We did not say.</p></div>
+<div class="card fragment"><p class="card-tag">WHAT ARE THE RULES?</p><p class="card-text">We did not say.</p></div>
+<div class="card fragment"><p class="card-tag">WHAT DOES IT LOOK LIKE?</p><p class="card-text">We did not say.</p></div>
+</div>
+<aside>This is how most people start: type what you want in one line and press Enter. Ask the room what they think comes back. Then one click per card. These are four things we know and the model does not. We have a picture of this scoreboard in our heads. None of it is in the eight words. The prompt is prompt-1.md in the repo.</aside>
+</section>
+
+
+<section class="slide light" id="r1-tries">
+<p class="eyebrow">RUN 1 · LIVE PAGES · SAME EIGHT WORDS, THREE TIMES</p>
+<h2>Looks great. Is it our scoreboard?</h2>
+<div class="row">
+<div class="try">
+<div class="live" style="width:512px;height:450px" data-w="1000" data-src="run1-one-line-prompt/attempt-1/index.html"></div>
+<p class="caption fragment"><b>Try 1</b> · Standings and a table by day. The scores are made up.</p>
+</div>
+<div class="try">
+<div class="live" style="width:512px;height:450px" data-w="1000" data-src="run1-one-line-prompt/attempt-2/index.html"></div>
+<p class="caption fragment"><b>Try 2</b> · A dark page with a score sheet to type into.</p>
+</div>
+<div class="try">
+<div class="live" style="width:512px;height:450px" data-w="1000" data-src="run1-one-line-prompt/attempt-3/index.html"></div>
+<p class="caption fragment"><b>Try 3</b> · “Seniors in first place”, ten events, made-up scores.</p>
+</div>
+</div>
+<div class="spacer"></div>
+<p class="small fragment">Three tries, three different apps. All three work. None has houses, a +10 button or an Award box.</p>
+<aside>These are the real pages, live. Scroll them and click around: they work, and they look more finished than most school websites. Let the room react first. Then one click per try, and ask after each: is this what we wanted? All three chose Freshmen, Sophomores, Juniors and Seniors. Tries 1 and 3 open with points nobody earned. Each try has its own way to enter points, and none of them is a +10 button. Try 2 saves what you type in the browser, so clear it before the session. The orange button reloads a page.</aside>
+</section>
+<section class="slide" id="r1-score">
+<p class="eyebrow">RUN 1 · ONE-LINE PROMPT</p>
+<h2>It did not fail. It guessed.</h2>
+<div class="row">
+<div class="col">
+<p class="big big-orange pop" style="--i:1">0 of 8</p>
+<p class="body rise" style="--i:2">None of our 8 checks pass, in any of the three tries.</p>
+<p class="small rise" style="--i:3">The pages are not broken. They are a different app from the one we had in mind.</p>
+</div>
+<div class="col">
+<div class="card fragment"><p class="card-tag">IT GUESSED THE TEAMS</p><p class="card-text">Freshmen, Sophomores, Juniors, Seniors. Every time.</p></div>
+<div class="card fragment"><p class="card-tag">IT GUESSED THE SCORES</p><p class="card-text">Two of three pages open with points nobody earned.</p></div>
+<div class="card fragment"><p class="card-tag">IT GUESSED HOW IT WORKS</p><p class="card-text">Three tries, three ways to enter points.</p></div>
+</div>
+</div>
+<aside>Be fair to the model here. Our 8 checks describe the app we wanted: four houses, +10 and -10, an Award box, a Leader, a Reset button. The first check looks for those buttons and does not find them, so the other seven cannot even be tried. That is not a bug in the page. One click per card: everything we left out, the model filled in with a guess, and a different guess each time. Ask the room: whose fault is the zero?</aside>
+</section>
 <section class="slide light" id="app">
-<p class="eyebrow">THE APP · THIS ONE WORKS, CLICK IT</p>
-<h2>A house points scoreboard</h2>
+<p class="eyebrow">WHAT WE HAD IN MIND · THIS ONE WORKS, CLICK IT</p>
+<h2>We wanted a house points scoreboard</h2>
 <div class="row">
 <div class="mock pop" style="--i:1" id="mock"></div>
 <div class="col">
@@ -236,37 +317,10 @@ table.claims tr.claim.ok { background: #23345C; }
 <p class="small rise" style="--i:5">Points never go below 0 · A bad number gets a friendly message · Reset sets every house back to 0</p>
 </div>
 </div>
-<aside>This is what we asked for: a scoreboard for Spirit Week with four houses. The sketch on the left works, so click a few buttons. It was written by hand for this slide and leaves out the Award box. Buttons add and remove points, bars grow, the top house is marked. Notice what the request does not say: which houses, which colours, and any rule our school has about points. Keep that in mind.</aside>
+<aside>This is the picture we had in our heads the whole time: four houses, buttons that add and remove points, bars that grow, the top house marked. The sketch on the left works, so click a few buttons. It was written by hand for this slide and leaves out the Award box. None of this was in the eight words. So for run 2 we write it down. Notice what even this picture does not say: which houses, which colours, and any rule our school has about points. Keep that in mind.</aside>
 </section>
-
-<section class="slide" id="runs">
-<p class="eyebrow">THE EXPERIMENT</p>
-<h2>Three runs, one change at a time</h2>
-<div class="cards">
-<div class="card fragment">
-<p class="card-tag">RUN 1</p>
-<h3>Better process</h3>
-<p class="card-text">A small AI model, a clear request, and real errors pasted back.</p>
-</div>
-<div class="card fragment">
-<p class="card-tag">RUN 2</p>
-<h3>Better model</h3>
-<p class="card-text">A powerful model with the same clear request. One try.</p>
-</div>
-<div class="card fragment">
-<p class="card-tag">RUN 3</p>
-<h3>Better harness</h3>
-<p class="card-text">The same powerful model, plus a rules file that lives in the project.</p>
-</div>
-</div>
-<div class="spacer"></div>
-<p class="small">Each run was made three times. Every page was tested the same way: 8 checks from the request, 6 checks from the school’s own rules.</p>
-<aside>Click once per run. Stress that only one thing changes each time, like a science experiment. The small model is llama3.2:1b running on this laptop. The powerful model is Claude Fable 5.2 in Claude Code. “Harness” means everything around the model: the rules it reads and the tools it can use.</aside>
-</section>
-
-<!-- ===================== RUN 1 ===================== -->
-<section class="slide light" id="r1-prompt">
-<p class="eyebrow">RUN 1 · BETTER PROCESS</p>
+<section class="slide light" id="r2-prompt">
+<p class="eyebrow">RUN 2 · BETTER PROMPT</p>
 <h2>Say exactly what you want</h2>
 <div class="prompt rise" style="--i:1">
 <p class="prompt-line">- Each house has a button labelled +10 that adds 10 points, and a button labelled -10</p>
@@ -281,64 +335,13 @@ table.claims tr.claim.ok { background: #23345C; }
 <div class="card rise" style="--i:4"><p class="card-tag">AN EXAMPLE</p><p class="card-text">Some clicks with their right result.</p></div>
 <div class="card rise" style="--i:5"><p class="card-tag">PLAN FIRST</p><p class="card-text">Steps before code.</p></div>
 </div>
-<aside>These four lines are taken from the real request, which is about twenty lines long. It is in prompt-1.md in the repo. Point at the four parts: what it does, the rules, an example, and asking for a plan first. All three runs get exactly this request. After the first answer we also asked the small model two questions: “explain this code” and “what could go wrong with this page?”</aside>
-</section>
-
-<section class="slide light" id="r1-loop">
-<p class="eyebrow">RUN 1 · BETTER PROCESS</p>
-<h2>Then paste back what really happened</h2>
-<div class="cards">
-<div class="card fragment">
-<p class="card-tag">TRY 1</p>
-<h3>Partly works</h3>
-<p class="card-text"><b>Works:</b> +10 on the first house.</p>
-<p class="card-text"><b>Fails:</b> the other houses, Award, Leader, Reset and the bars.</p>
-<p class="card-text"><b>Our feedback:</b> helped once, then nothing more.</p>
-</div>
-<div class="card fragment">
-<p class="card-tag">TRY 2</p>
-<h3>Nothing works</h3>
-<p class="card-text"><b>Fails:</b> every button. The page stops with an error as it opens.</p>
-<p class="card-text"><b>Our feedback:</b> we pasted the exact error twice. It sent back the same broken code.</p>
-</div>
-<div class="card fragment">
-<p class="card-tag">TRY 3</p>
-<h3>Nothing works</h3>
-<p class="card-text"><b>Fails:</b> every button. They appear, and none of them does anything.</p>
-<p class="card-text"><b>Our feedback:</b> two fixes, and the same error stayed.</p>
-</div>
-</div>
-<div class="spacer"></div>
-<p class="small">Same model and same request in every try. We only sent what the page really did, never the right answer.</p>
-<aside>One click per try. Each try is the same request to the same small model. After its first answer we tested the page and pasted back what really happened, twice. Try 1: the first page had one lonely set of buttons; after our report, +10 worked on the first house, and the second report changed nothing. Tries 2 and 3: the page stops with a script error, and the model could not use the error we gave it. Of the 8 checks from the request, the final pages pass 3, 0 and 1. All the messages are in all-prompts-1.md in the repo.</aside>
-</section>
-
-<section class="slide light" id="r1-tries">
-<p class="eyebrow">RUN 1 · LIVE PAGES · CLICK +10 ON THE FIRST THREE HOUSES</p>
-<h2>Same request. Three different pages.</h2>
-<div class="row">
-<div class="try">
-<div class="live" style="width:512px;height:450px" data-w="1000" data-src="run1-better-process/attempt-1/index.html"></div>
-<p class="caption fragment"><b>Try 1</b> · The first house counts. No names, no bars, no Leader.</p>
-</div>
-<div class="try">
-<div class="live" style="width:512px;height:450px" data-w="1000" data-src="run1-better-process/attempt-2/index.html"></div>
-<p class="caption fragment"><b>Try 2</b> · Two +10 buttons per house. Every house stays at 0.</p>
-</div>
-<div class="try">
-<div class="live" style="width:512px;height:450px" data-w="1000" data-src="run1-better-process/attempt-3/index.html"></div>
-<p class="caption fragment"><b>Try 3</b> · Four rows of buttons. Every row stays at 0.</p>
-</div>
-</div>
-<div class="spacer"></div>
-<p class="small fragment">These are the final pages, after both fixes. Best of three: 3 of 8 checks.</p>
-<aside>These are the real pages, live. Do the same clicks on all three, or let students call them: +10 three times on the first house, twice on the second, once on the third. Then click once per try for the captions. The orange button reloads a page. The small model wrote something different each time, and none of the three is a scoreboard you could use. A clear request and honest feedback are good habits, but they could not lift this model past its limit.</aside>
+<aside>Same model as run 1. The only change is the request. These four lines are taken from the real one, which is about twenty lines long. It is in prompt-2.md in the repo. Point at the four parts: what it does, the rules, an example, and asking for a plan first. Each part answers one of the questions run 1 left open. Run 3 gets exactly this request too.</aside>
 </section>
 
 <!-- ===================== RUN 2 ===================== -->
 <section class="slide" id="r2-score">
-<p class="eyebrow">RUN 2 · BETTER MODEL</p>
-<h2>Same request. Bigger model.</h2>
+<p class="eyebrow">RUN 2 · BETTER PROMPT</p>
+<h2>Same model. Clear request.</h2>
 <div class="row">
 <div class="col">
 <p class="big big-blue pop" style="--i:1">8 of 8</p>
@@ -351,30 +354,30 @@ table.claims tr.claim.ok { background: #23345C; }
 <div class="card rise" style="--i:5"><p class="card-tag">LEADER AND BARS</p><p class="card-text">The top house is marked, and the bars grow.</p></div>
 </div>
 </div>
-<aside>Exactly the same words as run 1. The only change is the model: Claude Fable 5.2, one shot. Everything that broke in run 1 works here, in all three tries. Ask the room: so are we done? Is a better model the whole answer?</aside>
+<aside>The same model as run 1, one shot again. The only change is the request. Everything we had in mind is there, in all three tries: from 0 of 8 to 8 of 8. Ask the room: so are we done? Is a better prompt the whole answer?</aside>
 </section>
 
 <section class="slide" id="r2-tries">
-<p class="eyebrow">RUN 2 · LIVE PAGES · THE SAME CLICKS</p>
+<p class="eyebrow">RUN 2 · LIVE PAGES · CLICK +10 ON THE FIRST THREE HOUSES</p>
 <h2>Wait. Who are Maple and Oak?</h2>
 <div class="row">
 <div class="try">
-<div class="live" style="width:512px;height:450px" data-w="800" data-src="run2-better-model/attempt-1/index.html"></div>
+<div class="live" style="width:512px;height:450px" data-w="800" data-src="run2-better-prompt/attempt-1/index.html"></div>
 <p class="caption"><b>Try 1</b> · Maple, Oak, Cedar, Birch</p>
 </div>
 <div class="try">
-<div class="live" style="width:512px;height:450px" data-w="800" data-src="run2-better-model/attempt-2/index.html"></div>
+<div class="live" style="width:512px;height:450px" data-w="800" data-src="run2-better-prompt/attempt-2/index.html"></div>
 <p class="caption"><b>Try 2</b> · Red, Blue, Green, Gold House</p>
 </div>
 <div class="try">
-<div class="live" style="width:512px;height:450px" data-w="800" data-src="run2-better-model/attempt-3/index.html"></div>
+<div class="live" style="width:512px;height:450px" data-w="800" data-src="run2-better-prompt/attempt-3/index.html"></div>
 <p class="caption"><b>Try 3</b> · Red, Blue, Green, Gold House</p>
 </div>
 </div>
 <div class="spacer"></div>
 <p class="body fragment">It works every time. But the houses are made up, and they change between tries.</p>
 <p class="body fragment" style="margin-top:16px"><b>Our houses were never in the request.</b> Nobody told the model.</p>
-<aside>The same clicks as before on the live pages, and this time the pages work. Let the room spot the problem before you click for the two lines. The model had to call the houses something, so it invented names and colours, and it invented different ones on different tries. It even said so in its answer: “I used Maple, Oak, Cedar and Birch as placeholders.” Whatever you leave out, the model fills in with a guess.</aside>
+<aside>These are the real pages, live. Do the same clicks on all three, or let students call them: +10 three times on the first house, twice on the second, once on the third. This time it is our app. Let the room spot the problem before you click for the two lines. The model had to call the houses something, so it invented names and colours, and it invented different ones on different tries. It even said so in its answer: “I used Maple, Oak, Cedar and Birch as placeholders.” Whatever you leave out, the model fills in with a guess, exactly as in run 1. We only left out less.</aside>
 </section>
 
 <section class="slide accent" id="statement">
@@ -408,7 +411,7 @@ table.claims tr.claim.ok { background: #23345C; }
 </div>
 <div class="spacer"></div>
 <p class="small">The file is called CLAUDE.md. The agent reads it every time it starts in this folder. The request did not change by one word.</p>
-<aside>This is the rules file, about forty lines of plain English. Three parts: who our houses are, the rules of our Spirit Week, and how we want the code written. The important part: the request is exactly the same as in runs 1 and 2. The knowledge moved out of our heads and into the project. The file is rules-file.md in the repo.</aside>
+<aside>This is the rules file, about forty lines of plain English. Three parts: who our houses are, the rules of our Spirit Week, and how we want the code written. The important part: the request is exactly the same as in run 2. The knowledge moved out of our heads and into the project. The file is rules-file.md in the repo.</aside>
 </section>
 
 <section class="slide" id="r3-tries">
@@ -440,7 +443,7 @@ table.claims tr.claim.ok { background: #23345C; }
 <div class="row">
 <div class="try">
 <p class="small">RUN 2 · NO RULES FILE</p>
-<div class="live" style="width:780px;height:500px" data-w="900" data-src="run2-better-model/attempt-1/index.html"></div>
+<div class="live" style="width:780px;height:500px" data-w="900" data-src="run2-better-prompt/attempt-1/index.html"></div>
 <p class="body fragment"><b>500 points.</b> Accepted.</p>
 </div>
 <div class="try">
@@ -481,22 +484,22 @@ table.claims tr.claim.ok { background: #23345C; }
 <h2>What each change bought us</h2>
 <table class="rise" style="--i:1">
 <tr class="head"><th style="width:22%">Run</th><th style="width:34%">What changed</th><th style="width:15%">Request checks, of 8</th><th style="width:15%">School checks, of 6</th><th style="width:14%">Time</th></tr>
-<tr><td>1 · Better process</td><td>Small model, clear request, real errors pasted back</td><td><div class="tri" data-v="3,0,1" data-max="8"></div></td><td><div class="tri school" data-v="0,1,1" data-max="6"></div></td><td>1 to 5 min per answer</td></tr>
-<tr><td>2 · Better model</td><td>Powerful model, one try</td><td><div class="tri" data-v="8,8,8" data-max="8"></div></td><td><div class="tri school" data-v="1,1,1" data-max="6"></div></td><td>2 to 3 min</td></tr>
-<tr class="win"><td>3 · Better harness</td><td>Same model, plus the rules file</td><td><div class="tri" data-v="8,8,8" data-max="8"></div></td><td><div class="tri school" data-v="6,6,6" data-max="6"></div></td><td>13 to 18 min</td></tr>
+<tr><td>1 · One-line prompt</td><td>Eight words, one try</td><td><div class="tri" data-v="0,0,0" data-max="8"></div></td><td><div class="tri school" data-v="1,1,1" data-max="6"></div></td><td>2 to 4 min</td></tr>
+<tr><td>2 · Better prompt</td><td>Same model, a clear request</td><td><div class="tri" data-v="8,8,8" data-max="8"></div></td><td><div class="tri school" data-v="1,1,1" data-max="6"></div></td><td>2 to 3 min</td></tr>
+<tr class="win"><td>3 · Better harness</td><td>Same model and request, plus the rules file</td><td><div class="tri" data-v="8,8,8" data-max="8"></div></td><td><div class="tri school" data-v="6,6,6" data-max="6"></div></td><td>13 to 18 min</td></tr>
 </table>
 <div class="spacer"></div>
-<p class="small" style="margin-top:20px">The three bars are try 1, try 2 and try 3. Runs 1 and 2 were never told the school rules: the one they pass is by chance, because the page happens to fit a phone. Run 3’s time is mostly the agent waiting for our yes or no.</p>
-<aside>Read down the two score columns, then look inside each cell. The small model’s three tries disagree with each other. From run 2 on, the three tries match. A better model reached 8 of 8 in one try. The rules file took the school checks from 1 to 6. Be fair to run 2: it failed the school checks because it was never told them, not because it made mistakes.</aside>
+<p class="small" style="margin-top:20px">The three bars are the three tries. Run 1 scores 0 because it built a different app, not a broken one. Runs 1 and 2 were never told the school rules: the one they pass is by chance. Run 3’s time is mostly waiting for our yes or no.</p>
+<aside>Read down the two score columns. The model is the same in every row. A clear request took the first column from 0 to 8. The rules file took the second from 1 to 6. Be fair to runs 1 and 2: they failed checks they were never told about, not because the model made mistakes.</aside>
 </section>
 
 <section class="slide" id="try-it">
 <p class="eyebrow">LIVE DEMO</p>
 <h2>Your turn: try to break it</h2>
 <div class="row" style="gap:40px">
-<div class="live" id="tryframe" style="width:900px;height:620px" data-w="1000" data-src="run2-better-model/attempt-1/index.html"></div>
+<div class="live" id="tryframe" style="width:900px;height:620px" data-w="1000" data-src="run2-better-prompt/attempt-1/index.html"></div>
 <div class="col" style="gap:22px">
-<div class="picks" id="pick-run"><span class="label">RUN</span><button class="pick" data-run="run1-better-process">1</button><button class="pick on" data-run="run2-better-model">2</button><button class="pick" data-run="run3-better-harness">3</button>
+<div class="picks" id="pick-run"><span class="label">RUN</span><button class="pick" data-run="run1-one-line-prompt">1</button><button class="pick on" data-run="run2-better-prompt">2</button><button class="pick" data-run="run3-better-harness">3</button>
 <span class="label" style="margin-left:18px">TRY</span><span id="pick-try" style="display:flex;gap:12px"><button class="pick on" data-try="1">1</button><button class="pick" data-try="2">2</button><button class="pick" data-try="3">3</button></span></div>
 <table class="mono">
 <tr class="head"><th style="width:52%">Do this</th><th>What should happen</th></tr>
@@ -510,7 +513,7 @@ table.claims tr.claim.ok { background: #23345C; }
 <p class="small">The last three are school rules. Invent your own clicks and predict what each run will do.</p>
 </div>
 </div>
-<aside>Pick a run and a try with the buttons, let students call out what to click, and compare with the table. The orange button reloads the page, which is also the test in the last row. Run 2 against run 3 is the best pair for the school rules. Good ones to invent: award 50 exactly, award 2.5, click Reset by accident. demo.html in the repo opens every page in its own tab if you want more room.</aside>
+<aside>Pick a run and a try with the buttons, let students call out what to click, and compare with the table. The orange button reloads the page, which is also the test in the last row. Run 2 against run 3 is the best pair for the school rules. Run 1 is a different app, so the table does not fit it: use it to show that. Good ones to invent: award 50 exactly, award 2.5, click Reset by accident. demo.html in the repo opens every page in its own tab if you want more room.</aside>
 </section>
 
 <!-- ===================== MYSTERY BUTTON ===================== -->
@@ -590,7 +593,7 @@ table.claims tr.claim.ok { background: #23345C; }
 </div>
 <div class="spacer"></div>
 <p class="small">That is all we told the agent. No hint about the cause.</p>
-<aside>We broke the page on purpose, three times, by changing one line each time. One click per part. This is the same habit as run 1: say what really happened. Compare with “it’s broken, fix it”. The next slide has the broken and the fixed pages side by side.</aside>
+<aside>We broke the page on purpose, three times, by changing one line each time. One click per part. This is the run 2 habit again, for a bug instead of an app: say exactly what happened. Compare with “it’s broken, fix it”. The next slide has the broken and the fixed pages side by side.</aside>
 </section>
 
 <section class="slide" id="debug-fix">
@@ -632,7 +635,7 @@ table.claims tr.claim.ok { background: #23345C; }
 <p class="card-text">Tests, and your own eyes.</p>
 </div>
 </div>
-<aside>One click per habit. Habit 1 is the request all three runs shared. Habit 2 is the fix loop in run 1 and the bug reports for the mystery button. Habit 3 is the jump from run 2 to run 3. Habit 4 is the tests run 3 wrote and the claims we checked ourselves. A better model helps a lot, as run 2 showed, but it is the one thing on this list you do not control. The four habits are yours.</aside>
+<aside>One click per habit. Habit 1 is the jump from run 1 to run 2. Habit 2 is the bug reports for the mystery button. Habit 3 is the jump from run 2 to run 3. Habit 4 is the tests run 3 wrote and the claims we checked ourselves. The model was the same in all three runs. Nothing here needed a smarter AI. The four habits are yours.</aside>
 </section>
 
 <section class="slide" id="real-job">
@@ -686,12 +689,12 @@ table.claims tr.claim.ok { background: #23345C; }
 <p class="prompt rise" style="--i:1"><a href="https://github.com/arigsela/innovate-2026" target="_blank">github.com/arigsela/innovate-2026</a></p>
 <div class="spacer"></div>
 <div class="cards">
-<div class="card rise" style="--i:2"><p class="card-tag">THE PROMPTS</p><p class="card-text">The request, and every follow-up message we typed.</p></div>
+<div class="card rise" style="--i:2"><p class="card-tag">THE PROMPTS</p><p class="card-text">The eight words, the clear request and the bug reports.</p></div>
 <div class="card rise" style="--i:3"><p class="card-tag">THE PAGES</p><p class="card-text">All 9 tries: the page, the full chat and screenshots.</p></div>
 <div class="card rise" style="--i:4"><p class="card-tag">THE RULES FILE</p><p class="card-text">The one file that separates run 2 from run 3.</p></div>
 <div class="card rise" style="--i:5"><p class="card-tag">THE MYSTERY BUTTON</p><p class="card-text">The page, the bugs and a worksheet to try it yourself.</p></div>
 </div>
-<aside>Leave this slide up at the end. The prompts are prompt-1.md to prompt-3.md in each run folder, with every message in all-prompts-1.md, all-prompts-2.md and all-prompts-3.md. The rules file is run3-better-harness/rules-file.md. The scores are in RESULTS.md, and demo.html opens every page. These slides are slides.html. The mystery button has its own README with steps students can follow at home.</aside>
+<aside>Leave this slide up at the end. The prompts are prompt-1.md, prompt-2.md and prompt-3.md, one in each run folder, with every message in all-prompts-1.md, all-prompts-2.md and all-prompts-3.md. The repo also has two extras that are not in these slides: the clear request on a small model and on a smaller Claude model. The rules file is run3-better-harness/rules-file.md. The scores are in RESULTS.md, and demo.html opens every page. These slides are slides.html. The mystery button has its own README with steps students can follow at home.</aside>
 </section>
 
 </div>
@@ -789,7 +792,7 @@ document.querySelectorAll('.tri').forEach(t => {
 
 /* === LIVE DEMO: choose a run and a try === */
 (function () {
-  const box = document.getElementById('tryframe'); let run = 'run2-better-model', n = '1';
+  const box = document.getElementById('tryframe'); let run = 'run2-better-prompt', n = '1';
   function set() { box.dataset.src = `${run}/attempt-${n}/index.html`; loadLive(box); }
   document.getElementById('pick-run').addEventListener('click', e => {
     const b = e.target.closest('.pick'); if (!b) return;

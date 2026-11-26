@@ -1,0 +1,13 @@
+I built the scoreboard as a single file, `index.html`, but I couldn't open it in a browser here (those commands were blocked), so it is untested. Double-click it to open it; if anything looks off, tell me what you see.
+
+What's on the page:
+
+- **Standings:** a headline for who is in first and by how much, then a ranked bar for each team with its total. Hovering or tabbing onto a team shows its points by day.
+- **Points by event:** a table grouped Monday to Friday, with the top score in each event in bold and totals at the bottom.
+- **Edit scores:** a button that turns the table into input boxes. In that mode you can rename the title, teams and events, add or remove events and teams (2 to 8 teams), and clear all scores.
+
+Things to know before you use it:
+
+- **Sample data:** it opens with four class teams (Freshmen to Seniors), ten made-up events, and invented scores for Monday to Wednesday. Use "Clear all scores" in edit mode, then rename or replace the events with yours.
+- **Saved per browser:** scores save automatically, but only in the browser where you enter them. Other people opening the file elsewhere won't see your updates, so it suits one computer driving a projector or a shared screen. A live board that everyone can view on their own phones would need a small hosted backend; say if you want that.
+- **Team colours:** they come from a fixed colourblind-safe set, not your school's class colours. It also follows the device's light or dark setting.

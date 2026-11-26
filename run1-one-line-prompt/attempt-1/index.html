@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spirit Week Scoreboard</title>
+<style>
+  :root {
+    color-scheme: light;
+    --page: #f9f9f9;
+    --surface: #ffffff;
+    --text: #191919;
+    --text-2: #666666;
+    --grid: #e7e7e7;
+    --axis: #c2c2c2;
+    --border: rgba(11, 11, 11, 0.10);
+    /* Team colors: assigned in this fixed order, one per team, never by rank */
+    --s1: #257de0; --s2: #f47230; --s3: #00b894; --s4: #f2a600;
+    --s5: #ee7fac; --s6: #008a17; --s7: #6a4ce2; --s8: #ec4647;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      color-scheme: dark;
+      --page: #0b0b0b;
+      --surface: #191919;
+      --text: #efefef;
+      --text-2: #9c9c9c;
+      --grid: #303030;
+      --axis: #474747;
+      --border: rgba(255, 255, 255, 0.10);
+      --s1: #338ced; --s2: #e76624; --s3: #00a888; --s4: #d28e05;
+      --s5: #e24d8b; --s6: #0aac23; --s7: #9887ef; --s8: #eb6263;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: clamp(16px, 4vw, 48px);
+    background: var(--page);
+    color: var(--text);
+    font: 16px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  main { max-width: 960px; margin: 0 auto; }
+
+  header { margin-bottom: 24px; }
+  h1 { margin: 0; font-size: clamp(28px, 5vw, 44px); line-height: 1.1; letter-spacing: -0.02em; }
+  #headline { margin: 8px 0 0; font-size: clamp(16px, 2.4vw, 22px); color: var(--text-2); }
+
+  section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: clamp(16px, 3vw, 28px);
+    margin-bottom: 20px;
+  }
+  .section-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+  h2 { margin: 0; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-2); }
+
+  /* Standings */
+  .row {
+    display: grid;
+    grid-template-columns: 52px minmax(88px, 180px) 1fr 72px;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 6px;
+    border-radius: 8px;
+    outline: none;
+  }
+  .row:hover, .row:focus-visible { background: var(--page); }
+  .row:focus-visible { box-shadow: 0 0 0 2px var(--text); }
+  .rank {
+    justify-self: start;
+    min-width: 44px;
+    padding: 2px 8px;
+    border: 1px solid var(--axis);
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    color: var(--text-2);
+  }
+  .rank.first { background: var(--text); border-color: var(--text); color: var(--surface); }
+  .name { font-size: clamp(17px, 2.4vw, 24px); font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .track { border-left: 1px solid var(--axis); padding: 6px 0; }
+  .bar { height: 16px; border-radius: 0 4px 4px 0; transition: width 0.3s ease; }
+  .total { font-size: clamp(20px, 3vw, 30px); font-weight: 700; text-align: right; }
+  .empty { margin: 0; color: var(--text-2); }
+
+  /* Points table */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  th, td { padding: 10px 12px; text-align: right; border-bottom: 1px solid var(--grid); white-space: nowrap; }
+  tbody tr:last-child th, tbody tr:last-child td { border-bottom: 0; }
+  thead th { vertical-align: bottom; font-weight: 600; border-bottom-color: var(--axis); }
+  thead .theme { display: block; font-size: 12px; font-weight: 400; color: var(--text-2); }
+  th:first-child { text-align: left; }
+  tbody th { font-weight: 600; }
+  td.sum, th.sum { font-weight: 700; }
+  .team-cell { display: flex; align-items: center; gap: 8px; }
+  .swatch { flex: none; width: 12px; height: 12px; border-radius: 3px; }
+  .blank { color: var(--text-2); }
+
+  input {
+    font: inherit;
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--axis);
+    border-radius: 6px;
+    padding: 4px 8px;
+  }
+  input:focus-visible, button:focus-visible { outline: 2px solid var(--text); outline-offset: 1px; }
+  input[type="number"] { width: 5em; text-align: right; }
+  input.team-name { width: 9em; font-weight: 600; }
+  input.theme-input { display: block; width: 8.5em; margin: 4px 0 0 auto; font-size: 12px; text-align: right; }
+
+  button {
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--axis);
+    border-radius: 8px;
+    padding: 6px 14px;
+    cursor: pointer;
+  }
+  button:hover:not(:disabled) { background: var(--page); }
+  button:disabled { opacity: 0.5; cursor: default; }
+  button.primary { background: var(--text); border-color: var(--text); color: var(--surface); }
+  button.primary:hover { background: var(--text); opacity: 0.85; }
+  button.remove { padding: 2px 8px; font-size: 16px; line-height: 1.2; }
+  .edit-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .note { margin: 12px 0 0; font-size: 13px; color: var(--text-2); }
+
+  #tip {
+    position: fixed;
+    z-index: 10;
+    pointer-events: none;
+    min-width: 150px;
+    padding: 10px 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+  }
+  #tip strong { display: block; margin-bottom: 4px; font-size: 14px; }
+  #tip div { display: flex; justify-content: space-between; gap: 16px; color: var(--text-2); }
+  #tip div span:last-child { color: var(--text); font-weight: 600; }
+
+  @media (max-width: 520px) {
+    .row { grid-template-columns: 46px 92px 1fr 52px; gap: 8px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .bar { transition: none; } }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Spirit Week Scoreboard</h1>
+    <p id="headline" aria-live="polite"></p>
+  </header>
+
+  <section aria-labelledby="standings-title">
+    <div class="section-head"><h2 id="standings-title">Standings</h2></div>
+    <div id="standings"></div>
+  </section>
+
+  <section aria-labelledby="points-title">
+    <div class="section-head">
+      <h2 id="points-title">Points by day</h2>
+      <button id="edit-toggle" type="button" aria-pressed="false">Edit scores</button>
+    </div>
+    <div class="table-wrap"><table id="points"></table></div>
+    <div id="edit-panel" hidden>
+      <div class="edit-actions">
+        <button id="add-team" type="button">Add team</button>
+        <button id="clear-scores" type="button">Clear all scores</button>
+      </div>
+      <p class="note">Changes save automatically in this browser. Leave a box empty for a day that hasn't been scored yet.</p>
+    </div>
+  </section>
+</main>
+<div id="tip" role="tooltip" hidden></div>
+
+<script>
+(function () {
+  'use strict';
+
+  var STORAGE_KEY = 'spirit-week-scoreboard-v1';
+  var MAX_TEAMS = 8; // one color slot per team
+
+  // Starting data: example scores so the page isn't empty. "Clear all scores" wipes them.
+  var DEFAULTS = {
+    days: [
+      { name: 'Mon', theme: 'Pajama Day' },
+      { name: 'Tue', theme: 'Twin Day' },
+      { name: 'Wed', theme: 'Decades Day' },
+      { name: 'Thu', theme: 'Class Colors' },
+      { name: 'Fri', theme: 'School Spirit' }
+    ],
+    teams: [
+      { id: 1, slot: 1, name: 'Freshmen',   pts: [30, 45, 25, null, null] },
+      { id: 2, slot: 2, name: 'Sophomores', pts: [35, 30, 50, null, null] },
+      { id: 3, slot: 3, name: 'Juniors',    pts: [45, 55, 40, null, null] },
+      { id: 4, slot: 4, name: 'Seniors',    pts: [50, 40, 60, null, null] }
+    ]
+  };
+
+  var state = load();
+  var editing = false;
+
+  var $headline = document.getElementById('headline');
+  var $standings = document.getElementById('standings');
+  var $table = document.getElementById('points');
+  var $editToggle = document.getElementById('edit-toggle');
+  var $editPanel = document.getElementById('edit-panel');
+  var $addTeam = document.getElementById('add-team');
+  var $tip = document.getElementById('tip');
+
+  function clone(o) { return JSON.parse(JSON.stringify(o)); }
+
+  function load() {
+    try {
+      var saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      if (saved && Array.isArray(saved.days) && Array.isArray(saved.teams)) return saved;
+    } catch (e) { /* fall through to defaults */ }
+    return clone(DEFAULTS);
+  }
+
+  function save() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+  }
+
+  function el(tag, props, children) {
+    var node = document.createElement(tag);
+    for (var k in props || {}) {
+      if (k === 'text') node.textContent = props[k];
+      else if (k === 'class') node.className = props[k];
+      else if (k in node) node[k] = props[k];
+      else node.setAttribute(k, props[k]);
+    }
+    (children || []).forEach(function (c) { if (c) node.appendChild(c); });
+    return node;
+  }
+
+  function total(team) {
+    return team.pts.reduce(function (sum, p) { return sum + (p || 0); }, 0);
+  }
+
+  function rankOf(team) {
+    var mine = total(team);
+    return 1 + state.teams.filter(function (t) { return total(t) > mine; }).length;
+  }
+
+  function ordinal(n) {
+    return n + (n === 1 ? 'st' : n === 2 ? 'nd' : n === 3 ? 'rd' : 'th');
+  }
+
+  function plural(n) { return n + (n === 1 ? ' point' : ' points'); }
+
+  function joinNames(names) {
+    if (names.length < 3) return names.join(' and ');
+    return names.slice(0, -1).join(', ') + ', and ' + names[names.length - 1];
+  }
+
+  function headline() {
+    if (!state.teams.length) return 'Add a team to get started.';
+    var totals = state.teams.map(total).sort(function (a, b) { return b - a; });
+    if (totals[0] === 0) return 'No points on the board yet.';
+    var leaders = state.teams.filter(function (t) { return total(t) === totals[0]; })
+      .map(function (t) { return t.name; });
+    if (leaders.length > 1) return 'Tied for first at ' + plural(totals[0]) + ': ' + joinNames(leaders) + '.';
+    if (totals.length === 1) return leaders[0] + ': ' + plural(totals[0]) + '.';
+    return 'First place: ' + leaders[0] + ', ahead by ' + plural(totals[0] - totals[1]) + '.';
+  }
+
+  /* ---------- Standings ---------- */
+
+  function renderStandings() {
+    $headline.textContent = headline();
+    $standings.textContent = '';
+    if (!state.teams.length) {
+      $standings.appendChild(el('p', { class: 'empty', text: 'No teams yet. Choose Edit scores, then Add team.' }));
+      return;
+    }
+    var max = Math.max.apply(null, state.teams.map(total)) || 1;
+    var anyPoints = state.teams.some(function (t) { return total(t) > 0; });
+
+    state.teams.forEach(function (team) {
+      var sum = total(team);
+      var rank = rankOf(team);
+      var bar = el('div', { class: 'bar' });
+      bar.style.width = sum > 0 ? 'max(2px, ' + (sum / max * 100) + '%)' : '0';
+      bar.style.background = 'var(--s' + team.slot + ')';
+
+      var row = el('div', {
+        class: 'row',
+        tabIndex: 0,
+        'aria-label': team.name + ', ' + (anyPoints ? ordinal(rank) + ' place, ' : '') + plural(sum)
+      }, [
+        el('span', { class: 'rank' + (anyPoints && rank === 1 ? ' first' : ''), text: anyPoints ? ordinal(rank) : '–' }),
+        el('span', { class: 'name', text: team.name }),
+        el('div', { class: 'track' }, [bar]),
+        el('span', { class: 'total', text: String(sum) })
+      ]);
+
+      row.addEventListener('mousemove', function (e) { showTip(team, e.clientX + 14, e.clientY + 14); });
+      row.addEventListener('mouseleave', hideTip);
+      row.addEventListener('focus', function () {
+        var r = row.getBoundingClientRect();
+        showTip(team, r.left + 64, r.bottom + 4);
+      });
+      row.addEventListener('blur', hideTip);
+      $standings.appendChild(row);
+    });
+  }
+
+  function showTip(team, x, y) {
+    $tip.textContent = '';
+    $tip.appendChild(el('strong', { text: team.name }));
+    state.days.forEach(function (day, i) {
+      var p = team.pts[i];
+      $tip.appendChild(el('div', null, [
+        el('span', { text: day.name + (day.theme ? ' · ' + day.theme : '') }),
+        el('span', { text: p == null ? '–' : String(p) })
+      ]));
+    });
+    $tip.hidden = false;
+    var w = $tip.offsetWidth, h = $tip.offsetHeight;
+    $tip.style.left = Math.max(8, Math.min(x, window.innerWidth - w - 8)) + 'px';
+    $tip.style.top = Math.max(8, Math.min(y, window.innerHeight - h - 8)) + 'px';
+  }
+
+  function hideTip() { $tip.hidden = true; }
+
+  /* ---------- Points table ---------- */
+
+  function renderTable() {
+    $table.textContent = '';
+
+    var headRow = el('tr', null, [el('th', { scope: 'col', text: 'Team' })]);
+    state.days.forEach(function (day) {
+      var th = el('th', { scope: 'col', text: day.name });
+      if (editing) {
+        var input = el('input', { class: 'theme-input', type: 'text', value: day.theme, maxLength: 30 });
+        input.setAttribute('aria-label', day.name + ' theme');
+        input.addEventListener('input', function () { day.theme = input.value.trim(); save(); });
+        th.appendChild(input);
+      } else if (day.theme) {
+        th.appendChild(el('span', { class: 'theme', text: day.theme }));
+      }
+      headRow.appendChild(th);
+    });
+    headRow.appendChild(el('th', { scope: 'col', class: 'sum', text: 'Total' }));
+    $table.appendChild(el('thead', null, [headRow]));
+
+    var body = el('tbody');
+    state.teams.forEach(function (team) {
+      var swatch = el('span', { class: 'swatch' });
+      swatch.style.background = 'var(--s' + team.slot + ')';
+      var sumCell = el('td', { class: 'sum', text: String(total(team)) });
+      var nameCell;
+
+      if (editing) {
+        var nameInput = el('input', { class: 'team-name', type: 'text', value: team.name, maxLength: 24 });
+        nameInput.setAttribute('aria-label', 'Team name');
+        nameInput.addEventListener('input', function () {
+          team.name = nameInput.value.trim() || 'Team';
+          save();
+          renderStandings();
+        });
+        var remove = el('button', { class: 'remove', type: 'button', text: '×', title: 'Remove ' + team.name });
+        remove.setAttribute('aria-label', 'Remove ' + team.name);
+        remove.addEventListener('click', function () {
+          if (!confirm('Remove ' + team.name + ' and all of its points?')) return;
+          state.teams = state.teams.filter(function (t) { return t !== team; });
+          save();
+          render();
+        });
+        nameCell = el('div', { class: 'team-cell' }, [swatch, nameInput, remove]);
+      } else {
+        nameCell = el('div', { class: 'team-cell' }, [swatch, el('span', { text: team.name })]);
+      }
+
+      var tr = el('tr', null, [el('th', { scope: 'row' }, [nameCell])]);
+      state.days.forEach(function (day, i) {
+        var p = team.pts[i];
+        var td = el('td');
+        if (editing) {
+          var input = el('input', { type: 'number', min: '0', step: '1', inputMode: 'numeric' });
+          input.value = p == null ? '' : p;
+          input.setAttribute('aria-label', team.name + ' points for ' + day.name);
+          input.addEventListener('input', function () {
+            var n = Number(input.value);
+            team.pts[i] = input.value.trim() === '' || !isFinite(n) ? null : Math.max(0, Math.round(n));
+            save();
+            sumCell.textContent = String(total(team));
+            renderStandings();
+          });
+          td.appendChild(input);
+        } else if (p == null) {
+          td.appendChild(el('span', { class: 'blank', text: '–' }));
+        } else {
+          td.textContent = String(p);
+        }
+        tr.appendChild(td);
+      });
+      tr.appendChild(sumCell);
+      body.appendChild(tr);
+    });
+    $table.appendChild(body);
+
+    $editToggle.textContent = editing ? 'Done' : 'Edit scores';
+    $editToggle.className = editing ? 'primary' : '';
+    $editToggle.setAttribute('aria-pressed', String(editing));
+    $editPanel.hidden = !editing;
+    $addTeam.disabled = state.teams.length >= MAX_TEAMS;
+  }
+
+  function render() { renderStandings(); renderTable(); }
+
+  /* ---------- Controls ---------- */
+
+  $editToggle.addEventListener('click', function () {
+    editing = !editing;
+    render();
+  });
+
+  $addTeam.addEventListener('click', function () {
+    if (state.teams.length >= MAX_TEAMS) return;
+    var used = state.teams.map(function (t) { return t.slot; });
+    var slot = 1;
+    while (used.indexOf(slot) !== -1) slot++;
+    state.teams.push({
+      id: Date.now(),
+      slot: slot,
+      name: 'Team ' + (state.teams.length + 1),
+      pts: state.days.map(function () { return null; })
+    });
+    save();
+    render();
+    var names = $table.querySelectorAll('input.team-name');
+    var last = names[names.length - 1];
+    if (last) { last.focus(); last.select(); }
+  });
+
+  document.getElementById('clear-scores').addEventListener('click', function () {
+    if (!confirm('Clear every score for every team? Team names and themes stay.')) return;
+    state.teams.forEach(function (t) { t.pts = state.days.map(function () { return null; }); });
+    save();
+    render();
+  });
+
+  window.addEventListener('scroll', hideTip, { passive: true });
+
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,5 +1,7 @@
 # Orchestrator Brief: Vibe Coding Demo Build
 
+> **Changed since this brief (2026-11-26).** Run 1 is now a one-line prompt on the capable model, in `run1-one-line-prompt/`. The small-model run this brief calls run 1 is in `extra-small-model/`. `run2-better-model/` is now `run2-better-prompt/`. The folder is a git repo with a top-level `CLAUDE.md`, which `clean-settings.json` excludes. `RESULTS.md` has the details. The brief below is unchanged.
+
 You are setting up and capturing pre-built demo material for a 35-minute high school workshop. The presenter (Ari) will show it to students to compare careless and careful ways of coding with AI, and to show an AI agent explaining and debugging code.
 
 There are two parts:

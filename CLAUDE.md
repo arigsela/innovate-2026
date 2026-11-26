@@ -9,11 +9,11 @@ The repo is public.
 The value of this repo is the honest difference between the runs. These are records, not
 code to improve:
 
-- Everything inside an `attempt-N/` folder, in `run1-better-process/`, `run2-better-model/`,
-  `run2-haiku/`, `run3-better-harness/` and `archive/`.
+- Everything inside an `attempt-N/` folder, in `run1-one-line-prompt/`, `run2-better-prompt/`,
+  `run3-better-harness/`, `run2-haiku/`, `extra-small-model/` and `archive/`.
 - `answer.md` and `fixed/index.html` in `mystery-button/`.
-- The prompt files (`prompt-N.md`, `followups.md`, `rules-file.md`, `bug-report.md`). The
-  three `prompt-N.md` files must stay byte-identical.
+- The prompt files (`prompt-N.md`, `followups.md`, `rules-file.md`, `bug-report.md`).
+  `prompt-2.md` and `prompt-3.md` must stay byte-identical.
 
 If one of these looks wrong, say so and leave it. Do not fix a bug in a run's page.
 
@@ -53,6 +53,6 @@ and the scripts in `_orchestrator/`.
 ## Running the runs again
 
 This file sits at the top of the repo, so an agent started in any subfolder reads it. A run
-must not see it. `_orchestrator/clean-settings.json` excludes it for the `CLEAN_CLAUDE`
-command in `docs/instructions.md`. Before any new run, repeat the isolation check in that
-brief and confirm this file is not listed.
+must not see it, and must not see the git repo either. `_orchestrator/clean-settings.json`
+excludes this file for the `CLEAN_CLAUDE` command in `docs/instructions.md`. Make a new run
+in an empty folder outside the repo, as run 1 was, and copy the result in.

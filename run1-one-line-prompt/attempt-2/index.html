@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spirit Week Scoreboard</title>
+<style>
+  :root {
+    --bg: #0f1226;
+    --panel: #191d3a;
+    --panel-2: #222750;
+    --line: #333a6b;
+    --text: #f4f5ff;
+    --muted: #a9aed6;
+    --gold: #ffd54a;
+    --accent: #7c8cff;
+    --danger: #ff7a7a;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    min-height: 100vh;
+    background: radial-gradient(1200px 600px at 50% -10%, #2a2f66 0%, var(--bg) 60%) fixed, var(--bg);
+    color: var(--text);
+    font: 16px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  .wrap { max-width: 1000px; margin: 0 auto; padding: 24px 20px 64px; }
+
+  header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .title {
+    flex: 1; min-width: 0;
+    font: 800 clamp(1.6rem, 4.5vw, 2.8rem)/1.1 inherit;
+    font-family: inherit;
+    letter-spacing: -0.02em;
+    color: var(--text); background: transparent;
+    border: 1px solid transparent; border-radius: 10px; padding: 6px 10px; margin-left: -10px;
+  }
+  .title:hover { border-color: var(--line); }
+
+  input:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  button {
+    font: 600 0.95rem inherit; font-family: inherit;
+    color: var(--text); background: var(--panel-2);
+    border: 1px solid var(--line); border-radius: 10px;
+    padding: 9px 14px; cursor: pointer; white-space: nowrap;
+  }
+  button:hover { background: #2c3266; }
+  button.primary { background: var(--accent); border-color: var(--accent); color: #0b0d22; }
+  button.primary:hover { background: #95a2ff; }
+  button.danger { color: var(--danger); }
+  button.icon {
+    padding: 2px 8px; font-size: 1.1rem; line-height: 1.2;
+    background: transparent; border-color: transparent; color: var(--muted);
+  }
+  button.icon:hover { color: var(--danger); background: var(--panel-2); }
+
+  /* Leaderboard */
+  #board { display: grid; gap: 12px; }
+  .team {
+    display: grid; grid-template-columns: 3rem 1fr auto; align-items: center; gap: 4px 16px;
+    background: var(--panel); border: 1px solid var(--line); border-radius: 16px;
+    padding: 14px 20px;
+  }
+  .team.leader { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold), 0 8px 30px rgba(255, 213, 74, 0.12); }
+  .rank {
+    grid-row: span 2;
+    font-weight: 800; font-size: 1.6rem; color: var(--muted); text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+  .team.leader .rank { color: var(--gold); }
+  .name { font-weight: 700; font-size: 1.35rem; overflow-wrap: anywhere; }
+  .score {
+    grid-row: span 2;
+    font-weight: 800; font-size: 2.2rem; font-variant-numeric: tabular-nums; text-align: right; min-width: 3ch;
+  }
+  .track { height: 14px; border-radius: 99px; background: rgba(255, 255, 255, 0.08); overflow: hidden; }
+  .fill { height: 100%; width: 0; border-radius: 99px; transition: width 0.5s ease; }
+  .empty { color: var(--muted); text-align: center; padding: 40px 0; }
+
+  /* Score sheet */
+  #sheet { margin-top: 36px; }
+  #sheet h2 { font-size: 1.1rem; margin: 0 0 4px; }
+  #sheet p { color: var(--muted); margin: 0 0 14px; font-size: 0.9rem; }
+  .table-wrap { overflow-x: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 16px; }
+  table { border-collapse: collapse; width: 100%; }
+  th, td { padding: 8px 10px; border-bottom: 1px solid var(--line); text-align: center; }
+  tfoot td { border-bottom: 0; font-weight: 800; font-size: 1.1rem; font-variant-numeric: tabular-nums; }
+  th:first-child, td:first-child { text-align: left; min-width: 220px; }
+  td:last-child, th:last-child { width: 1%; }
+  .team-head { display: flex; align-items: center; gap: 6px; justify-content: center; }
+  input[type="color"] {
+    flex: none; width: 22px; height: 22px; padding: 0; border: 0; border-radius: 50%;
+    background: none; cursor: pointer; overflow: hidden;
+  }
+  input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+  input[type="color"]::-webkit-color-swatch { border: 0; border-radius: 50%; }
+  input[type="color"]::-moz-color-swatch { border: 0; border-radius: 50%; }
+  input[type="text"], input[type="number"] {
+    font: inherit; color: var(--text); background: transparent;
+    border: 1px solid transparent; border-radius: 8px; padding: 6px 8px; width: 100%;
+  }
+  input[type="text"]:hover, input[type="number"]:hover { border-color: var(--line); }
+  input[type="text"]:focus, input[type="number"]:focus { background: var(--bg); border-color: var(--line); }
+  .team-head input[type="text"] { font-weight: 700; min-width: 90px; width: 110px; }
+  input[type="number"] {
+    width: 5.5rem; text-align: center; font-variant-numeric: tabular-nums;
+    background: var(--bg); border-color: var(--line);
+  }
+  .sheet-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+  .sheet-actions .spacer { flex: 1; }
+
+  /* Presentation mode: just the leaderboard, scaled up for a projector */
+  body.presenting #sheet { display: none; }
+  body.presenting .wrap { max-width: 1500px; padding-top: 4vh; }
+  body.presenting .title { pointer-events: none; text-align: center; font-size: clamp(2rem, 5vw, 4.5rem); margin: 0; }
+  body.presenting header { margin-bottom: 4vh; }
+  body.presenting #board { gap: 2vh; }
+  body.presenting .team { padding: 2.2vh 2.5vw; grid-template-columns: 6vw 1fr auto; }
+  body.presenting .rank { font-size: clamp(1.6rem, 3.5vw, 3.5rem); }
+  body.presenting .name { font-size: clamp(1.4rem, 3vw, 3rem); }
+  body.presenting .score { font-size: clamp(2.2rem, 5vw, 5rem); }
+  body.presenting .track { height: clamp(14px, 2.2vh, 28px); }
+  body.presenting #present { opacity: 0.35; }
+  body.presenting #present:hover, body.presenting #present:focus-visible { opacity: 1; }
+
+  @media (max-width: 560px) {
+    .team { grid-template-columns: 2.2rem 1fr auto; padding: 12px 14px; gap: 4px 10px; }
+    .name { font-size: 1.1rem; }
+    .score { font-size: 1.7rem; }
+  }
+  @media (prefers-reduced-motion: reduce) { .fill { transition: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <input id="title" class="title" type="text" aria-label="Scoreboard title" maxlength="60">
+    <button id="present" class="primary" type="button">Present</button>
+  </header>
+
+  <section id="board" aria-label="Standings" aria-live="polite"></section>
+
+  <section id="sheet">
+    <h2>Score sheet</h2>
+    <p>Type points into the grid and the standings update instantly. Everything saves in this browser.</p>
+    <div class="table-wrap"><table id="grid"></table></div>
+    <div class="sheet-actions">
+      <button id="addEvent" type="button">+ Add event</button>
+      <button id="addTeam" type="button">+ Add team</button>
+      <span class="spacer"></span>
+      <button id="clear" class="danger" type="button">Clear all scores</button>
+    </div>
+  </section>
+</div>
+
+<script>
+(() => {
+  const KEY = 'spirit-week-scoreboard-v1';
+  const PALETTE = ['#ef4444', '#f59e0b', '#22c55e', '#3b82f6', '#a855f7', '#ec4899', '#14b8a6', '#f97316'];
+  const uid = () => Math.random().toString(36).slice(2, 10);
+  const $ = (id) => document.getElementById(id);
+
+  function el(tag, props = {}, ...children) {
+    const node = Object.assign(document.createElement(tag), props);
+    node.append(...children);
+    return node;
+  }
+
+  function defaults() {
+    return {
+      title: 'Spirit Week Scoreboard',
+      teams: ['Freshmen', 'Sophomores', 'Juniors', 'Seniors'].map((name, i) => ({ id: uid(), name, color: PALETTE[i] })),
+      events: [
+        'Monday — Pajama Day',
+        'Tuesday — Twin Day',
+        'Wednesday — Decades Day',
+        'Thursday — Class Color Day',
+        'Friday — Pep Rally',
+      ].map((name) => ({ id: uid(), name, scores: {} })),
+    };
+  }
+
+  function load() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(KEY));
+      if (saved && Array.isArray(saved.teams) && Array.isArray(saved.events)) return saved;
+    } catch (e) { /* fall through to defaults */ }
+    return defaults();
+  }
+
+  let state = load();
+  const save = () => {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+  };
+
+  const total = (teamId) => state.events.reduce((sum, ev) => sum + (Number(ev.scores[teamId]) || 0), 0);
+  const fmt = (n) => (Math.round(n * 100) / 100).toLocaleString();
+
+  /* ---------- Leaderboard ---------- */
+  const board = $('board');
+  const rows = new Map(); // team id -> row element, reused so the bars animate
+
+  function renderBoard() {
+    const ranked = state.teams
+      .map((team) => ({ team, total: total(team.id) }))
+      .sort((a, b) => b.total - a.total);
+    const max = Math.max(1, ...ranked.map((r) => r.total));
+
+    for (const [id, row] of rows) {
+      if (!state.teams.some((t) => t.id === id)) { row.remove(); rows.delete(id); }
+    }
+    board.querySelector('.empty')?.remove();
+    if (!ranked.length) {
+      board.append(el('div', { className: 'empty', textContent: 'Add a team to get started.' }));
+      return;
+    }
+
+    let rank = 0;
+    ranked.forEach((entry, i) => {
+      if (i === 0 || entry.total !== ranked[i - 1].total) rank = i + 1; // ties share a rank
+      let row = rows.get(entry.team.id);
+      if (!row) {
+        row = el('div', { className: 'team' },
+          el('div', { className: 'rank' }),
+          el('div', { className: 'name' }),
+          el('div', { className: 'score' }),
+          el('div', { className: 'track' }, el('div', { className: 'fill' })));
+        rows.set(entry.team.id, row);
+      }
+      const leading = rank === 1 && entry.total > 0;
+      row.classList.toggle('leader', leading);
+      row.querySelector('.rank').textContent = leading ? '👑' : rank;
+      row.querySelector('.name').textContent = entry.team.name || 'Unnamed team';
+      row.querySelector('.score').textContent = fmt(entry.total);
+      const fill = row.querySelector('.fill');
+      fill.style.background = entry.team.color;
+      fill.style.width = Math.max(0, entry.total) / max * 100 + '%';
+      board.append(row); // re-appending puts rows in ranked order
+    });
+  }
+
+  /* ---------- Score sheet ---------- */
+  const grid = $('grid');
+
+  function renderTotals() {
+    grid.querySelectorAll('tfoot [data-team]').forEach((cell) => {
+      cell.textContent = fmt(total(cell.dataset.team));
+    });
+  }
+
+  function renderGrid() {
+    const head = el('tr', {}, el('th', { textContent: 'Event', scope: 'col' }));
+    for (const team of state.teams) {
+      const color = el('input', { type: 'color', value: team.color, title: 'Team color' });
+      color.setAttribute('aria-label', 'Team color');
+      color.addEventListener('input', () => { team.color = color.value; save(); renderBoard(); });
+
+      const name = el('input', { type: 'text', value: team.name, maxLength: 30 });
+      name.setAttribute('aria-label', 'Team name');
+      name.addEventListener('input', () => { team.name = name.value; save(); renderBoard(); });
+
+      const remove = el('button', { type: 'button', className: 'icon', textContent: '×', title: 'Remove team' });
+      remove.setAttribute('aria-label', 'Remove team');
+      remove.addEventListener('click', () => {
+        if (!confirm(`Remove ${team.name || 'this team'} and all of its points?`)) return;
+        state.teams = state.teams.filter((t) => t !== team);
+        state.events.forEach((ev) => delete ev.scores[team.id]);
+        save(); renderAll();
+      });
+      head.append(el('th', { scope: 'col' }, el('div', { className: 'team-head' }, color, name, remove)));
+    }
+    head.append(el('th'));
+
+    const body = el('tbody');
+    for (const ev of state.events) {
+      const name = el('input', { type: 'text', value: ev.name, maxLength: 60, placeholder: 'Event name' });
+      name.setAttribute('aria-label', 'Event name');
+      name.addEventListener('input', () => { ev.name = name.value; save(); });
+      const row = el('tr', {}, el('td', {}, name));
+
+      for (const team of state.teams) {
+        const input = el('input', { type: 'number', step: 'any', placeholder: '0', value: ev.scores[team.id] ?? '' });
+        input.setAttribute('aria-label', `${team.name} points`);
+        input.addEventListener('input', () => {
+          const value = input.value === '' ? NaN : Number(input.value);
+          if (Number.isFinite(value)) ev.scores[team.id] = value; else delete ev.scores[team.id];
+          save(); renderBoard(); renderTotals();
+        });
+        row.append(el('td', {}, input));
+      }
+
+      const remove = el('button', { type: 'button', className: 'icon', textContent: '×', title: 'Remove event' });
+      remove.setAttribute('aria-label', 'Remove event');
+      remove.addEventListener('click', () => {
+        const hasPoints = Object.keys(ev.scores).length > 0;
+        if (hasPoints && !confirm(`Remove "${ev.name || 'this event'}" and its points?`)) return;
+        state.events = state.events.filter((e) => e !== ev);
+        save(); renderAll();
+      });
+      row.append(el('td', {}, remove));
+      body.append(row);
+    }
+
+    const foot = el('tr', {}, el('td', { textContent: 'Total' }));
+    for (const team of state.teams) {
+      const cell = el('td');
+      cell.dataset.team = team.id;
+      foot.append(cell);
+    }
+    foot.append(el('td'));
+
+    grid.replaceChildren(el('thead', {}, head), body, el('tfoot', {}, foot));
+    renderTotals();
+  }
+
+  function renderAll() { renderGrid(); renderBoard(); }
+
+  /* ---------- Controls ---------- */
+  const title = $('title');
+  title.value = state.title || '';
+  document.title = state.title || 'Spirit Week Scoreboard';
+  title.addEventListener('input', () => {
+    state.title = title.value;
+    document.title = title.value || 'Spirit Week Scoreboard';
+    save();
+  });
+
+  $('addTeam').addEventListener('click', () => {
+    const used = new Set(state.teams.map((t) => t.color));
+    const color = PALETTE.find((c) => !used.has(c)) || PALETTE[state.teams.length % PALETTE.length];
+    state.teams.push({ id: uid(), name: `Team ${state.teams.length + 1}`, color });
+    save(); renderAll();
+    const names = grid.querySelectorAll('thead input[type="text"]');
+    names[names.length - 1]?.select();
+  });
+
+  $('addEvent').addEventListener('click', () => {
+    state.events.push({ id: uid(), name: '', scores: {} });
+    save(); renderAll();
+    grid.querySelector('tbody tr:last-child input[type="text"]')?.focus();
+  });
+
+  $('clear').addEventListener('click', () => {
+    if (!confirm('Clear every score? Teams and events stay.')) return;
+    state.events.forEach((ev) => { ev.scores = {}; });
+    save(); renderAll();
+  });
+
+  const presentBtn = $('present');
+  function setPresenting(on) {
+    document.body.classList.toggle('presenting', on);
+    presentBtn.textContent = on ? 'Exit' : 'Present';
+  }
+  presentBtn.addEventListener('click', () => {
+    const on = !document.body.classList.contains('presenting');
+    setPresenting(on);
+    if (on) document.documentElement.requestFullscreen?.().catch(() => {});
+    else if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
+  });
+  document.addEventListener('fullscreenchange', () => {
+    if (!document.fullscreenElement) setPresenting(false); // Esc leaves presentation mode too
+  });
+
+  // Keep a second open tab (e.g. the projector window) in sync with the one being edited.
+  window.addEventListener('storage', (e) => {
+    if (e.key !== KEY) return;
+    state = load();
+    if (document.activeElement !== title) title.value = state.title || '';
+    if (grid.contains(document.activeElement)) renderBoard(); else renderAll();
+  });
+
+  renderAll();
+})();
+</script>
+</body>
+</html>

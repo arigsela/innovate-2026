@@ -1,6 +1,6 @@
-# Run 1: every message we sent
+# Small-model extra: every message we sent
 
-Run 1 uses the small model (`llama3.2:1b`) with a clear request and a feedback loop. Each attempt is one chat with five messages from us. Messages 1 to 3 are the same in every attempt. Messages 4 and 5 report what the page really did, so they differ per attempt.
+This run was run 1 until 2026-11-26. It uses the small model (`llama3.2:1b`) with a clear request and a feedback loop. Each attempt is one chat with five messages from us. Messages 1 to 3 are the same in every attempt. Messages 4 and 5 report what the page really did, so they differ per attempt.
 
 The rule for messages 4 and 5: we only describe what we did and what the page showed. We never tell the model the right answer or how to fix the code.
 

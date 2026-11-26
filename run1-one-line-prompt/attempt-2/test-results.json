@@ -1,0 +1,167 @@
+{
+  "page": "index.html",
+  "prompt": [
+    0,
+    8
+  ],
+  "school": [
+    1,
+    6
+  ],
+  "results": [
+    {
+      "id": 1,
+      "kind": "prompt",
+      "title": "Load the page",
+      "verdict": "FAIL",
+      "why": "0 houses with a +10 button, not 4; no Reset button.",
+      "shown": "Present\n1\nFreshmen\n0\n1\nSophomores\n0\n1\nJuniors\n0\n1\nSeniors\n0\nScore sheet\n\nType points into the grid and the standings update instantly. Everything saves in this browser.\n\nEvent\t\n×\n\t\n×\n\t\n×\n\t\n×\n\t\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\nTotal\t0\t0\t0\t0\t\n+ Add event\n+ Add team\nClear all scores",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-01.png"
+    },
+    {
+      "id": 2,
+      "kind": "prompt",
+      "title": "Click +10 twice on house 1",
+      "verdict": "CHECK",
+      "why": "Could not find four houses that each have a +10 button (found 0), so this check could not be performed.",
+      "shown": "Present\n1\nFreshmen\n0\n1\nSophomores\n0\n1\nJuniors\n0\n1\nSeniors\n0\nScore sheet\n\nType points into the grid and the standings update instantly. Everything saves in this browser.\n\nEvent\t\n×\n\t\n×\n\t\n×\n\t\n×\n\t\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\nTotal\t0\t0\t0\t0\t\n+ Add event\n+ Add team\nClear all scores",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-02.png"
+    },
+    {
+      "id": 3,
+      "kind": "prompt",
+      "title": "Click -10 on house 2 while it has 0",
+      "verdict": "CHECK",
+      "why": "Could not find four houses that each have a +10 button (found 0), so this check could not be performed.",
+      "shown": "Present\n1\nFreshmen\n0\n1\nSophomores\n0\n1\nJuniors\n0\n1\nSeniors\n0\nScore sheet\n\nType points into the grid and the standings update instantly. Everything saves in this browser.\n\nEvent\t\n×\n\t\n×\n\t\n×\n\t\n×\n\t\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\nTotal\t0\t0\t0\t0\t\n+ Add event\n+ Add team\nClear all scores",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-03.png"
+    },
+    {
+      "id": 4,
+      "kind": "prompt",
+      "title": "Type 25 in house 3 and click Award",
+      "verdict": "CHECK",
+      "why": "Could not find four houses that each have a +10 button (found 0), so this check could not be performed.",
+      "shown": "Present\n1\nFreshmen\n0\n1\nSophomores\n0\n1\nJuniors\n0\n1\nSeniors\n0\nScore sheet\n\nType points into the grid and the standings update instantly. Everything saves in this browser.\n\nEvent\t\n×\n\t\n×\n\t\n×\n\t\n×\n\t\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\nTotal\t0\t0\t0\t0\t\n+ Add event\n+ Add team\nClear all scores",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-04.png"
+    },
+    {
+      "id": 5,
+      "kind": "prompt",
+      "title": "Type -5 in house 1 and click Award",
+      "verdict": "CHECK",
+      "why": "Could not find four houses that each have a +10 button (found 0), so this check could not be performed.",
+      "shown": "Present\n1\nFreshmen\n0\n1\nSophomores\n0\n1\nJuniors\n0\n1\nSeniors\n0\nScore sheet\n\nType points into the grid and the standings update instantly. Everything saves in this browser.\n\nEvent\t\n×\n\t\n×\n\t\n×\n\t\n×\n\t\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\nTotal\t0\t0\t0\t0\t\n+ Add event\n+ Add team\nClear all scores",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-05.png"
+    },
+    {
+      "id": 6,
+      "kind": "prompt",
+      "title": "Click +10 twice on house 1 and once on house 2",
+      "verdict": "CHECK",
+      "why": "Could not find four houses that each have a +10 button (found 0), so this check could not be performed.",
+      "shown": "Present\n1\nFreshmen\n0\n1\nSophomores\n0\n1\nJuniors\n0\n1\nSeniors\n0\nScore sheet\n\nType points into the grid and the standings update instantly. Everything saves in this browser.\n\nEvent\t\n×\n\t\n×\n\t\n×\n\t\n×\n\t\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\nTotal\t0\t0\t0\t0\t\n+ Add event\n+ Add team\nClear all scores",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-06.png"
+    },
+    {
+      "id": 7,
+      "kind": "prompt",
+      "title": "Give points to houses 1 and 2, then click Reset",
+      "verdict": "CHECK",
+      "why": "Could not find four houses that each have a +10 button (found 0), so this check could not be performed.",
+      "shown": "Present\n1\nFreshmen\n0\n1\nSophomores\n0\n1\nJuniors\n0\n1\nSeniors\n0\nScore sheet\n\nType points into the grid and the standings update instantly. Everything saves in this browser.\n\nEvent\t\n×\n\t\n×\n\t\n×\n\t\n×\n\t\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\nTotal\t0\t0\t0\t0\t\n+ Add event\n+ Add team\nClear all scores",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-07.png"
+    },
+    {
+      "id": 8,
+      "kind": "prompt",
+      "title": "Give house 2 50 points, then take house 1 from 10 to 40",
+      "verdict": "CHECK",
+      "why": "Could not find four houses that each have a +10 button (found 0), so this check could not be performed.",
+      "shown": "Present\n1\nFreshmen\n0\n1\nSophomores\n0\n1\nJuniors\n0\n1\nSeniors\n0\nScore sheet\n\nType points into the grid and the standings update instantly. Everything saves in this browser.\n\nEvent\t\n×\n\t\n×\n\t\n×\n\t\n×\n\t\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\nTotal\t0\t0\t0\t0\t\n+ Add event\n+ Add team\nClear all scores",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-08.png"
+    },
+    {
+      "id": 9,
+      "kind": "school",
+      "title": "Load the page and read the house names",
+      "verdict": "CHECK",
+      "why": "Could not find four houses that each have a +10 button (found 0), so this check could not be performed.",
+      "shown": "Present\n1\nFreshmen\n0\n1\nSophomores\n0\n1\nJuniors\n0\n1\nSeniors\n0\nScore sheet\n\nType points into the grid and the standings update instantly. Everything saves in this browser.\n\nEvent\t\n×\n\t\n×\n\t\n×\n\t\n×\n\t\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\nTotal\t0\t0\t0\t0\t\n+ Add event\n+ Add team\nClear all scores",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-09.png"
+    },
+    {
+      "id": 10,
+      "kind": "school",
+      "title": "Give every house 10 points and look at the colours",
+      "verdict": "CHECK",
+      "why": "Could not find four houses that each have a +10 button (found 0), so this check could not be performed.",
+      "shown": "Present\n1\nFreshmen\n0\n1\nSophomores\n0\n1\nJuniors\n0\n1\nSeniors\n0\nScore sheet\n\nType points into the grid and the standings update instantly. Everything saves in this browser.\n\nEvent\t\n×\n\t\n×\n\t\n×\n\t\n×\n\t\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\nTotal\t0\t0\t0\t0\t\n+ Add event\n+ Add team\nClear all scores",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-10.png"
+    },
+    {
+      "id": 11,
+      "kind": "school",
+      "title": "Type 60 in house 1 and click Award",
+      "verdict": "CHECK",
+      "why": "Could not find four houses that each have a +10 button (found 0), so this check could not be performed.",
+      "shown": "Present\n1\nFreshmen\n0\n1\nSophomores\n0\n1\nJuniors\n0\n1\nSeniors\n0\nScore sheet\n\nType points into the grid and the standings update instantly. Everything saves in this browser.\n\nEvent\t\n×\n\t\n×\n\t\n×\n\t\n×\n\t\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\nTotal\t0\t0\t0\t0\t\n+ Add event\n+ Add team\nClear all scores",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-11.png"
+    },
+    {
+      "id": 12,
+      "kind": "school",
+      "title": "Click +10 once on house 1 and once on house 2",
+      "verdict": "CHECK",
+      "why": "Could not find four houses that each have a +10 button (found 0), so this check could not be performed.",
+      "shown": "Present\n1\nFreshmen\n0\n1\nSophomores\n0\n1\nJuniors\n0\n1\nSeniors\n0\nScore sheet\n\nType points into the grid and the standings update instantly. Everything saves in this browser.\n\nEvent\t\n×\n\t\n×\n\t\n×\n\t\n×\n\t\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\nTotal\t0\t0\t0\t0\t\n+ Add event\n+ Add team\nClear all scores",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-12.png"
+    },
+    {
+      "id": 13,
+      "kind": "school",
+      "title": "Click +10 twice on house 1, then reload the page",
+      "verdict": "CHECK",
+      "why": "Could not find four houses that each have a +10 button (found 0), so this check could not be performed.",
+      "shown": "Present\n1\nFreshmen\n0\n1\nSophomores\n0\n1\nJuniors\n0\n1\nSeniors\n0\nScore sheet\n\nType points into the grid and the standings update instantly. Everything saves in this browser.\n\nEvent\t\n×\n\t\n×\n\t\n×\n\t\n×\n\t\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\nTotal\t0\t0\t0\t0\t\n+ Add event\n+ Add team\nClear all scores",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-13.png"
+    },
+    {
+      "id": 14,
+      "kind": "school",
+      "title": "Load the page at 360px wide",
+      "verdict": "PASS",
+      "why": "No sideways scrolling.",
+      "shown": "Present\n1\nFreshmen\n0\n1\nSophomores\n0\n1\nJuniors\n0\n1\nSeniors\n0\nScore sheet\n\nType points into the grid and the standings update instantly. Everything saves in this browser.\n\nEvent\t\n×\n\t\n×\n\t\n×\n\t\n×\n\t\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\n\t\t\t\t\t×\nTotal\t0\t0\t0\t0\t\n+ Add event\n+ Add team\nClear all scores",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-14.png"
+    }
+  ]
+}

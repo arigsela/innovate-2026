@@ -22,19 +22,21 @@ you use the keys.
 
 ## The experiment
 
-The app is House Cup: a points scoreboard for four school houses. All three runs got the same
-request, word for word (`prompt-1.md`, `prompt-2.md` and `prompt-3.md`). Each run was made
-three times.
+The app is House Cup: a points scoreboard for four school houses. All three runs used the
+same model (`claude-fable-5-2`), and each run was made three times. Run 1 got one line:
+`make a scoreboard web page for spirit week`. Runs 2 and 3 got the same clear request, word
+for word (`prompt-2.md` and `prompt-3.md`).
 
 | Run | What changed | Checks from the request, of 8 | School checks, of 6 |
 | --- | --- | --- | --- |
-| 1 · Better process | A small model (`llama3.2:1b`), with real errors pasted back twice | 3, 0, 1 | 0, 1, 1 |
-| 2 · Better model | A powerful model (`claude-fable-5-2`), one try, no follow-ups | 8, 8, 8 | 1, 1, 1 |
-| 3 · Better harness | The same powerful model, plus a rules file in the project | 8, 8, 8 | 6, 6, 6 |
+| 1 · One-line prompt | Eight words, one try, no follow-ups | 0, 0, 0 | 1, 1, 1 |
+| 2 · Better prompt | A clear request: what it does, the rules, an example | 8, 8, 8 | 1, 1, 1 |
+| 3 · Better harness | The same clear request, plus a rules file in the project | 8, 8, 8 | 6, 6, 6 |
 
-The three numbers in a cell are the three tries. The school checks are the school's own
-houses and rules. Only run 3 was told them, through its rules file, so run 2 fails them
-because nobody told it, not because it made mistakes.
+The three numbers in a cell are the three tries. Run 1's pages work and look finished. They
+score 0 because they are a different app: the model had to guess what we wanted. The school
+checks are the school's own houses and rules. Only run 3 was told them, through its rules
+file, so run 2 fails them because nobody told it, not because it made mistakes.
 
 `RESULTS.md` has the full table, the times, and what is uncertain about the results.
 
@@ -48,9 +50,10 @@ at home with the worksheet in `mystery-button/README.md`.
 
 | Path | What it holds |
 | --- | --- |
-| `run1-better-process/` | Run 1: the request, the follow-up messages, and three tries. Each try keeps the page after every fix in `v1/`, `v2/` and `v3/`. |
-| `run2-better-model/` | Run 2: the request and three tries. |
-| `run2-haiku/` | Run 2 again on a smaller Claude model (`claude-haiku-5-5`). Same scores. Not in the slides. |
+| `run1-one-line-prompt/` | Run 1: the one-line request and three tries. |
+| `run2-better-prompt/` | Run 2: the clear request and three tries. |
+| `run2-haiku/` | Extra: run 2 again on a smaller Claude model (`claude-haiku-5-5`). Same scores. Not in the slides. |
+| `extra-small-model/` | Extra: the clear request on a small model (`llama3.2:1b`), with real errors pasted back. Each try keeps the page after every fix in `v1/`, `v2/` and `v3/`. Not in the slides. |
 | `run3-better-harness/` | Run 3: the request, the rules file (`rules-file.md`) and three tries. Each try has the tests the agent wrote. |
 | `mystery-button/` | The page, the agent's explanation, the three bugs with broken and fixed copies, and the worksheet. |
 | `docs/instructions.md` | The brief given to the agent that set up, ran and tested everything. |

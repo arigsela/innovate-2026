@@ -1,6 +1,6 @@
 # Run 2: every message we sent
 
-Run 2 uses the powerful model (`claude-fable-5-2` in Claude Code) with the same request as run 1. It is one message and one answer. There are no follow-ups: we did not ask it to explain, and we did not paste any errors back.
+Run 2 uses the powerful model (`claude-fable-5-2` in Claude Code) with the clear request, the same one run 3 gets. Run 1 got one line instead. It is one message and one answer. There are no follow-ups: we did not ask it to explain, and we did not paste any errors back.
 
 ## Message 1: the request
 

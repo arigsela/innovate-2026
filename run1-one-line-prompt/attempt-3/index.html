@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spirit Week Scoreboard</title>
+<style>
+  :root {
+    color-scheme: light;
+    --plane: #f9f9f9;
+    --surface: #ffffff;
+    --text: #191919;
+    --text-2: #666666;
+    --grid: #e7e7e7;
+    --axis: #c2c2c2;
+    --border: rgba(11, 11, 11, 0.10);
+    --wash: rgba(11, 11, 11, 0.04);
+    /* Team colors: fixed slots, assigned to a team once and never by rank */
+    --s1: #257de0; --s2: #f47230; --s3: #00b894; --s4: #f2a600;
+    --s5: #ee7fac; --s6: #008a17; --s7: #6a4ce2; --s8: #ec4647;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      color-scheme: dark;
+      --plane: #0b0b0b;
+      --surface: #191919;
+      --text: #efefef;
+      --text-2: #9c9c9c;
+      --grid: #303030;
+      --axis: #474747;
+      --border: rgba(255, 255, 255, 0.10);
+      --wash: rgba(255, 255, 255, 0.06);
+      --s1: #338ced; --s2: #e76624; --s3: #00a888; --s4: #d28e05;
+      --s5: #e24d8b; --s6: #0aac23; --s7: #9887ef; --s8: #eb6263;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--plane);
+    color: var(--text);
+    font: 16px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  .page { max-width: 960px; margin: 0 auto; padding: 32px 20px 64px; }
+
+  .top { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end; justify-content: space-between; margin-bottom: 20px; }
+  .top-text { flex: 1 1 320px; min-width: 0; }
+  h1 { margin: 0; font-size: 1.75rem; line-height: 1.2; font-weight: 650; overflow-wrap: anywhere; }
+  .title-input { width: 100%; font-size: 1.75rem; font-weight: 650; line-height: 1.2; }
+  .sub { margin: 4px 0 0; color: var(--text-2); font-size: 0.9375rem; }
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+  button {
+    font: inherit; font-size: 0.875rem; font-weight: 550;
+    padding: 8px 14px; border-radius: 8px; cursor: pointer;
+    background: var(--surface); color: var(--text); border: 1px solid var(--border);
+  }
+  button:hover { background: var(--wash); }
+  button.primary { background: var(--text); color: var(--surface); border-color: var(--text); }
+  button.primary:hover { opacity: 0.88; background: var(--text); }
+  button.ghost { border-color: transparent; background: none; color: var(--text-2); padding: 4px 8px; }
+  button.ghost:hover { background: var(--wash); color: var(--text); }
+  input {
+    font: inherit; color: var(--text); background: var(--surface);
+    border: 1px solid var(--axis); border-radius: 6px; padding: 6px 8px; min-width: 0;
+  }
+  :focus-visible { outline: 2px solid var(--s1); outline-offset: 2px; }
+
+  .card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+    padding: 24px; margin-bottom: 20px;
+  }
+  .card h2 { margin: 0 0 12px; font-size: 1rem; font-weight: 650; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+  /* Leader */
+  .leader { padding-bottom: 20px; margin-bottom: 12px; border-bottom: 1px solid var(--grid); }
+  .leader-label { color: var(--text-2); font-size: 0.875rem; }
+  .leader-value {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px;
+    font-size: clamp(2.25rem, 7vw, 3.5rem); font-weight: 650; line-height: 1.1; margin: 2px 0 6px;
+    overflow-wrap: anywhere;
+  }
+  .leader-value .who { display: inline-flex; align-items: center; gap: 12px; }
+  .leader-value .dot { width: 0.32em; height: 0.32em; }
+  .leader-value .amp { color: var(--text-2); font-weight: 400; }
+  .leader-detail { color: var(--text-2); }
+
+  .dot { display: inline-block; flex: none; width: 10px; height: 10px; border-radius: 50%; background: var(--c); }
+
+  /* Standings bars */
+  .standings { list-style: none; margin: 0; padding: 0; }
+  .standings li {
+    display: grid; grid-template-columns: 1.5ch minmax(5.5rem, 11rem) 1fr; column-gap: 12px; align-items: center;
+    border-radius: 6px; cursor: default;
+  }
+  .standings li:hover { background: var(--wash); }
+  .rank { color: var(--text-2); text-align: right; font-variant-numeric: tabular-nums; }
+  .team { display: flex; align-items: center; gap: 8px; min-width: 0; font-weight: 550; }
+  .team .name { overflow-wrap: anywhere; }
+  .bar-wrap { display: flex; align-items: center; gap: 8px; padding: 9px 0; border-left: 1px solid var(--axis); min-width: 0; }
+  .bar { flex: none; height: 20px; border-radius: 0 4px 4px 0; background: var(--c); transition: width 0.45s ease; }
+  .val { flex: none; font-weight: 650; font-variant-numeric: tabular-nums; }
+
+  /* Events table */
+  .table-wrap { overflow-x: auto; margin: 0 -8px; padding: 0 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9375rem; }
+  th, td { padding: 9px 10px; text-align: right; white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; padding-left: 0; white-space: normal; min-width: 11rem; }
+  thead th { font-weight: 550; color: var(--text-2); font-size: 0.875rem; border-bottom: 1px solid var(--axis); vertical-align: bottom; }
+  .th-team { display: inline-flex; align-items: center; gap: 6px; }
+  tbody th { font-weight: 400; }
+  tbody td, tfoot td { font-variant-numeric: tabular-nums; }
+  tbody tr.event + tr.event > * { border-top: 1px solid var(--grid); }
+  tr.day th {
+    padding-top: 18px; padding-bottom: 6px; text-align: left; white-space: nowrap;
+    font-size: 0.75rem; font-weight: 650; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-2);
+  }
+  tr.day .day-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  tr.day button { text-transform: none; letter-spacing: 0; }
+  td.best { font-weight: 700; }
+  td.empty, .muted { color: var(--text-2); }
+  tfoot th, tfoot td { border-top: 1px solid var(--axis); font-weight: 700; padding-top: 12px; }
+  table input[type="number"] { width: 5.25rem; text-align: right; }
+  table input[type="text"] { width: 100%; }
+  thead input[type="text"] { width: 7rem; }
+  td.del, th.del { width: 1%; padding-right: 0; }
+  .note { color: var(--text-2); font-size: 0.8125rem; margin: 14px 0 0; }
+
+  /* Tooltip */
+  #tip {
+    position: fixed; z-index: 10; pointer-events: none; min-width: 170px; max-width: 260px;
+    background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 10px;
+    padding: 10px 12px; font-size: 0.8125rem; box-shadow: 0 6px 24px rgba(0, 0, 0, 0.14);
+  }
+  #tip .tip-head { display: flex; align-items: center; gap: 6px; font-weight: 650; margin-bottom: 6px; }
+  #tip dl { display: grid; grid-template-columns: 1fr auto; gap: 2px 16px; margin: 0; }
+  #tip dt { color: var(--text-2); }
+  #tip dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
+  #tip .tip-total { border-top: 1px solid var(--grid); margin-top: 4px; padding-top: 4px; font-weight: 650; color: var(--text); }
+
+  @media (max-width: 560px) {
+    .page { padding: 20px 12px 48px; }
+    .card { padding: 16px; }
+    .standings li { grid-template-columns: 1.5ch minmax(4.5rem, 6.5rem) 1fr; column-gap: 8px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .bar { transition: none; } }
+  @media (forced-colors: active) { .bar, .dot { forced-color-adjust: none; background: CanvasText; } }
+  @media print { .actions { display: none; } body { background: #fff; } .card { border: none; padding: 0; } }
+</style>
+</head>
+<body>
+<main class="page">
+  <header class="top">
+    <div class="top-text">
+      <div id="title-slot"></div>
+      <p class="sub" id="progress"></p>
+    </div>
+    <div class="actions" id="actions"></div>
+  </header>
+
+  <section class="card" aria-labelledby="standings-h">
+    <h2 id="standings-h" class="sr-only">Standings</h2>
+    <div class="leader" id="leader" aria-live="polite"></div>
+    <ol class="standings" id="standings"></ol>
+  </section>
+
+  <section class="card" aria-labelledby="events-h">
+    <h2 id="events-h">Points by event</h2>
+    <div class="table-wrap"><table id="events"></table></div>
+    <p class="note" id="note"></p>
+  </section>
+</main>
+<div id="tip" role="tooltip" hidden></div>
+
+<script>
+(() => {
+  'use strict';
+
+  const STORAGE_KEY = 'spirit-week-scoreboard-v1';
+  const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+  const MAX_TEAMS = 8; // one per color slot
+  const MIN_TEAMS = 2;
+
+  // ---------- helpers ----------
+  const $ = (id) => document.getElementById(id);
+  const fmt = (n) => n.toLocaleString();
+  const pts = (n) => `${fmt(n)} ${Math.abs(n) === 1 ? 'point' : 'points'}`;
+  let uidCounter = 0;
+  const uid = (prefix) => `${prefix}${Date.now().toString(36)}${(uidCounter++).toString(36)}`;
+
+  function h(tag, props, ...kids) {
+    const el = document.createElement(tag);
+    for (const [k, v] of Object.entries(props || {})) {
+      if (v == null || v === false) continue;
+      if (k === 'class') el.className = v;
+      else if (k === 'style') el.style.cssText = v;
+      else if (k.startsWith('on')) el.addEventListener(k.slice(2), v);
+      else if (k in el) el[k] = v;
+      else el.setAttribute(k, v);
+    }
+    el.append(...kids.flat().filter((c) => c != null && c !== false));
+    return el;
+  }
+  const dot = (team) => h('span', { class: 'dot', style: `--c: var(--s${team.slot})`, 'aria-hidden': 'true' });
+
+  // ---------- state ----------
+  function sampleState() {
+    const teams = ['Freshmen', 'Sophomores', 'Juniors', 'Seniors'].map((name, i) => ({ id: `t${i + 1}`, name, slot: i + 1 }));
+    const ev = (day, name, scores) => ({
+      id: uid('e'), day, name,
+      scores: scores ? Object.fromEntries(teams.map((t, i) => [t.id, scores[i]])) : {},
+    });
+    return {
+      title: 'Spirit Week Scoreboard',
+      teams,
+      events: [
+        ev(0, 'Pajama Day dress-up', [40, 35, 50, 45]),
+        ev(0, 'Hallway decorating', [60, 80, 70, 100]),
+        ev(1, 'Twin Day dress-up', [30, 45, 40, 50]),
+        ev(1, 'Tug of war', [25, 50, 100, 75]),
+        ev(2, 'Decades Day dress-up', [45, 40, 55, 50]),
+        ev(2, 'Lunchtime trivia', [50, 75, 25, 100]),
+        ev(3, 'Class Color Day dress-up'),
+        ev(3, 'Penny wars'),
+        ev(4, 'School Colors Day dress-up'),
+        ev(4, 'Pep rally cheer-off'),
+      ],
+    };
+  }
+
+  function load() {
+    try {
+      const s = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      if (s && Array.isArray(s.teams) && s.teams.length >= MIN_TEAMS && Array.isArray(s.events)) return s;
+    } catch (_) { /* fall through to sample */ }
+    return sampleState();
+  }
+  function save() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (_) { /* storage unavailable */ }
+  }
+
+  let state = load();
+  let editing = false;
+
+  const score = (ev, team) => (typeof ev.scores[team.id] === 'number' ? ev.scores[team.id] : null);
+  const isScored = (ev) => state.teams.some((t) => score(ev, t) !== null);
+  const total = (team) => state.events.reduce((sum, ev) => sum + (score(ev, team) ?? 0), 0);
+
+  // ---------- header ----------
+  function renderTop() {
+    document.title = state.title || 'Spirit Week Scoreboard';
+    $('title-slot').replaceChildren(
+      editing
+        ? h('input', {
+            class: 'title-input', type: 'text', value: state.title, 'aria-label': 'Scoreboard title',
+            oninput: (e) => { state.title = e.target.value; document.title = state.title || 'Spirit Week Scoreboard'; save(); },
+          })
+        : h('h1', {}, state.title || 'Spirit Week Scoreboard')
+    );
+
+    const actions = [];
+    if (editing) {
+      if (state.teams.length < MAX_TEAMS) actions.push(h('button', { type: 'button', onclick: addTeam }, 'Add team'));
+      actions.push(h('button', { type: 'button', onclick: clearScores }, 'Clear all scores'));
+      actions.push(h('button', { type: 'button', class: 'primary', onclick: () => setEditing(false) }, 'Done'));
+    } else {
+      actions.push(h('button', { type: 'button', class: 'primary', onclick: () => setEditing(true) }, 'Edit scores'));
+    }
+    $('actions').replaceChildren(...actions);
+    $('note').textContent = editing
+      ? 'Leave a box blank for events that haven’t been scored yet. Changes save automatically in this browser.'
+      : 'Bold marks the top score in each event.';
+    renderProgress();
+  }
+
+  function renderProgress() {
+    const n = state.events.length;
+    const done = state.events.filter(isScored).length;
+    $('progress').textContent = n ? `${done} of ${n} events scored` : 'No events yet';
+  }
+
+  // ---------- standings ----------
+  const rowEls = new Map();
+
+  function makeRow(team) {
+    const row = h('li', { tabIndex: 0 },
+      h('span', { class: 'rank' }),
+      h('span', { class: 'team' }, dot(team), h('span', { class: 'name' })),
+      h('span', { class: 'bar-wrap' },
+        h('span', { class: 'bar', style: `--c: var(--s${team.slot}); width: 0` }),
+        h('span', { class: 'val' })
+      )
+    );
+    const show = (e) => showTip(team.id, e);
+    row.addEventListener('mouseenter', show);
+    row.addEventListener('mousemove', show);
+    row.addEventListener('mouseleave', hideTip);
+    row.addEventListener('focus', show);
+    row.addEventListener('blur', hideTip);
+    return row;
+  }
+
+  function renderStandings() {
+    const totals = new Map(state.teams.map((t) => [t.id, total(t)]));
+    const ranked = [...state.teams].sort((a, b) => totals.get(b.id) - totals.get(a.id));
+    const max = Math.max(0, ...totals.values());
+    const list = $('standings');
+
+    for (const [id, el] of rowEls) {
+      if (!state.teams.some((t) => t.id === id)) { el.remove(); rowEls.delete(id); }
+    }
+    ranked.forEach((t, i) => {
+      let row = rowEls.get(t.id);
+      const isNew = !row;
+      if (isNew) { row = makeRow(t); rowEls.set(t.id, row); }
+      const p = totals.get(t.id);
+      const rank = 1 + ranked.filter((o) => totals.get(o.id) > p).length;
+      const frac = max > 0 ? Math.max(0, p) / max : 0;
+      row.querySelector('.rank').textContent = rank;
+      row.querySelector('.name').textContent = t.name || 'Unnamed team';
+      row.querySelector('.val').textContent = fmt(p);
+      row.setAttribute('aria-label', `Rank ${rank}: ${t.name}, ${pts(p)}`);
+      if (list.children[i] !== row) list.insertBefore(row, list.children[i] || null);
+      const bar = row.querySelector('.bar');
+      const width = `calc((100% - 7ch) * ${frac.toFixed(4)})`;
+      if (isNew) requestAnimationFrame(() => { bar.style.width = width; });
+      else bar.style.width = width;
+    });
+
+    renderLeader(totals, ranked);
+  }
+
+  function renderLeader(totals, ranked) {
+    const who = (t) => h('span', { class: 'who' }, dot(t), t.name || 'Unnamed team');
+    let label, value, detail;
+
+    if (!state.events.some(isScored)) {
+      label = 'Standings';
+      value = ['No points yet'];
+      detail = 'Scores show up here as events are judged.';
+    } else {
+      const top = totals.get(ranked[0].id);
+      const leaders = ranked.filter((t) => totals.get(t.id) === top);
+      if (leaders.length === 1) {
+        const rest = ranked.slice(1);
+        const second = totals.get(rest[0].id);
+        const chasers = rest.filter((t) => totals.get(t.id) === second).map((t) => t.name);
+        label = 'In first place';
+        value = [who(leaders[0])];
+        detail = `${pts(top)} · ${fmt(top - second)} ahead of ${chasers.join(' and ')}`;
+      } else {
+        label = leaders.length === ranked.length ? 'All tied up' : 'Tied for first';
+        value = leaders.flatMap((t, i) => (i ? [h('span', { class: 'amp', 'aria-hidden': 'true' }, '&'), who(t)] : [who(t)]));
+        detail = `${pts(top)} each`;
+      }
+    }
+    $('leader').replaceChildren(
+      h('div', { class: 'leader-label' }, label),
+      h('div', { class: 'leader-value' }, value),
+      h('div', { class: 'leader-detail' }, detail)
+    );
+  }
+
+  // ---------- tooltip ----------
+  function showTip(teamId, e) {
+    const team = state.teams.find((t) => t.id === teamId);
+    if (!team) return;
+    const tip = $('tip');
+    const rows = [];
+    DAYS.forEach((day, d) => {
+      const scored = state.events.filter((ev) => ev.day === d && score(ev, team) !== null);
+      if (scored.length) rows.push(h('dt', {}, day), h('dd', {}, fmt(scored.reduce((s, ev) => s + score(ev, team), 0))));
+    });
+    tip.replaceChildren(
+      h('div', { class: 'tip-head' }, dot(team), team.name || 'Unnamed team'),
+      rows.length
+        ? h('dl', {}, rows, h('dt', { class: 'tip-total' }, 'Total'), h('dd', { class: 'tip-total' }, fmt(total(team))))
+        : h('div', { class: 'muted' }, 'No points yet')
+    );
+    tip.hidden = false;
+
+    let x, y;
+    if (e.type === 'focus') {
+      const r = e.currentTarget.getBoundingClientRect();
+      x = r.left + Math.min(r.width / 2, 240); y = r.bottom - 6;
+    } else { x = e.clientX; y = e.clientY; }
+    const { width, height } = tip.getBoundingClientRect();
+    let left = x + 14, top = y + 14;
+    if (left + width > innerWidth - 8) left = Math.max(8, x - width - 14);
+    if (top + height > innerHeight - 8) top = Math.max(8, y - height - 14);
+    tip.style.left = `${left}px`;
+    tip.style.top = `${top}px`;
+  }
+  function hideTip() { $('tip').hidden = true; }
+  addEventListener('scroll', hideTip, { passive: true });
+
+  // ---------- events table ----------
+  function renderTable(focusEventId) {
+    const cols = state.teams.length + 1 + (editing ? 1 : 0);
+    const canRemoveTeam = state.teams.length > MIN_TEAMS;
+
+    const head = h('tr', {},
+      h('th', { scope: 'col' }, 'Event'),
+      state.teams.map((t) =>
+        h('th', { scope: 'col' },
+          h('span', { class: 'th-team' },
+            dot(t),
+            editing
+              ? [
+                  h('input', {
+                    type: 'text', value: t.name, 'aria-label': 'Team name',
+                    oninput: (e) => { t.name = e.target.value; save(); renderStandings(); },
+                  }),
+                  canRemoveTeam && h('button', {
+                    type: 'button', class: 'ghost', title: 'Remove team', 'aria-label': `Remove ${t.name}`,
+                    onclick: () => removeTeam(t),
+                  }, '×'),
+                ]
+              : (t.name || 'Unnamed team')
+          )
+        )
+      ),
+      editing && h('th', { class: 'del' }, h('span', { class: 'sr-only' }, 'Remove'))
+    );
+
+    const body = [];
+    DAYS.forEach((day, d) => {
+      const events = state.events.filter((ev) => ev.day === d);
+      if (!events.length && !editing) return;
+      body.push(h('tr', { class: 'day' },
+        h('th', { colSpan: cols, scope: 'rowgroup' },
+          h('div', { class: 'day-head' },
+            day,
+            editing && h('button', { type: 'button', class: 'ghost', onclick: () => addEvent(d) }, `+ Add ${day} event`)
+          )
+        )
+      ));
+      events.forEach((ev) => {
+        const vals = state.teams.map((t) => score(ev, t));
+        const best = Math.max(0, ...vals.filter((v) => v !== null));
+        body.push(h('tr', { class: 'event' },
+          h('th', { scope: 'row' },
+            editing
+              ? h('input', {
+                  type: 'text', value: ev.name, 'aria-label': 'Event name', 'data-event': ev.id,
+                  oninput: (e) => { ev.name = e.target.value; save(); },
+                })
+              : (ev.name || 'Untitled event')
+          ),
+          state.teams.map((t, i) => {
+            const v = vals[i];
+            if (editing) {
+              return h('td', {}, h('input', {
+                type: 'number', step: 'any', inputMode: 'numeric', value: v ?? '',
+                'aria-label': `${t.name} points for ${ev.name}`,
+                oninput: (e) => {
+                  const n = e.target.value.trim() === '' ? NaN : Number(e.target.value);
+                  if (Number.isFinite(n)) ev.scores[t.id] = n; else delete ev.scores[t.id];
+                  save(); renderStandings(); renderTotals(); renderProgress();
+                },
+              }));
+            }
+            if (v === null) return h('td', { class: 'empty' }, '–');
+            return h('td', { class: best > 0 && v === best ? 'best' : null }, fmt(v));
+          }),
+          editing && h('td', { class: 'del' }, h('button', {
+            type: 'button', class: 'ghost', title: 'Remove event', 'aria-label': `Remove ${ev.name}`,
+            onclick: () => removeEvent(ev),
+          }, '×'))
+        ));
+      });
+    });
+    if (!body.length) {
+      body.push(h('tr', {}, h('td', { colSpan: cols, class: 'muted' }, 'No events yet. Choose “Edit scores” to add some.')));
+    }
+
+    const foot = h('tr', {},
+      h('th', { scope: 'row' }, 'Total'),
+      state.teams.map((t) => h('td', { 'data-total': t.id })),
+      editing && h('td', { class: 'del' })
+    );
+
+    $('events').replaceChildren(h('thead', {}, head), h('tbody', {}, body), h('tfoot', {}, foot));
+    renderTotals();
+
+    if (focusEventId) {
+      const input = $('events').querySelector(`input[data-event="${focusEventId}"]`);
+      if (input) { input.focus(); input.select(); }
+    }
+  }
+
+  function renderTotals() {
+    $('events').querySelectorAll('[data-total]').forEach((td) => {
+      const team = state.teams.find((t) => t.id === td.dataset.total);
+      if (team) td.textContent = fmt(total(team));
+    });
+  }
+
+  // ---------- actions ----------
+  function renderAll(focusEventId) { renderTop(); renderStandings(); renderTable(focusEventId); }
+  function setEditing(on) { editing = on; hideTip(); renderAll(); }
+
+  function addEvent(day) {
+    const ev = { id: uid('e'), day, name: 'New event', scores: {} };
+    state.events.push(ev);
+    save(); renderAll(ev.id);
+  }
+  function removeEvent(ev) {
+    if (isScored(ev) && !confirm(`Remove “${ev.name}” and its scores?`)) return;
+    state.events = state.events.filter((e) => e !== ev);
+    save(); renderAll();
+  }
+  function addTeam() {
+    const used = new Set(state.teams.map((t) => t.slot));
+    let slot = 1;
+    while (used.has(slot)) slot++;
+    if (slot > MAX_TEAMS) return;
+    state.teams.push({ id: uid('t'), name: `Team ${state.teams.length + 1}`, slot });
+    save(); renderAll();
+  }
+  function removeTeam(team) {
+    if (state.teams.length <= MIN_TEAMS) return;
+    if (!confirm(`Remove ${team.name} and all of their scores?`)) return;
+    state.teams = state.teams.filter((t) => t !== team);
+    state.events.forEach((ev) => { delete ev.scores[team.id]; });
+    save(); renderAll();
+  }
+  function clearScores() {
+    if (!confirm('Clear every score? Teams and events stay; all points go back to blank.')) return;
+    state.events.forEach((ev) => { ev.scores = {}; });
+    save(); renderAll();
+  }
+
+  renderAll();
+})();
+</script>
+</body>
+</html>

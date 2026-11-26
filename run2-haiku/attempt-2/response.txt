@@ -1,0 +1,20 @@
+I built `index.html` in the project folder, but I have not run it. Writing my test file to `/tmp` and running a syntax check with Node were both blocked by permission prompts, so I checked the code by reading it. Please open the file in a browser and try it before using it at Spirit Week.
+
+**What's in it**
+- Four houses (Red, Blue, Green, Gold), each with a name, a points number, and a bar. Every house starts at 0.
+- Each house has +10, -10, a number box, and Award. Reset sits at the top.
+- Points never go below 0. Award only accepts whole numbers above 0. Anything else shows a friendly message under that house and leaves the points alone.
+- The bar length is a share of the top score, so the leading house's bar is full.
+- Everything is in one file with inline CSS and JavaScript. It uses no libraries and no internet.
+- Each section of code has a short comment above it.
+
+**Choices I made that you can change**
+- **House names and colours:** I made them up. Edit the `HOUSES` list at the top of the script.
+- **Leader on ties:** if two houses share the top score, both show Leader.
+- **No Leader at the start:** the badge only appears once the top score is above 0, so the all-zero start doesn't mark all four houses.
+- **Number box clears after a good award,** and pressing Enter in the box also awards.
+- **Reset does not ask for confirmation** and does not clear the number boxes. It clears the points and the messages.
+
+**Still to check in a browser**
+- Your example: +10 twice on the first house should show 20 and Leader.
+- Award with a blank box, `2.5`, `0`, or `-3` should show the message and leave the points unchanged.

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grade Calculator</title>
+
+  <!-- STYLES: how the page looks. Everything is built in, so no internet is needed. -->
+  <style>
+    /* Page background and base text */
+    body {
+      margin: 0;
+      padding: 40px 16px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 18px;
+      color: #1f2933;
+      background: #eef2f7;
+    }
+
+    /* The white card that holds the calculator */
+    .card {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 28px;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+    }
+
+    .hint {
+      margin: 0 0 20px;
+      color: #52606d;
+      font-size: 16px;
+    }
+
+    /* The label, text box and button */
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px;
+      font-size: 18px;
+      border: 2px solid #9aa5b1;
+      border-radius: 8px;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 14px;
+      padding: 12px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #ffffff;
+      background: #1d4ed8;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1e40af;
+    }
+
+    input[type="text"]:focus,
+    button:focus-visible {
+      outline: 3px solid #f59e0b;
+      outline-offset: 2px;
+    }
+
+    /* The result area: hidden until there is something to show */
+    #output {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 8px;
+      display: none;
+    }
+
+    /* Look of a successful result */
+    #output.result {
+      display: block;
+      background: #e6f4ea;
+      border: 2px solid #2f855a;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    /* Look of a friendly message when something needs fixing */
+    #output.message {
+      display: block;
+      background: #fff4e5;
+      border: 2px solid #c05621;
+    }
+
+    #output p {
+      margin: 4px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PAGE CONTENT: the title, the text box, the Calculate button and the result area -->
+  <main class="card">
+    <h1>Grade Calculator</h1>
+    <p class="hint">Type your test scores separated by commas, then click Calculate.</p>
+
+    <!-- The form lets the student click the button or press Enter -->
+    <form id="grade-form">
+      <label for="scores">Test scores</label>
+      <input type="text" id="scores" placeholder="For example: 85, 90, 78" autocomplete="off">
+      <button type="submit">Calculate</button>
+    </form>
+
+    <!-- The average and grade, or a friendly message, appear here -->
+    <div id="output" role="status" aria-live="polite"></div>
+  </main>
+
+  <!-- SCRIPT: reads the scores, checks them, and shows the average and letter grade -->
+  <script>
+    // Find the parts of the page the script needs to use
+    var form = document.getElementById("grade-form");
+    var scoresBox = document.getElementById("scores");
+    var output = document.getElementById("output");
+
+    // Turn the typed text into a list of scores.
+    // Returns { scores: [...] } if everything is fine, or { error: "..." } if not.
+    function readScores(text) {
+      // Empty box: ask the student to type something
+      if (text.trim() === "") {
+        return { error: "Please type at least one test score, for example: 85, 90, 78" };
+      }
+
+      var pieces = text.split(",");
+      var scores = [];
+
+      for (var i = 0; i < pieces.length; i++) {
+        var piece = pieces[i].trim();
+
+        // Nothing between two commas (or a comma at the start or end)
+        if (piece === "") {
+          return { error: "It looks like there is an extra comma. Please put one score between each comma, for example: 85, 90, 78" };
+        }
+
+        // Must look like a plain number, such as 85 or 92.5
+        var looksLikeNumber = /^[+-]?(\d+\.?\d*|\.\d+)$/.test(piece);
+        var score = Number(piece);
+
+        // Must also be from 0 to 100
+        if (!looksLikeNumber || score < 0 || score > 100) {
+          return { error: "Oops! \"" + piece + "\" is not a valid score. Each score must be a number from 0 to 100." };
+        }
+
+        scores.push(score);
+      }
+
+      return { scores: scores };
+    }
+
+    // Work out the average, rounded to one decimal place
+    function getAverage(scores) {
+      var total = 0;
+      for (var i = 0; i < scores.length; i++) {
+        total += scores[i];
+      }
+      return Math.round((total * 10) / scores.length) / 10;
+    }
+
+    // Turn an average into a letter grade
+    function getLetterGrade(average) {
+      if (average >= 90) { return "A"; }
+      if (average >= 80) { return "B"; }
+      if (average >= 70) { return "C"; }
+      if (average >= 60) { return "D"; }
+      return "F";
+    }
+
+    // Show lines of text in the result area.
+    // kind is "result" (green) or "message" (orange).
+    function show(kind, lines) {
+      output.textContent = "";
+      output.className = kind;
+      for (var i = 0; i < lines.length; i++) {
+        var p = document.createElement("p");
+        p.textContent = lines[i];
+        output.appendChild(p);
+      }
+    }
+
+    // Run the calculator when Calculate is clicked (or Enter is pressed)
+    form.addEventListener("submit", function (event) {
+      // Stop the page from reloading
+      event.preventDefault();
+
+      var answer = readScores(scoresBox.value);
+
+      // Something is wrong: show the friendly message and no grade
+      if (answer.error) {
+        show("message", [answer.error]);
+        scoresBox.focus();
+        return;
+      }
+
+      // All good: show the average and the letter grade
+      var average = getAverage(answer.scores);
+      show("result", [
+        "Average: " + average.toFixed(1),
+        "Grade: " + getLetterGrade(average)
+      ]);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Page setup: character set, mobile scaling and the title shown on the browser tab -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grade Calculator</title>
+
+  <style>
+    /* Page background and font: centres the calculator on the screen */
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #eef2f7;
+      color: #1f2933;
+    }
+
+    /* Card: the white box that holds the whole calculator */
+    .card {
+      width: 100%;
+      max-width: 440px;
+      padding: 28px;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: 1.6rem;
+    }
+
+    .intro {
+      margin: 0 0 20px;
+      color: #52606d;
+    }
+
+    /* Input area: the label, the text box and the Calculate button */
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px 12px;
+      font-size: 1rem;
+      border: 2px solid #cbd2d9;
+      border-radius: 8px;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #2563eb;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 12px;
+      padding: 11px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #ffffff;
+      background: #2563eb;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1d4ed8;
+    }
+
+    button:focus-visible {
+      outline: 3px solid #93c5fd;
+      outline-offset: 2px;
+    }
+
+    /* Result area: hidden until there is an average and grade to show */
+    .result {
+      margin-top: 20px;
+      padding: 16px;
+      text-align: center;
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      border-radius: 8px;
+    }
+
+    .result p {
+      margin: 4px 0;
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+
+    /* Message area: hidden until there is a friendly message to show */
+    .message {
+      margin-top: 20px;
+      padding: 14px 16px;
+      background: #fff7ed;
+      border: 1px solid #fdba74;
+      border-radius: 8px;
+      color: #9a3412;
+    }
+
+    /* Hides the result or message box when it is not needed */
+    [hidden] {
+      display: none;
+    }
+
+    /* Grade scale: the small reference list at the bottom of the card */
+    .scale {
+      margin: 20px 0 0;
+      font-size: 0.85rem;
+      color: #52606d;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Calculator card: everything the student sees on the page -->
+  <main class="card">
+    <h1>Grade Calculator</h1>
+    <p class="intro">Type your test scores to see your average and letter grade.</p>
+
+    <!-- Input form: one text box for the scores and the Calculate button -->
+    <form id="grade-form" novalidate>
+      <label for="scores">Test scores (separated by commas)</label>
+      <input type="text" id="scores" placeholder="For example: 85, 90, 78" autocomplete="off">
+      <button type="submit" id="calculate">Calculate</button>
+    </form>
+
+    <!-- Result: shows the average and letter grade after a successful calculation -->
+    <div id="result" class="result" aria-live="polite" hidden>
+      <p id="average"></p>
+      <p id="grade"></p>
+    </div>
+
+    <!-- Message: shows a friendly note when the input is empty or a score is not valid -->
+    <div id="message" class="message" role="alert" hidden></div>
+
+    <!-- Grade scale: reminds the student which averages earn which letter -->
+    <p class="scale">A = 90–100 &nbsp;·&nbsp; B = 80–89 &nbsp;·&nbsp; C = 70–79 &nbsp;·&nbsp; D = 60–69 &nbsp;·&nbsp; F = below 60</p>
+  </main>
+
+  <script>
+    // Page elements: grab the parts of the page the script needs to read or change
+    var form = document.getElementById("grade-form");
+    var scoresInput = document.getElementById("scores");
+    var resultBox = document.getElementById("result");
+    var averageText = document.getElementById("average");
+    var gradeText = document.getElementById("grade");
+    var messageBox = document.getElementById("message");
+
+    // Letter grade: turns an average into A, B, C, D or F
+    function getLetterGrade(average) {
+      if (average >= 90) { return "A"; }
+      if (average >= 80) { return "B"; }
+      if (average >= 70) { return "C"; }
+      if (average >= 60) { return "D"; }
+      return "F";
+    }
+
+    // Rounding: rounds a number to one decimal place (for example 84.333 becomes 84.3)
+    function roundToOneDecimal(number) {
+      return Math.round(number * 10 + 0.0000001) / 10;
+    }
+
+    // Calculation: checks the typed text and returns either a friendly message
+    // or the average and letter grade
+    function calculateGrade(text) {
+      // Empty box: nothing was typed
+      if (text.trim() === "") {
+        return { message: "Please type at least one test score, for example: 85, 90, 78" };
+      }
+
+      var parts = text.split(",");
+      var total = 0;
+
+      for (var i = 0; i < parts.length; i++) {
+        var part = parts[i].trim();
+
+        // Extra comma: there is a gap where a score should be
+        if (part === "") {
+          return { message: "It looks like there is an extra comma. Please put one score between each comma, for example: 85, 90, 78" };
+        }
+
+        // Not a number: only plain numbers such as 85 or 92.5 are accepted
+        var isPlainNumber = /^(\d+\.?\d*|\.\d+)$/.test(part);
+        var score = Number(part);
+
+        // Out of range: each score must be from 0 to 100
+        if (!isPlainNumber || score < 0 || score > 100) {
+          return { message: "\"" + part + "\" is not a valid score. Each score must be a number from 0 to 100." };
+        }
+
+        total = total + score;
+      }
+
+      // Average: add the scores up, divide by how many there are, then round.
+      // The letter grade uses the rounded average so it always matches what is shown.
+      var average = roundToOneDecimal(total / parts.length);
+
+      return {
+        average: average.toFixed(1),
+        grade: getLetterGrade(average)
+      };
+    }
+
+    // Display: shows either the friendly message or the average and grade, never both
+    function showOutcome(outcome) {
+      if (outcome.message) {
+        resultBox.hidden = true;
+        averageText.textContent = "";
+        gradeText.textContent = "";
+        messageBox.textContent = outcome.message;
+        messageBox.hidden = false;
+      } else {
+        messageBox.hidden = true;
+        messageBox.textContent = "";
+        averageText.textContent = "Average: " + outcome.average;
+        gradeText.textContent = "Grade: " + outcome.grade;
+        resultBox.hidden = false;
+      }
+    }
+
+    // Calculate button: runs the calculation when the button is clicked
+    // (pressing Enter in the text box does the same thing)
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      showOutcome(calculateGrade(scoresInput.value));
+    });
+  </script>
+
+</body>
+</html>

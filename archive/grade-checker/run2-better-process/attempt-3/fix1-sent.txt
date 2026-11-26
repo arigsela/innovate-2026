@@ -1,0 +1,1 @@
+Here is what happened when I typed nothing and clicked Calculate: nothing appeared on the page. Fix it and show the complete corrected index.html.

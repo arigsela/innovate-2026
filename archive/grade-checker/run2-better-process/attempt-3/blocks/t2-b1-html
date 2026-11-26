@@ -1,0 +1,97 @@
+<!-- Create the index page -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Set the language and character encoding -->
+    <meta charset="UTF-8">
+    <title>Grade Calculator</title>
+    <!-- Link the style.css file -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Create the main content section -->
+    <div class="container">
+        <!-- Create the input field and button -->
+        <div class="input-field">
+            <label for="scores">Type test scores separated by commas:</label>
+            <input type="text" id="scores" name="scores">
+            <button id="calculate-btn">Calculate</button>
+        </div>
+        <!-- Create the result section -->
+        <div class="result">
+            <p id="average"></p>
+            <p id="grade"></p>
+        </div>
+    </div>
+    <!-- Add CSS stylesheets to the head section -->
+    <style>
+        /* Add styles to the container, input field, and button */
+        .container {
+            width: 50%;
+            margin: 40px auto;
+        }
+        .input-field {
+            width: 50%;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        #calculate-btn {
+            width: 100%;
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #calculate-btn:hover {
+            background-color: #3e8e41;
+        }
+        .result {
+            padding: 20px;
+        }
+        #average, #grade {
+            font-weight: bold;
+        }
+    </style>
+    <!-- Add JavaScript code to handle the input field and button events -->
+    <script>
+        // Add event listener to the input field
+        document.getElementById("scores").addEventListener("input", function() {
+            // Check if the input field is empty
+            if (this.value.trim() === "") {
+                document.getElementById("result").innerHTML = "Please enter test scores separated by commas.";
+            } else {
+                // Try to convert the input value to an array of numbers
+                try {
+                    var scores = this.value.split(",").map(Number);
+                    // Calculate the average
+                    var average = scores.reduce(function(a, b) { return a + b; }, 0) / scores.length;
+                    // Get the letter grade
+                    var grade;
+                    if (average >= 90) {
+                        grade = "A";
+                    } else if (average >= 80) {
+                        grade = "B";
+                    } else if (average >= 70) {
+                        grade = "C";
+                    } else if (average >= 60) {
+                        grade = "D";
+                    } else {
+                        grade = "F";
+                    }
+                    // Update the result section
+                    document.getElementById("average").innerHTML = "Average: " + average.toFixed(1);
+                    document.getElementById("grade").innerHTML = grade;
+                } catch (e) {
+                    // If the input field is not a number, display an error message
+                    document.getElementById("result").innerHTML = "Error: Invalid input.";
+                }
+            }
+        });
+    </script>
+</body>
+</html>

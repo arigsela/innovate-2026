@@ -1,0 +1,47 @@
+<script>
+  // Create an object to hold the points for each house
+  let points = {
+    house1: 0,
+    house2: 0,
+    house3: 0,
+    house4: 0
+  };
+
+  // Add event listeners to each button
+  document.getElementById("plus10").addEventListener("click", function() {
+    if (points.house1 >= 0) {
+      points.house1 += 10;
+      document.getElementById("house1").innerHTML = points.house1;
+    } else {
+      alert("You can't add points below 0!");
+    }
+  });
+
+  document.getElementById("minus10").addEventListener("click", function() {
+    if (points.house1 >= 0) {
+      points.house1 -= 10;
+      document.getElementById("house1").innerHTML = points.house1;
+    } else {
+      alert("You can't subtract points below 0!");
+    }
+  });
+
+  document.getElementById("award").addEventListener("click", function() {
+    var input = prompt("Enter your number of points:");
+    if (isNaN(input) || input < 1) {
+      alert("Please enter a whole number greater than 0!");
+    } else {
+      points.house1 += parseInt(input);
+      document.getElementById("house1").innerHTML = points.house1;
+    }
+  });
+
+  document.getElementById("reset").addEventListener("click", function() {
+    points.house1 = 0;
+    document.getElementById("house1").innerHTML = points.house1;
+  });
+
+  // Set the leader house
+  points.leader = Math.max(...Object.values(points));
+  document.getElementById("leader").innerHTML = points.leader + " is the Leader";
+</script>

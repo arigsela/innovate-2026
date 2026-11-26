@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Page setup: character set, mobile-friendly sizing and the tab title -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grade Calculator</title>
+
+  <style>
+    /* Base page styles: font, colours and centring the calculator on the page */
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 48px 16px;
+      font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      color: #1f2933;
+      background: #f2f5f9;
+    }
+
+    /* The card: the white box that holds the whole calculator */
+    .card {
+      width: 100%;
+      max-width: 460px;
+      padding: 28px;
+      background: #ffffff;
+      border: 1px solid #d9e0e8;
+      border-radius: 12px;
+      box-shadow: 0 4px 14px rgba(31, 41, 51, 0.08);
+    }
+
+    h1 {
+      margin: 0 0 4px;
+      font-size: 1.6rem;
+    }
+
+    .intro {
+      margin: 0 0 20px;
+      color: #52606d;
+    }
+
+    /* The input area: label, text box and Calculate button */
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px 12px;
+      font: inherit;
+      color: inherit;
+      border: 1px solid #9aa5b1;
+      border-radius: 8px;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 12px;
+      padding: 11px 12px;
+      font: inherit;
+      font-weight: 600;
+      color: #ffffff;
+      background: #1d4ed8;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1e40af;
+    }
+
+    input[type="text"]:focus-visible,
+    button:focus-visible {
+      outline: 3px solid #93c5fd;
+      outline-offset: 2px;
+    }
+
+    /* The output area: hidden until there is a result or a message to show */
+    .output {
+      margin-top: 20px;
+      padding: 14px 16px;
+      border-radius: 8px;
+    }
+
+    .output[hidden] {
+      display: none;
+    }
+
+    .output p {
+      margin: 0;
+    }
+
+    /* Result style: used when the average and grade are shown */
+    .output.result {
+      background: #ecfdf3;
+      border: 1px solid #a6e3bd;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    /* Message style: used for friendly messages about the input */
+    .output.message {
+      background: #fff7e6;
+      border: 1px solid #f5cf8a;
+    }
+
+    /* The grade scale: a small reminder of which average earns which letter */
+    .scale {
+      margin: 20px 0 0;
+      font-size: 0.875rem;
+      color: #52606d;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- The calculator card: heading, input form, output area and grade scale -->
+  <main class="card">
+    <h1>Grade Calculator</h1>
+    <p class="intro">Type your test scores to see your average and letter grade.</p>
+
+    <!-- The input form: one text box for the scores and the Calculate button -->
+    <form id="grade-form" novalidate>
+      <label for="scores">Test scores, separated by commas</label>
+      <input type="text" id="scores" placeholder="For example: 85, 90, 78" autocomplete="off">
+      <button type="submit">Calculate</button>
+    </form>
+
+    <!-- The output area: JavaScript fills this with the result or a message -->
+    <div id="output" class="output" role="status" aria-live="polite" hidden></div>
+
+    <!-- The grade scale shown under the calculator -->
+    <p class="scale">A = 90-100 &nbsp; B = 80-89 &nbsp; C = 70-79 &nbsp; D = 60-69 &nbsp; F = below 60</p>
+  </main>
+
+  <script>
+    // Page elements: the parts of the page the script reads from and writes to
+    var form = document.getElementById("grade-form");
+    var scoresInput = document.getElementById("scores");
+    var output = document.getElementById("output");
+
+    // Reading the scores: turns the typed text into a list of numbers.
+    // Returns { scores: [...] } when everything is fine,
+    // or { error: "message" } when something needs fixing.
+    function readScores(text) {
+      if (text.trim() === "") {
+        return { error: "Please type at least one test score, for example: 85, 90, 78" };
+      }
+
+      var parts = text.split(",");
+      var scores = [];
+
+      for (var i = 0; i < parts.length; i++) {
+        var part = parts[i].trim();
+
+        // A blank between commas (or a comma at the end) means a score is missing
+        if (part === "") {
+          return { error: "There seems to be a missing score or an extra comma. Please check your scores and try again." };
+        }
+
+        // Only plain numbers such as 85 or 85.5 are accepted
+        var looksLikeNumber = /^[+-]?(\d+\.?\d*|\.\d+)$/.test(part);
+        if (!looksLikeNumber) {
+          return { error: "\"" + part + "\" is not a number. Each score must be a number from 0 to 100." };
+        }
+
+        var score = Number(part);
+        if (score < 0 || score > 100) {
+          return { error: "\"" + part + "\" is out of range. Each score must be a number from 0 to 100." };
+        }
+
+        scores.push(score);
+      }
+
+      return { scores: scores };
+    }
+
+    // Working out the average: adds up the scores, divides by how many
+    // there are, and rounds the answer to one decimal place
+    function calculateAverage(scores) {
+      var total = 0;
+      for (var i = 0; i < scores.length; i++) {
+        total += scores[i];
+      }
+      var average = total / scores.length;
+      // The tiny nudge stops averages such as 72.35 being stored a hair
+      // too low by the computer and rounding down by mistake
+      return Math.round((average + Number.EPSILON * 100) * 10) / 10;
+    }
+
+    // Choosing the letter grade: A = 90-100, B = 80-89, C = 70-79, D = 60-69, F = below 60
+    function getLetterGrade(average) {
+      if (average >= 90) { return "A"; }
+      if (average >= 80) { return "B"; }
+      if (average >= 70) { return "C"; }
+      if (average >= 60) { return "D"; }
+      return "F";
+    }
+
+    // Showing output: replaces whatever is in the output area with new lines of text.
+    // "kind" is either "result" (average and grade) or "message" (something to fix).
+    function showOutput(kind, lines) {
+      output.textContent = "";
+      output.className = "output " + kind;
+
+      for (var i = 0; i < lines.length; i++) {
+        var line = document.createElement("p");
+        line.textContent = lines[i];
+        output.appendChild(line);
+      }
+
+      output.hidden = false;
+    }
+
+    // The Calculate button: runs when the button is clicked (or Enter is pressed).
+    // It checks the scores, then shows either a friendly message or the result.
+    form.addEventListener("submit", function (event) {
+      // Stop the browser from reloading the page when the form is submitted
+      event.preventDefault();
+
+      var result = readScores(scoresInput.value);
+
+      if (result.error) {
+        showOutput("message", [result.error]);
+        scoresInput.focus();
+        return;
+      }
+
+      var average = calculateAverage(result.scores);
+      var grade = getLetterGrade(average);
+
+      showOutput("result", [
+        "Average: " + average.toFixed(1),
+        "Grade: " + grade
+      ]);
+    });
+  </script>
+</body>
+</html>

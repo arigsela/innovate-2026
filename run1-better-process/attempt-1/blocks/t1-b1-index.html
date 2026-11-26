@@ -1,0 +1,100 @@
+<!-- index.html -->
+
+<!-- Create a div element to hold the scoreboard -->
+<div id="scoreboard">
+  <!-- Create four div elements to represent our four houses -->
+  <div id="house1"></div>
+  <div id="house2"></div>
+  <div id="house3"></div>
+  <div id="house4"></div>
+</div>
+
+<!-- Add event listeners to each button -->
+<button id="plus10">+10</button>
+<button id="minus10">-10</button>
+<button id="award">Award</button>
+<button id="reset">Reset</button>
+
+<!-- Create the scoreboard element -->
+<h2 id="leader">Leader</h2>
+
+<!-- Add CSS styles to index.html -->
+<style>
+  /* Make the scoreboard look neat and clean */
+  #scoreboard {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* Style the house div elements */
+  #house1, #house2, #house3, #house4 {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin: 20px;
+  }
+
+  /* Style the buttons */
+  #plus10, #minus10, #award, #reset {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+  /* Style the award button */
+  #award {
+    background-color: #ccc;
+    color: #000;
+  }
+</style>
+
+<!-- Add JavaScript code to index.html -->
+<script>
+  // Create an object to hold the points for each house
+  let points = {
+    house1: 0,
+    house2: 0,
+    house3: 0,
+    house4: 0
+  };
+
+  // Add event listeners to each button
+  document.getElementById("plus10").addEventListener("click", function() {
+    if (points.house1 >= 0) {
+      points.house1 += 10;
+      document.getElementById("house1").innerHTML = points.house1;
+    } else {
+      alert("You can't add points below 0!");
+    }
+  });
+
+  document.getElementById("minus10").addEventListener("click", function() {
+    if (points.house1 >= 0) {
+      points.house1 -= 10;
+      document.getElementById("house1").innerHTML = points.house1;
+    } else {
+      alert("You can't subtract points below 0!");
+    }
+  });
+
+  document.getElementById("award").addEventListener("click", function() {
+    var input = prompt("Enter your number of points:");
+    if (isNaN(input) || input < 1) {
+      alert("Please enter a whole number greater than 0!");
+    } else {
+      points.house1 += parseInt(input);
+      document.getElementById("house1").innerHTML = points.house1;
+    }
+  });
+
+  document.getElementById("reset").addEventListener("click", function() {
+    points.house1 = 0;
+    document.getElementById("house1").innerHTML = points.house1;
+  });
+
+  // Set the leader house
+  points.leader = Math.max(...Object.values(points));
+  document.getElementById("leader").innerHTML = points.leader + " is the Leader";
+</script>

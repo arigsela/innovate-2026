@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>House Cup</title>
+
+  <style>
+    /* --- Page basics: colours, and text that is never smaller than 18px --- */
+    :root {
+      --paper: #f6efe0;
+      --card: #fffdf7;
+      --ink: #1c1a17;
+      --line: #cbbd9c;
+      --note: #fff1b8;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      /* 18px on a phone, growing on a big projector screen */
+      font-size: clamp(18px, 1.25vw, 26px);
+    }
+
+    body {
+      margin: 0;
+      padding: 1rem 16px 2rem;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Verdana, "Trebuchet MS", Arial, sans-serif;
+      font-size: 1rem;
+      line-height: 1.4;
+    }
+
+    main {
+      max-width: 72rem;
+      margin: 0 auto;
+    }
+
+    /* --- Page title --- */
+    h1 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 2rem;
+      line-height: 1.1;
+      text-align: center;
+    }
+
+    .subtitle {
+      margin: 0.25rem 0 1rem;
+      text-align: center;
+    }
+
+    /* --- One house: name, bar, points and buttons --- */
+    .house {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-areas:
+        "name     name"
+        "bar      points"
+        "controls controls"
+        "message  message";
+      gap: 0.5rem 0.75rem;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      padding: 0.75rem;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-left: 0.5rem solid var(--main-colour);
+      border-radius: 0.5rem;
+    }
+
+    .name-row {
+      grid-area: name;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.25rem 0.6rem;
+    }
+
+    .house h2 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.4rem;
+      line-height: 1.2;
+    }
+
+    /* --- The word Leader or Tied next to the name --- */
+    .status {
+      padding: 0.1rem 0.6rem;
+      border: 2px solid var(--ink);
+      border-radius: 1rem;
+      font-size: 1rem;
+      font-weight: bold;
+    }
+
+    .status:empty {
+      display: none;
+    }
+
+    .status.leader {
+      background: var(--ink);
+      color: #ffffff;
+    }
+
+    /* --- The bar: filled with the house's main colour, edged with its second colour --- */
+    .bar-track {
+      grid-area: bar;
+      height: 1.6rem;
+      background: #ffffff;
+      border: 3px solid var(--second-colour);
+      border-radius: 0.4rem;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      width: 0;
+      height: 100%;
+      background: var(--main-colour);
+      transition: width 0.4s ease;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .bar-fill {
+        transition: none;
+      }
+    }
+
+    /* --- The points number --- */
+    .points {
+      grid-area: points;
+      min-width: 6.5rem;
+      margin: 0;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .points-number {
+      font-size: 1.6rem;
+      font-weight: bold;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* --- Buttons and the number box --- */
+    .controls {
+      grid-area: controls;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.5rem;
+    }
+
+    .award-form {
+      display: contents;
+    }
+
+    button,
+    input {
+      min-width: 0;
+      min-height: 2.75rem;
+      padding: 0.3rem 0.6rem;
+      border: 2px solid var(--ink);
+      border-radius: 0.4rem;
+      background: #ffffff;
+      color: var(--ink);
+      font: inherit;
+    }
+
+    button {
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #ece3cc;
+    }
+
+    button:active {
+      background: #d9cdaa;
+    }
+
+    button:focus-visible,
+    input:focus-visible {
+      outline: 3px solid #1f5fbf;
+      outline-offset: 2px;
+    }
+
+    .award-button {
+      background: var(--ink);
+      color: #ffffff;
+    }
+
+    .award-button:hover {
+      background: #3d3830;
+    }
+
+    .award-button:active {
+      background: #575044;
+    }
+
+    input {
+      width: 100%;
+    }
+
+    /* --- Messages shown on the page (never pop-ups) --- */
+    .message {
+      grid-area: message;
+      margin: 0;
+      padding: 0.4rem 0.6rem;
+      background: var(--note);
+      border-left: 0.3rem solid var(--ink);
+      border-radius: 0.3rem;
+    }
+
+    .message:empty {
+      display: none;
+    }
+
+    /* --- Bottom of the page: bar scale and the Reset button --- */
+    .footer {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-top: 1.25rem;
+    }
+
+    .footer p {
+      margin: 0;
+    }
+
+    #reset-button {
+      min-width: 7rem;
+    }
+
+    #page-message {
+      margin-top: 0.75rem;
+    }
+
+    /* --- Wider screens: all four buttons in one row --- */
+    @media (min-width: 600px) {
+      .controls {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
+    /* --- Projector and laptop: each house is one row, so the bars line up --- */
+    @media (min-width: 1100px) {
+      .house {
+        grid-template-columns: 13rem minmax(0, 1fr) auto auto;
+        grid-template-areas:
+          "name    bar     points  controls"
+          "message message message message";
+        gap: 0.5rem 1rem;
+      }
+
+      .controls {
+        grid-template-columns: repeat(4, 4.6rem);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- The page: title, the four houses (added by the code below), and Reset -->
+  <main>
+    <h1>House Cup</h1>
+    <p class="subtitle">Spirit Week house points</p>
+
+    <!-- The four houses are added here when the page loads -->
+    <div id="houses"></div>
+
+    <!-- Bar scale and the Reset button -->
+    <div class="footer">
+      <p id="bar-note"></p>
+      <button type="button" id="reset-button">Reset</button>
+    </div>
+    <p class="message" id="page-message" role="status"></p>
+  </main>
+
+  <!-- The scoring logic lives in scoreboard.js -->
+  <script src="scoreboard.js"></script>
+
+  <script>
+    // --- Saving: the points are kept in this browser so a reload does not lose them ---
+    const SAVE_KEY = "houseCupScores";
+
+    // Reads the saved points, or starts at 0 if there are none.
+    function loadScores() {
+      try {
+        return readSavedScores(localStorage.getItem(SAVE_KEY));
+      } catch (error) {
+        return startScores();
+      }
+    }
+
+    // Saves the points and tells us if it worked.
+    function saveScores() {
+      try {
+        localStorage.setItem(SAVE_KEY, JSON.stringify(scores));
+        return true;
+      } catch (error) {
+        return false;
+      }
+    }
+
+    // --- The points for each house, in the same order as HOUSES ---
+    let scores = loadScores();
+
+    // --- Building the page: one block for each house ---
+
+    // Makes the block for one house: name, bar, points, buttons and message.
+    function buildHouse(house, houseIndex) {
+      const block = document.createElement("section");
+      block.className = "house";
+      block.style.setProperty("--main-colour", house.mainColour);
+      block.style.setProperty("--second-colour", house.secondColour);
+      block.innerHTML =
+        '<div class="name-row">' +
+        "  <h2>" + house.name + "</h2>" +
+        '  <span class="status" id="status-' + houseIndex + '"></span>' +
+        "</div>" +
+        '<div class="bar-track">' +
+        '  <div class="bar-fill" id="bar-' + houseIndex + '"></div>' +
+        "</div>" +
+        '<p class="points">' +
+        '  <span class="points-number" id="points-' + houseIndex + '">0</span> points' +
+        "</p>" +
+        '<div class="controls">' +
+        '  <button type="button" id="plus-' + houseIndex + '">+10</button>' +
+        '  <button type="button" id="minus-' + houseIndex + '">-10</button>' +
+        '  <form class="award-form" id="form-' + houseIndex + '" novalidate>' +
+        '    <input type="number" id="box-' + houseIndex + '" min="1" max="' + MAX_AWARD + '" step="1"' +
+        '      inputmode="numeric" placeholder="1-' + MAX_AWARD + '"' +
+        '      aria-label="Points to award to ' + house.name + '">' +
+        '    <button type="submit" class="award-button">Award</button>' +
+        "  </form>" +
+        "</div>" +
+        '<p class="message" id="message-' + houseIndex + '" role="status"></p>';
+      return block;
+    }
+
+    // Adds all the houses to the page and connects their buttons.
+    function buildPage() {
+      const housesArea = document.getElementById("houses");
+      HOUSES.forEach(function (house, houseIndex) {
+        housesArea.appendChild(buildHouse(house, houseIndex));
+
+        document.getElementById("plus-" + houseIndex).addEventListener("click", function () {
+          changePoints(houseIndex, 10);
+        });
+        document.getElementById("minus-" + houseIndex).addEventListener("click", function () {
+          changePoints(houseIndex, -10);
+        });
+        document.getElementById("form-" + houseIndex).addEventListener("submit", function (event) {
+          event.preventDefault();
+          awardPoints(houseIndex);
+        });
+      });
+      document.getElementById("reset-button").addEventListener("click", resetAll);
+    }
+
+    // --- Showing the points: numbers, bars, and Leader or Tied ---
+
+    // Updates everything on the page to match the scores.
+    function showScores() {
+      HOUSES.forEach(function (house, houseIndex) {
+        const status = getStatus(scores, houseIndex);
+        const statusLabel = document.getElementById("status-" + houseIndex);
+        statusLabel.textContent = status;
+        statusLabel.className = status === "Leader" ? "status leader" : "status";
+
+        document.getElementById("points-" + houseIndex).textContent = scores[houseIndex];
+        document.getElementById("bar-" + houseIndex).style.width = getBarPercent(scores, houseIndex) + "%";
+      });
+      document.getElementById("bar-note").textContent =
+        "A full bar is " + getFullBarPoints(scores) + " points.";
+    }
+
+    // --- Messages on the page ---
+
+    // Removes every message from the page.
+    function clearMessages() {
+      HOUSES.forEach(function (house, houseIndex) {
+        document.getElementById("message-" + houseIndex).textContent = "";
+      });
+      document.getElementById("page-message").textContent = "";
+    }
+
+    // Shows a message under one house.
+    function showHouseMessage(houseIndex, text) {
+      document.getElementById("message-" + houseIndex).textContent = text;
+    }
+
+    // --- Changing the points ---
+
+    // Keeps the new scores, saves them, and updates the page.
+    function useScores(newScores) {
+      scores = newScores;
+      showScores();
+      if (!saveScores()) {
+        document.getElementById("page-message").textContent =
+          "Heads up: this browser could not save the points, so a reload would lose them.";
+      }
+    }
+
+    // Runs when +10 or -10 is clicked.
+    function changePoints(houseIndex, amount) {
+      clearMessages();
+      if (amount < 0 && scores[houseIndex] === 0) {
+        showHouseMessage(houseIndex, HOUSES[houseIndex].name + " is already at 0 points.");
+        return;
+      }
+      useScores(addPoints(scores, houseIndex, amount));
+    }
+
+    // Runs when Award is clicked: checks the typed number, then adds it.
+    function awardPoints(houseIndex) {
+      const box = document.getElementById("box-" + houseIndex);
+      clearMessages();
+
+      const problem = getAwardProblem(box.value);
+      if (problem !== "") {
+        showHouseMessage(houseIndex, problem);
+        return;
+      }
+
+      const points = Number(box.value);
+      useScores(addPoints(scores, houseIndex, points));
+      showHouseMessage(houseIndex, "Awarded " + points + " points to " + HOUSES[houseIndex].name + ".");
+      box.value = "";
+    }
+
+    // Runs when Reset is clicked: every house goes back to 0.
+    function resetAll() {
+      clearMessages();
+      HOUSES.forEach(function (house, houseIndex) {
+        document.getElementById("box-" + houseIndex).value = "";
+      });
+      document.getElementById("page-message").textContent = "All houses are back to 0 points.";
+      useScores(resetScores());
+    }
+
+    // --- Start the page ---
+    buildPage();
+    showScores();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+Here is what happened when I opened the page with the new files: each house still showed two +10 buttons, an Award button and a Reset button, with no -10 button, and the browser console showed the same error "Failed to execute 'addEventListener' on 'EventTarget': parameter 2 is not of type 'Object'." Fix it and show every file again in full.

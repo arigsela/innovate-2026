@@ -1,0 +1,56 @@
+/* style.css */
+
+.house {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.house h2 {
+    font-weight: bold;
+}
+
+.house span {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.add-points, .subtract-points, .award-button, .reset-button {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.add-points, .subtract-points {
+    margin-bottom: 10px;
+}
+
+.add-points, .subtract-points button {
+    width: 100%;
+}
+
+.house-pointer {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.house-pointer:hover {
+    background-color: #444;
+}
+
+#house1-points, #house2-points, #house3-points, #house4-points {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+#house1-leader, #house2-leader, #house3-leader, #house4-leader {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}

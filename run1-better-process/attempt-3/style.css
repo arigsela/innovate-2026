@@ -1,0 +1,38 @@
+.houses {
+  display: flex;
+  flex-direction: column;
+}
+
+.houses-name {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.houses-points {
+  display: flex;
+  flex-direction: row;
+}
+
+.houses-points > * {
+  width: 20px;
+  height: 20px;
+  background-color: #ccc;
+  margin: 0 5px;
+}
+
+.houses-points > .points {
+  background-color: #f00;
+}
+
+.houses-points > .points > * {
+  background-color: #ccc;
+}
+
+.houses-points > .points > .points + .points {
+  margin-top: 5px;
+}
+
+.houses-points > .points > .points > .points + .points > .points {
+  margin-top: 10px;
+}

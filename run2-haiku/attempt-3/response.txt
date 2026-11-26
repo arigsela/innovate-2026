@@ -1,0 +1,17 @@
+I created `index.html` in `/Users/arisela/git/ai-innovate-2026/run2-haiku/attempt-3/`. It's a single file with inline CSS and JavaScript, with no libraries and no internet needed, so it works when you double-click it.
+
+**What's in it**
+- Four houses, each with a name, a points total, and a bar. All start at 0.
+- Each house has **+10** and **-10** buttons. Points never go below 0.
+- Each house has a number box and an **Award** button. Only a whole number above 0 is accepted. Anything else shows a friendly message and leaves the points alone.
+- **Leader** appears next to the house with the most points, but only once someone has points.
+- **Reset** sets every house back to 0.
+- Each section of the code has a short comment above it.
+
+**Choices I made that you may want to change**
+- **House names and colours** are placeholders: Red, Blue, Green and Yellow. Change them in the `HOUSES` list near the top of the script.
+- **Ties:** if two or more houses share the top score, they all show Leader.
+- **Bar length:** the leading house gets a full bar, and the others are drawn as a share of that.
+- **Award box:** it clears after a successful award.
+
+**Not verified:** I could not run a syntax check or open the page in a browser. My Node check was blocked by a permission prompt. I read through the code instead and found no problems, but please open the file and try the buttons once. The example you gave should work: two clicks on +10 on the first house shows "20 points" with Leader beside its name.

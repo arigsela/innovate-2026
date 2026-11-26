@@ -1,0 +1,74 @@
+[
+  {
+    "n": 1,
+    "group": "prompt",
+    "verdict": "CHECK",
+    "reason": "3 text boxes on the page; typed into the first one"
+  },
+  {
+    "n": 2,
+    "group": "prompt",
+    "verdict": "CHECK",
+    "reason": "3 text boxes on the page; typed into the first one"
+  },
+  {
+    "n": 3,
+    "group": "prompt",
+    "verdict": "CHECK",
+    "reason": "3 text boxes on the page; typed into the first one"
+  },
+  {
+    "n": 4,
+    "group": "prompt",
+    "verdict": "CHECK",
+    "reason": "3 text boxes on the page; typed into the first one"
+  },
+  {
+    "n": 5,
+    "group": "prompt",
+    "verdict": "CHECK",
+    "reason": "3 text boxes on the page; typed into the first one"
+  },
+  {
+    "n": 6,
+    "group": "prompt",
+    "verdict": "CHECK",
+    "reason": "3 text boxes on the page; typed into the first one"
+  },
+  {
+    "n": 7,
+    "group": "prompt",
+    "verdict": "CHECK",
+    "reason": "3 text boxes on the page; typed into the first one"
+  },
+  {
+    "n": 8,
+    "group": "project",
+    "verdict": "CHECK",
+    "reason": "3 text boxes on the page; typed into the first one"
+  },
+  {
+    "n": 9,
+    "group": "project",
+    "verdict": "CHECK",
+    "reason": "3 text boxes on the page; typed into the first one"
+  },
+  {
+    "n": 10,
+    "group": "project",
+    "verdict": "CHECK",
+    "reason": "3 text boxes on the page; typed into the first one"
+  },
+  {
+    "n": 11,
+    "group": "project",
+    "verdict": "CHECK",
+    "reason": "3 text boxes on the page; typed into the first one"
+  },
+  {
+    "n": 12,
+    "group": "project",
+    "verdict": "PASS",
+    "reason": "scrollWidth 360"
+  }
+]

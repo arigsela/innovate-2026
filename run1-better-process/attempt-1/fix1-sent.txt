@@ -1,0 +1,1 @@
+Here is what happened when I opened the page: it showed one +10 button, one -10 button, one Award button, one Reset button and the text "0 is the Leader", and nothing else. Fix it and show every file again in full.

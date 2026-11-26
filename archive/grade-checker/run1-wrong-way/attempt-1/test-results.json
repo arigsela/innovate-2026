@@ -1,0 +1,74 @@
+[
+  {
+    "n": 1,
+    "group": "prompt",
+    "verdict": "CHECK",
+    "reason": "could not type or click: locator.fill: Error: Cannot type text into input[type=number]"
+  },
+  {
+    "n": 2,
+    "group": "prompt",
+    "verdict": "CHECK",
+    "reason": "3 text boxes on the page; typed into the first one"
+  },
+  {
+    "n": 3,
+    "group": "prompt",
+    "verdict": "CHECK",
+    "reason": "could not type or click: locator.fill: Error: Cannot type text into input[type=number]"
+  },
+  {
+    "n": 4,
+    "group": "prompt",
+    "verdict": "CHECK",
+    "reason": "3 text boxes on the page; typed into the first one"
+  },
+  {
+    "n": 5,
+    "group": "prompt",
+    "verdict": "CHECK",
+    "reason": "3 text boxes on the page; typed into the first one"
+  },
+  {
+    "n": 6,
+    "group": "prompt",
+    "verdict": "CHECK",
+    "reason": "3 text boxes on the page; typed into the first one"
+  },
+  {
+    "n": 7,
+    "group": "prompt",
+    "verdict": "CHECK",
+    "reason": "3 text boxes on the page; typed into the first one"
+  },
+  {
+    "n": 8,
+    "group": "project",
+    "verdict": "CHECK",
+    "reason": "could not type or click: locator.fill: Error: Cannot type text into input[type=number]"
+  },
+  {
+    "n": 9,
+    "group": "project",
+    "verdict": "CHECK",
+    "reason": "3 text boxes on the page; typed into the first one"
+  },
+  {
+    "n": 10,
+    "group": "project",
+    "verdict": "CHECK",
+    "reason": "could not type or click: locator.fill: Error: Cannot type text into input[type=number]"
+  },
+  {
+    "n": 11,
+    "group": "project",
+    "verdict": "CHECK",
+    "reason": "could not type or click: locator.fill: Error: Cannot type text into input[type=number]"
+  },
+  {
+    "n": 12,
+    "group": "project",
+    "verdict": "FAIL",
+    "reason": "scrollWidth 394 is wider than 360"
+  }
+]

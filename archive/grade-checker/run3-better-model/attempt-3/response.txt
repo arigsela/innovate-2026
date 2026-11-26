@@ -1,0 +1,12 @@
+`index.html` is written, but it is untested: the test run needed an approval that wasn't granted, so I only traced the logic by hand. By that trace, `85, 90, 78` gives "Average: 84.3" and "Grade: B".
+
+A few behaviours you might not assume:
+
+- **Grade uses the rounded average.** An average of 89.95 displays as 90.0 and gets an A, so the letter always matches the number shown.
+- **Extra commas are flagged.** `85,,90` or a trailing comma (`85, 90,`) shows a friendly message asking for one score between each comma, rather than being ignored.
+- **Only plain numbers count.** Decimals like `92.5` are accepted; things like `abc`, `-5`, `101` or `1e2` show a message naming the bad entry and no grade.
+- **Enter works too.** Pressing Enter in the text box does the same as clicking Calculate.
+
+I also added a small grade-scale reminder line at the bottom of the page, which you didn't ask for.
+
+To check it yourself, double-click the file and try your example, an empty box, and `85, abc, 90`.

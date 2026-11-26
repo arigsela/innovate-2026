@@ -1,0 +1,167 @@
+{
+  "page": "index.html",
+  "prompt": [
+    8,
+    8
+  ],
+  "school": [
+    6,
+    6
+  ],
+  "results": [
+    {
+      "id": 1,
+      "kind": "prompt",
+      "title": "Load the page",
+      "verdict": "PASS",
+      "why": "Four houses, each with +10, -10, a number box and Award. A Reset button exists.",
+      "shown": "House Cup\n\nSpirit Week house points\n\nGryffindor\n\n0 points\n\n+10\n-10\nAward\nHufflepuff\n\n0 points\n\n+10\n-10\nAward\nRavenclaw\n\n0 points\n\n+10\n-10\nAward\nSlytherin\n\n0 points\n\n+10\n-10\nAward\n\nA full bar is 100 points.\n\nReset",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-01.png"
+    },
+    {
+      "id": 2,
+      "kind": "prompt",
+      "title": "Click +10 twice on house 1",
+      "verdict": "PASS",
+      "why": "House 1 shows 20. The other houses did not change.",
+      "shown": "House Cup\n\nSpirit Week house points\n\nGryffindor\nLeader\n\n20 points\n\n+10\n-10\nAward\nHufflepuff\n\n0 points\n\n+10\n-10\nAward\nRavenclaw\n\n0 points\n\n+10\n-10\nAward\nSlytherin\n\n0 points\n\n+10\n-10\nAward\n\nA full bar is 100 points.\n\nReset",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-02.png"
+    },
+    {
+      "id": 3,
+      "kind": "prompt",
+      "title": "Click -10 on house 2 while it has 0",
+      "verdict": "PASS",
+      "why": "House 2 stays at 0.",
+      "shown": "House Cup\n\nSpirit Week house points\n\nGryffindor\n\n0 points\n\n+10\n-10\nAward\nHufflepuff\n\n0 points\n\n+10\n-10\nAward\n\nHufflepuff is already at 0 points.\n\nRavenclaw\n\n0 points\n\n+10\n-10\nAward\nSlytherin\n\n0 points\n\n+10\n-10\nAward\n\nA full bar is 100 points.\n\nReset",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-03.png"
+    },
+    {
+      "id": 4,
+      "kind": "prompt",
+      "title": "Type 25 in house 3 and click Award",
+      "verdict": "PASS",
+      "why": "House 3 shows 25.",
+      "shown": "House Cup\n\nSpirit Week house points\n\nGryffindor\n\n0 points\n\n+10\n-10\nAward\nHufflepuff\n\n0 points\n\n+10\n-10\nAward\nRavenclaw\nLeader\n\n25 points\n\n+10\n-10\nAward\n\nAwarded 25 points to Ravenclaw.\n\nSlytherin\n\n0 points\n\n+10\n-10\nAward\n\nA full bar is 100 points.\n\nReset",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-04.png"
+    },
+    {
+      "id": 5,
+      "kind": "prompt",
+      "title": "Type -5 in house 1 and click Award",
+      "verdict": "PASS",
+      "why": "Points unchanged. Message on the page: \"Please type a whole number greater than 0, like 5 or 20.\".",
+      "shown": "House Cup\n\nSpirit Week house points\n\nGryffindor\n\n0 points\n\n+10\n-10\nAward\n\nPlease type a whole number greater than 0, like 5 or 20.\n\nHufflepuff\n\n0 points\n\n+10\n-10\nAward\nRavenclaw\n\n0 points\n\n+10\n-10\nAward\nSlytherin\n\n0 points\n\n+10\n-10\nAward\n\nA full bar is 100 points.\n\nReset",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-05.png"
+    },
+    {
+      "id": 6,
+      "kind": "prompt",
+      "title": "Click +10 twice on house 1 and once on house 2",
+      "verdict": "PASS",
+      "why": "Only house 1 shows the word Leader.",
+      "shown": "House Cup\n\nSpirit Week house points\n\nGryffindor\nLeader\n\n20 points\n\n+10\n-10\nAward\nHufflepuff\n\n10 points\n\n+10\n-10\nAward\nRavenclaw\n\n0 points\n\n+10\n-10\nAward\nSlytherin\n\n0 points\n\n+10\n-10\nAward\n\nA full bar is 100 points.\n\nReset",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-06.png"
+    },
+    {
+      "id": 7,
+      "kind": "prompt",
+      "title": "Give points to houses 1 and 2, then click Reset",
+      "verdict": "PASS",
+      "why": "Every house is back to 0.",
+      "shown": "House Cup\n\nSpirit Week house points\n\nGryffindor\n\n0 points\n\n+10\n-10\nAward\nHufflepuff\n\n0 points\n\n+10\n-10\nAward\nRavenclaw\n\n0 points\n\n+10\n-10\nAward\nSlytherin\n\n0 points\n\n+10\n-10\nAward\n\nA full bar is 100 points.\n\nReset\n\nAll houses are back to 0 points.",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-07.png"
+    },
+    {
+      "id": 8,
+      "kind": "prompt",
+      "title": "Give house 2 50 points, then take house 1 from 10 to 40",
+      "verdict": "PASS",
+      "why": "Something in house 1 got wider between 10 and 40 points.",
+      "shown": "House Cup\n\nSpirit Week house points\n\nGryffindor\n\n40 points\n\n+10\n-10\nAward\nHufflepuff\nLeader\n\n50 points\n\n+10\n-10\nAward\nRavenclaw\n\n0 points\n\n+10\n-10\nAward\nSlytherin\n\n0 points\n\n+10\n-10\nAward\n\nA full bar is 100 points.\n\nReset",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-08.png"
+    },
+    {
+      "id": 9,
+      "kind": "school",
+      "title": "Load the page and read the house names",
+      "verdict": "PASS",
+      "why": "Gryffindor, Hufflepuff, Ravenclaw, Slytherin, in that order.",
+      "shown": "House Cup\n\nSpirit Week house points\n\nGryffindor\n\n0 points\n\n+10\n-10\nAward\nHufflepuff\n\n0 points\n\n+10\n-10\nAward\nRavenclaw\n\n0 points\n\n+10\n-10\nAward\nSlytherin\n\n0 points\n\n+10\n-10\nAward\n\nA full bar is 100 points.\n\nReset",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-09.png"
+    },
+    {
+      "id": 10,
+      "kind": "school",
+      "title": "Give every house 10 points and look at the colours",
+      "verdict": "PASS",
+      "why": "Every house has an element filled with its main colour.",
+      "shown": "House Cup\n\nSpirit Week house points\n\nGryffindor\nTied\n\n10 points\n\n+10\n-10\nAward\nHufflepuff\nTied\n\n10 points\n\n+10\n-10\nAward\nRavenclaw\nTied\n\n10 points\n\n+10\n-10\nAward\nSlytherin\nTied\n\n10 points\n\n+10\n-10\nAward\n\nA full bar is 100 points.\n\nReset",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-10.png"
+    },
+    {
+      "id": 11,
+      "kind": "school",
+      "title": "Type 60 in house 1 and click Award",
+      "verdict": "PASS",
+      "why": "Points unchanged. Message on the page: \"One award can be at most 50 points. Please type 50 or less.\".",
+      "shown": "House Cup\n\nSpirit Week house points\n\nGryffindor\n\n0 points\n\n+10\n-10\nAward\n\nOne award can be at most 50 points. Please type 50 or less.\n\nHufflepuff\n\n0 points\n\n+10\n-10\nAward\nRavenclaw\n\n0 points\n\n+10\n-10\nAward\nSlytherin\n\n0 points\n\n+10\n-10\nAward\n\nA full bar is 100 points.\n\nReset",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-11.png"
+    },
+    {
+      "id": 12,
+      "kind": "school",
+      "title": "Click +10 once on house 1 and once on house 2",
+      "verdict": "PASS",
+      "why": "No Leader. Houses 1 and 2 show Tied.",
+      "shown": "House Cup\n\nSpirit Week house points\n\nGryffindor\nTied\n\n10 points\n\n+10\n-10\nAward\nHufflepuff\nTied\n\n10 points\n\n+10\n-10\nAward\nRavenclaw\n\n0 points\n\n+10\n-10\nAward\nSlytherin\n\n0 points\n\n+10\n-10\nAward\n\nA full bar is 100 points.\n\nReset",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-12.png"
+    },
+    {
+      "id": 13,
+      "kind": "school",
+      "title": "Click +10 twice on house 1, then reload the page",
+      "verdict": "PASS",
+      "why": "House 1 still shows 20 after the reload.",
+      "shown": "House Cup\n\nSpirit Week house points\n\nGryffindor\nLeader\n\n20 points\n\n+10\n-10\nAward\nHufflepuff\n\n0 points\n\n+10\n-10\nAward\nRavenclaw\n\n0 points\n\n+10\n-10\nAward\nSlytherin\n\n0 points\n\n+10\n-10\nAward\n\nA full bar is 100 points.\n\nReset",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-13.png"
+    },
+    {
+      "id": 14,
+      "kind": "school",
+      "title": "Load the page at 360px wide",
+      "verdict": "PASS",
+      "why": "No sideways scrolling.",
+      "shown": "House Cup\n\nSpirit Week house points\n\nGryffindor\n\n0 points\n\n+10\n-10\nAward\nHufflepuff\n\n0 points\n\n+10\n-10\nAward\nRavenclaw\n\n0 points\n\n+10\n-10\nAward\nSlytherin\n\n0 points\n\n+10\n-10\nAward\n\nA full bar is 100 points.\n\nReset",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-14.png"
+    }
+  ]
+}

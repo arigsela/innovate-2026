@@ -1,0 +1,6 @@
+1. `/Users/arisela/git/ai-innovate-2026/_orchestrator/isolation-check/with-rules/CLAUDE.md` (the only one; it contains the marker rule ZEBRA-7731).
+2. None — no hook-injected context is present.
+3. 14 skills: dataviz, update-config, keybindings-help, code-review, simplify (the others are fewer-permission-prompts, loop, schedule, claude-api, workflow-authoring, run, plugin-authoring, init, security-review).
+4. None — no MCP servers or MCP tools are listed.
+5. None — no persistent memory directory is mentioned.
+exit 0

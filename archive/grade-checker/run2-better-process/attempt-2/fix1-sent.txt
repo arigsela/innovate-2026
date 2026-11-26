@@ -1,0 +1,1 @@
+Here is what happened when I typed 85, 90, 78 and clicked Calculate: nothing appeared on the page, and the browser console showed no error. Fix it and show the complete corrected index.html.

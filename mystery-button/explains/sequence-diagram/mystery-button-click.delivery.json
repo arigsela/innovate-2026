@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "0bed2105-4ec9-487f-a3ff-04c12d880421",
+  "status": "current",
+  "command": "deliver",
+  "type": "sequence",
+  "input": "/Users/arisela/git/ai-innovate-2026/mystery-button/explain/sequence-diagram/candidate.json",
+  "output": "/Users/arisela/git/ai-innovate-2026/mystery-button/explain/sequence-diagram/mystery-button-click.html",
+  "specification": {
+    "sha256": "dda68b34a9c10e4efa08b740236a06b570c0dc9484e287a04cd495c2803ec87f",
+    "bytes": 5375
+  },
+  "artifact": {
+    "sha256": "8b933f953793bcca111aa5085a0bcbe7a338459948834148b5cf271785f1f038",
+    "bytes": 841017
+  }
+}

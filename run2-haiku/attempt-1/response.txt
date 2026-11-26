@@ -1,0 +1,17 @@
+I created `index.html` in `/Users/arisela/git/ai-innovate-2026/run2-haiku/attempt-1/`. It is one file with inline CSS and JavaScript, with no libraries or internet access needed.
+
+**I could not run it.** Bash commands were blocked for approval partway through, so I checked the code by reading it, not in a browser. Please double-click the file and try the example: click +10 twice on a house and it should show 20 points with the Leader label.
+
+What the page does:
+- **Four houses**, each with a name, a point total, and a bar. The bar length is relative to the top house, so the leader's bar is full and the others scale against it.
+- **+10 and -10 buttons** change a house's points by 10. Points are clamped at 0.
+- **Number box and Award button.** Only a whole number greater than 0 is accepted. Anything else (blank, `0`, `-5`, `1.5`) shows a friendly message in that house's card and leaves the points unchanged.
+- **Leader label** appears on the house with the most points, but only once someone has points, so all-zero shows no Leader.
+- **Reset** sets every house to 0 and clears any warning messages.
+- **Comments** sit above each section of the HTML, CSS and JavaScript.
+
+Choices I made that you may want to change:
+- **House names and colours are placeholders** (Red, Blue, Green, Gold). They are in one list near the top of the script.
+- **Ties show "Leader" on every tied house**, since the brief didn't say.
+- **A successful Award clears the number box.** A warning message clears when that house's points change.
+- **Reset has no confirmation prompt**, since you didn't ask for one.

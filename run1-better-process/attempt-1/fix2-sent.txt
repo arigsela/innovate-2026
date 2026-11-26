@@ -1,0 +1,1 @@
+Here is what happened when I opened the new page: each house showed "0" with a +10 button and a -10 button, but no house had a number box or an Award button, and the browser console showed the error "Cannot set properties of null (setting 'innerHTML')". Fix it and show every file again in full.

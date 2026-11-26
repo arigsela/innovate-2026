@@ -1,0 +1,304 @@
+Here are the steps I will take to build the web page called index.html:
+
+1. Define the structure and content of the page.
+2. Create the HTML structure and code for the index.html file.
+3. Add CSS and JavaScript code to style and interact with the page.
+4. Implement the rules and logic for the scoreboard, including:
+    * Showing the houses and their points
+    * Handling buttons for +10 and -10
+    * Handling buttons for Award and Reset
+    * Determining the Leader
+    * Displaying a friendly message when points are not valid
+5. Test the page to ensure it works as expected.
+6. Create a simple user interface with the buttons and text boxes.
+
+Here is the code for the index.html file:
+
+```html
+<!-- Comment above each section of the code explaining what it does -->
+
+<!-- Define the structure and content of the page -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Points Scoreboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Comment above each section of the code explaining what it does -->
+
+    <!-- Create a div for each house -->
+    <div class="house">
+        <!-- Comment above each section of the code explaining what it does -->
+
+        <!-- House name and points -->
+        <h2 id="house-name">House 1</h2>
+        <span id="house-points">0</span>
+
+        <!-- Buttons for +10 and -10 -->
+        <button id="plus-10">+10</button>
+        <button id="minus-10">-10</button>
+
+        <!-- Number box for Award and Reset -->
+        <label for="award">Award:</label>
+        <input type="number" id="award" value="0">
+        <button id="award-button">Award</button>
+
+        <!-- Button to reset the house -->
+        <button id="reset">Reset</button>
+    </div>
+
+    <!-- Create a container for all the houses -->
+    <div class="houses">
+        <div class="house">
+            <h2 id="house-name">House 1</h2>
+            <span id="house-points">0</span>
+        </div>
+        <div class="house">
+            <h2 id="house-name">House 2</h2>
+            <span id="house-points">0</span>
+        </div>
+        <div class="house">
+            <h2 id="house-name">House 3</h2>
+            <span id="house-points">0</span>
+        </div>
+        <div class="house">
+            <h2 id="house-name">House 4</h2>
+            <span id="house-points">0</span>
+        </div>
+    </div>
+
+    <!-- Create a container for all the award buttons -->
+    <div class="award-buttons">
+        <button id="award-button">Award</button>
+        <button id="reset-button">Reset</button>
+    </div>
+
+    <!-- Create a reset button to set each house back to 0 -->
+    <button id="reset-button">Reset</button>
+
+    <!-- Create a display for the scoreboard -->
+    <div class="scoreboard">
+        <h1>School Spirit Week Leaderboard</h1>
+
+        <!-- Comment above each section of the code explaining what it does -->
+
+        <!-- Initialize the house scoreboard -->
+        <script>
+            let scoreboard = {
+                houses: [
+                    { name: "House 1", points: 0 },
+                    { name: "House 2", points: 0 },
+                    { name: "House 3", points: 0 },
+                    { name: "House 4", points: 0 },
+                ],
+                currentHouse: 0,
+            };
+
+            // Function to update the scoreboard
+            function updateScoreboard() {
+                document.getElementById("house-points").textContent = scoreboard.houses[currentHouse].points;
+            }
+
+            // Function to display the Leader
+            function displayLeader() {
+                const currentHouse = scoreboard.houses.find((house) => house.name === "House 1");
+                const leader = currentHouse.name;
+                document.getElementById("house-name").textContent = leader;
+            }
+
+            // Function to handle Award
+            function handleAward(e) {
+                const awardValue = e.target.value;
+                if (awardValue > 0) {
+                    // Add the award value to the current house
+                    const currentHouse = scoreboard.houses.find((house) => house.name === "House 1");
+                    currentHouse.points += parseInt(awardValue);
+                    updateScoreboard();
+                    displayLeader();
+                } else {
+                    // Display a friendly message if the value is not valid
+                    alert("Please enter a positive whole number greater than 0.");
+                }
+            }
+
+            // Function to handle Reset
+            function handleReset() {
+                // Reset each house to 0
+                scoreboard.currentHouse = 0;
+                scoreboard.houses[0].points = 0;
+                updateScoreboard();
+                displayLeader();
+            }
+
+            // Add event listeners to the Award buttons
+            document.getElementById("award-button").addEventListener("click", handleAward);
+            document.getElementById("reset-button").addEventListener("click", handleReset);
+
+            // Initialize the scoreboard
+            updateScoreboard();
+            displayLeader();
+        </script>
+
+        <!-- Comment above each section of the code explaining what it does -->
+
+    </div>
+
+    <!-- Comment above each section of the code explaining what it does -->
+
+    <!-- Comment above each section of the code explaining what it does -->
+
+    <!-- Comment above each section of the code explaining what it does -->
+```
+
+And here is the CSS code to style the page:
+
+```css
+/* Comment above each section of the code explaining what it does */
+
+/* Style for the scoreboard */
+
+.scoreboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+}
+
+.house {
+    margin: 20px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 200px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.house h2 {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.house span {
+    font-size: 18px;
+    color: #666;
+}
+
+.house button {
+    float: right;
+    margin-left: 10px;
+    width: 40px;
+    height: 30px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.house button:hover {
+    background-color: #ccc;
+}
+
+/* Style for the award buttons */
+
+.award-buttons {
+    margin: 20px;
+}
+
+.award-button {
+    margin-left: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.award-button:hover {
+    background-color: #ccc;
+}
+
+/* Style for the reset button */
+
+.reset-button {
+    margin: 20px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.reset-button:hover {
+    background-color: #ccc;
+}
+
+/* Style for the scoreboard */
+
+.scoreboard h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+```
+
+And here is the JavaScript code to handle the events and update the scoreboard:
+
+```javascript
+// Comment above each section of the code explaining what it does
+
+// Initialize the scoreboard
+let scoreboard = {
+    houses: [
+        { name: "House 1", points: 0 },
+        { name: "House 2", points: 0 },
+        { name: "House 3", points: 0 },
+        { name: "House 4", points: 0 },
+    ],
+    currentHouse: 0,
+};
+
+// Function to update the scoreboard
+function updateScoreboard() {
+    document.getElementById("house-points").textContent = scoreboard.houses[currentHouse].points;
+}
+
+// Function to display the Leader
+function displayLeader() {
+    const currentHouse = scoreboard.houses.find((house) => house.name === "House 1");
+    const leader = currentHouse.name;
+    document.getElementById("house-name").textContent = leader;
+}
+
+// Function to handle Award
+function handleAward(e) {
+    const awardValue = e.target.value;
+    if (awardValue > 0) {
+        // Add the award value to the current house
+        const currentHouse = scoreboard.houses.find((house) => house.name === "House 1");
+        currentHouse.points += parseInt(awardValue);
+        updateScoreboard();
+        displayLeader();
+    } else {
+        // Display a friendly message if the value is not valid
+        alert("Please enter a positive whole number greater than 0.");
+    }
+}
+
+// Function to handle Reset
+function handleReset() {
+    // Reset each house to 0
+    scoreboard.currentHouse = 0;
+    scoreboard.houses[0].points = 0;
+    updateScoreboard();
+    displayLeader();
+}
+
+// Add event listeners to the Award buttons
+document.getElementById("award-button").addEventListener("click", handleAward);
+document.getElementById("reset-button").addEventListener("click", handleReset);
+
+// Initialize the scoreboard
+updateScoreboard();
+displayLeader();
+```
+

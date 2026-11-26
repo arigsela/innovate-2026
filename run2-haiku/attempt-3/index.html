@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spirit Week House Points</title>
+  <style>
+    /* ---- Page layout and general look ---- */
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #f4f6fb;
+      color: #222;
+      margin: 0;
+      padding: 24px 16px;
+    }
+
+    /* ---- Page title and Reset button row ---- */
+    header {
+      max-width: 720px;
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    h1 {
+      font-size: 1.6rem;
+      margin: 0;
+    }
+
+    /* ---- Column of house cards ---- */
+    .houses {
+      max-width: 720px;
+      margin: 0 auto;
+      display: grid;
+      gap: 16px;
+    }
+
+    /* ---- One house card ---- */
+    .house {
+      background: #fff;
+      border-radius: 10px;
+      padding: 16px 20px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    /* ---- Top row: house name, Leader badge, points total ---- */
+    .house-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .house-name {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    .leader-badge {
+      display: none;               /* hidden until this house is in the lead */
+      background: #ffd23f;
+      color: #333;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .leader-badge.show {
+      display: inline-block;
+    }
+    .points {
+      margin-left: auto;
+      font-size: 1.1rem;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ---- Points bar: grey track with a coloured fill ---- */
+    .bar-track {
+      background: #e5e8f0;
+      border-radius: 6px;
+      height: 18px;
+      margin: 12px 0 14px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      background: var(--color, #4a7dff);
+      height: 100%;
+      width: 0;
+      border-radius: 6px;
+      transition: width 0.3s ease;
+    }
+
+    /* ---- Row of buttons and the number box ---- */
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    button {
+      font: inherit;
+      font-weight: 600;
+      padding: 7px 14px;
+      border: none;
+      border-radius: 6px;
+      background: #2d3748;
+      color: #fff;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #1a202c;
+    }
+    button.secondary {
+      background: #6b7280;
+    }
+    button.secondary:hover {
+      background: #4b5563;
+    }
+    input[type="number"] {
+      font: inherit;
+      width: 90px;
+      padding: 6px 8px;
+      border: 1px solid #c4cad6;
+      border-radius: 6px;
+    }
+
+    /* ---- Friendly message shown when the Award number is not valid ---- */
+    .message {
+      min-height: 1.3em;
+      margin-top: 8px;
+      font-size: 0.9rem;
+      color: #b3261e;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Page heading and the Reset button -->
+  <header>
+    <h1>Spirit Week House Points</h1>
+    <button type="button" class="secondary" id="reset-btn">Reset</button>
+  </header>
+
+  <!-- Container where the four house cards are placed by the script -->
+  <main class="houses" id="houses"></main>
+
+  <script>
+    /* ---- Settings: the four houses (change the names or colours here) ---- */
+    const HOUSES = [
+      { name: 'Red House',    color: '#e5484d' },
+      { name: 'Blue House',   color: '#3b82f6' },
+      { name: 'Green House',  color: '#30a46c' },
+      { name: 'Yellow House', color: '#e0a100' },
+    ];
+
+    /* ---- The amount the +10 and -10 buttons change a house by ---- */
+    const STEP = 10;
+
+    /* ---- App state: one points total per house, all starting at 0 ---- */
+    const points = HOUSES.map(() => 0);
+
+    /* ---- Small helper: create an element with a class and text in one line ---- */
+    function makeEl(tag, className, text) {
+      const el = document.createElement(tag);
+      if (className) el.className = className;
+      if (text !== undefined) el.textContent = text;
+      return el;
+    }
+
+    /* ---- Build one house card and wire up its buttons ----
+       Returns the card's parts so updateAll() can change them later. */
+    function buildCard(house, index) {
+      const card = makeEl('div', 'house');
+      card.style.setProperty('--color', house.color);
+
+      // Top row: name, Leader badge, and points total
+      const top = makeEl('div', 'house-top');
+      const nameEl = makeEl('span', 'house-name', house.name);
+      const badgeEl = makeEl('span', 'leader-badge', 'Leader');
+      const pointsEl = makeEl('span', 'points', '0 points');
+      top.append(nameEl, badgeEl, pointsEl);
+
+      // Points bar
+      const track = makeEl('div', 'bar-track');
+      const fillEl = makeEl('div', 'bar-fill');
+      track.append(fillEl);
+
+      // Buttons and number box for awarding points
+      const controls = makeEl('div', 'controls');
+      const minusBtn = makeEl('button', '', '-10');
+      minusBtn.type = 'button';
+      const plusBtn = makeEl('button', '', '+10');
+      plusBtn.type = 'button';
+      const input = document.createElement('input');
+      input.type = 'number';
+      input.min = '1';
+      input.step = '1';
+      input.placeholder = 'points';
+      input.setAttribute('aria-label', `Points to award to ${house.name}`);
+      const awardBtn = makeEl('button', '', 'Award');
+      awardBtn.type = 'button';
+      controls.append(minusBtn, plusBtn, input, awardBtn);
+
+      // Message line for friendly error text
+      const msgEl = makeEl('div', 'message');
+
+      card.append(top, track, controls, msgEl);
+
+      // Click handlers: +10 adds, -10 takes away but never goes below 0
+      plusBtn.addEventListener('click', () => {
+        points[index] += STEP;
+        updateAll();
+      });
+      minusBtn.addEventListener('click', () => {
+        points[index] = Math.max(0, points[index] - STEP);
+        updateAll();
+      });
+
+      // Award handler: only a whole number greater than 0 is accepted
+      awardBtn.addEventListener('click', () => {
+        const typed = input.value.trim();
+        const isWholeNumber = /^\d+$/.test(typed);   // digits only: no decimals, minus signs or letters
+        if (!isWholeNumber || Number(typed) <= 0) {
+          msgEl.textContent = 'Oops! Please type a whole number greater than 0, like 5 or 10. The points were not changed.';
+          return;                                     // stop here: points stay as they were
+        }
+        points[index] += Number(typed);
+        msgEl.textContent = '';
+        input.value = '';
+        updateAll();
+      });
+
+      return { card, nameEl, badgeEl, pointsEl, fillEl, msgEl };
+    }
+
+    /* ---- Build all four cards and add them to the page ---- */
+    const container = document.getElementById('houses');
+    const cards = HOUSES.map((house, i) => buildCard(house, i));
+    cards.forEach(c => container.appendChild(c.card));
+
+    /* ---- Redraw every card from the points array ----
+       Updates the points text, the bar length, and the Leader badge. */
+    function updateAll() {
+      const highest = Math.max(...points);
+      const anyPoints = highest > 0;
+
+      cards.forEach((c, i) => {
+        const p = points[i];
+
+        // Points text, with "point" for 1 and "points" otherwise
+        c.pointsEl.textContent = `${p} ${p === 1 ? 'point' : 'points'}`;
+
+        // Bar length: the house with the most points gets a full bar,
+        // the others are shown as a share of that
+        c.fillEl.style.width = anyPoints ? `${(p / highest) * 100}%` : '0%';
+
+        // Leader badge: shown on the house(s) with the most points, once someone has points
+        c.badgeEl.classList.toggle('show', anyPoints && p === highest);
+      });
+    }
+
+    /* ---- Reset button: sets every house back to 0 and clears any messages ---- */
+    document.getElementById('reset-btn').addEventListener('click', () => {
+      points.fill(0);
+      cards.forEach(c => { c.msgEl.textContent = ''; });
+      updateAll();
+    });
+
+    /* ---- Draw the starting state (all houses at 0) ---- */
+    updateAll();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,114 @@
+{
+  "page": "index.html",
+  "prompt": [
+    0,
+    8
+  ],
+  "school": null,
+  "results": [
+    {
+      "id": 1,
+      "kind": "prompt",
+      "title": "Load the page",
+      "verdict": "FAIL",
+      "why": "8 houses with a +10 button, not 4; house 1 has no -10 button; house 1 has no Award button; house 1 has no number box; house 2 has no -10 button; house 2 has no Award button; house 2 has no number box; house 3 has no -10 button; house 3 has no Award button; house 3 has no number box; house 4 has no -10 button; house 4 has no Award button; house 4 has no number box; house 5 has no -10 button; house 5 has no Award button; house 5 has no number box; house 6 has no -10 button; house 6 has no Award button; house 6 has no number box; house 7 has no -10 button; house 7 has no Award button; house 7 has no number box; house 8 has no -10 button; house 8 has no Award button; house 8 has no number box.",
+      "shown": "Spirit Week Scoreboard\nHouse 1\n\n0\n\n+10\n+10\n\nAward\n\nReset\nHouse 2\n\n0\n\n+10\n+10\n\nAward\n\nReset\nHouse 3\n\n0\n\n+10\n+10\n\nAward\n\nReset\nHouse 4\n\n0\n\n+10\n+10\n\nAward\n\nReset\nReset All",
+      "dialogs": [],
+      "errors": [
+        "Failed to execute 'addEventListener' on 'EventTarget': parameter 2 is not of type 'Object'."
+      ],
+      "screenshot": "screenshots/check-01.png"
+    },
+    {
+      "id": 2,
+      "kind": "prompt",
+      "title": "Click +10 twice on house 1",
+      "verdict": "CHECK",
+      "why": "Could not find four houses that each have a +10 button (found 8), so this check could not be performed.",
+      "shown": "Spirit Week Scoreboard\nHouse 1\n\n0\n\n+10\n+10\n\nAward\n\nReset\nHouse 2\n\n0\n\n+10\n+10\n\nAward\n\nReset\nHouse 3\n\n0\n\n+10\n+10\n\nAward\n\nReset\nHouse 4\n\n0\n\n+10\n+10\n\nAward\n\nReset\nReset All",
+      "dialogs": [],
+      "errors": [
+        "Failed to execute 'addEventListener' on 'EventTarget': parameter 2 is not of type 'Object'."
+      ],
+      "screenshot": "screenshots/check-02.png"
+    },
+    {
+      "id": 3,
+      "kind": "prompt",
+      "title": "Click -10 on house 2 while it has 0",
+      "verdict": "CHECK",
+      "why": "Could not find four houses that each have a +10 button (found 8), so this check could not be performed.",
+      "shown": "Spirit Week Scoreboard\nHouse 1\n\n0\n\n+10\n+10\n\nAward\n\nReset\nHouse 2\n\n0\n\n+10\n+10\n\nAward\n\nReset\nHouse 3\n\n0\n\n+10\n+10\n\nAward\n\nReset\nHouse 4\n\n0\n\n+10\n+10\n\nAward\n\nReset\nReset All",
+      "dialogs": [],
+      "errors": [
+        "Failed to execute 'addEventListener' on 'EventTarget': parameter 2 is not of type 'Object'."
+      ],
+      "screenshot": "screenshots/check-03.png"
+    },
+    {
+      "id": 4,
+      "kind": "prompt",
+      "title": "Type 25 in house 3 and click Award",
+      "verdict": "CHECK",
+      "why": "Could not find four houses that each have a +10 button (found 8), so this check could not be performed.",
+      "shown": "Spirit Week Scoreboard\nHouse 1\n\n0\n\n+10\n+10\n\nAward\n\nReset\nHouse 2\n\n0\n\n+10\n+10\n\nAward\n\nReset\nHouse 3\n\n0\n\n+10\n+10\n\nAward\n\nReset\nHouse 4\n\n0\n\n+10\n+10\n\nAward\n\nReset\nReset All",
+      "dialogs": [],
+      "errors": [
+        "Failed to execute 'addEventListener' on 'EventTarget': parameter 2 is not of type 'Object'."
+      ],
+      "screenshot": "screenshots/check-04.png"
+    },
+    {
+      "id": 5,
+      "kind": "prompt",
+      "title": "Type -5 in house 1 and click Award",
+      "verdict": "CHECK",
+      "why": "Could not find four houses that each have a +10 button (found 8), so this check could not be performed.",
+      "shown": "Spirit Week Scoreboard\nHouse 1\n\n0\n\n+10\n+10\n\nAward\n\nReset\nHouse 2\n\n0\n\n+10\n+10\n\nAward\n\nReset\nHouse 3\n\n0\n\n+10\n+10\n\nAward\n\nReset\nHouse 4\n\n0\n\n+10\n+10\n\nAward\n\nReset\nReset All",
+      "dialogs": [],
+      "errors": [
+        "Failed to execute 'addEventListener' on 'EventTarget': parameter 2 is not of type 'Object'."
+      ],
+      "screenshot": "screenshots/check-05.png"
+    },
+    {
+      "id": 6,
+      "kind": "prompt",
+      "title": "Click +10 twice on house 1 and once on house 2",
+      "verdict": "CHECK",
+      "why": "Could not find four houses that each have a +10 button (found 8), so this check could not be performed.",
+      "shown": "Spirit Week Scoreboard\nHouse 1\n\n0\n\n+10\n+10\n\nAward\n\nReset\nHouse 2\n\n0\n\n+10\n+10\n\nAward\n\nReset\nHouse 3\n\n0\n\n+10\n+10\n\nAward\n\nReset\nHouse 4\n\n0\n\n+10\n+10\n\nAward\n\nReset\nReset All",
+      "dialogs": [],
+      "errors": [
+        "Failed to execute 'addEventListener' on 'EventTarget': parameter 2 is not of type 'Object'."
+      ],
+      "screenshot": "screenshots/check-06.png"
+    },
+    {
+      "id": 7,
+      "kind": "prompt",
+      "title": "Give points to houses 1 and 2, then click Reset",
+      "verdict": "CHECK",
+      "why": "Could not find four houses that each have a +10 button (found 8), so this check could not be performed.",
+      "shown": "Spirit Week Scoreboard\nHouse 1\n\n0\n\n+10\n+10\n\nAward\n\nReset\nHouse 2\n\n0\n\n+10\n+10\n\nAward\n\nReset\nHouse 3\n\n0\n\n+10\n+10\n\nAward\n\nReset\nHouse 4\n\n0\n\n+10\n+10\n\nAward\n\nReset\nReset All",
+      "dialogs": [],
+      "errors": [
+        "Failed to execute 'addEventListener' on 'EventTarget': parameter 2 is not of type 'Object'."
+      ],
+      "screenshot": "screenshots/check-07.png"
+    },
+    {
+      "id": 8,
+      "kind": "prompt",
+      "title": "Give house 2 50 points, then take house 1 from 10 to 40",
+      "verdict": "CHECK",
+      "why": "Could not find four houses that each have a +10 button (found 8), so this check could not be performed.",
+      "shown": "Spirit Week Scoreboard\nHouse 1\n\n0\n\n+10\n+10\n\nAward\n\nReset\nHouse 2\n\n0\n\n+10\n+10\n\nAward\n\nReset\nHouse 3\n\n0\n\n+10\n+10\n\nAward\n\nReset\nHouse 4\n\n0\n\n+10\n+10\n\nAward\n\nReset\nReset All",
+      "dialogs": [],
+      "errors": [
+        "Failed to execute 'addEventListener' on 'EventTarget': parameter 2 is not of type 'Object'."
+      ],
+      "screenshot": "screenshots/check-08.png"
+    }
+  ]
+}

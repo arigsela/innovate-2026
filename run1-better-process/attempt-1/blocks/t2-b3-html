@@ -1,0 +1,5 @@
+<!-- Add event listeners to each button -->
+<button id="plus10">+10</button>
+<button id="minus10">-10</button>
+<button id="award">Award</button>
+<button id="reset">Reset</button>

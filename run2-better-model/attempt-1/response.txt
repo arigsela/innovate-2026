@@ -1,0 +1,12 @@
+`index.html` is written in your project folder, but I have not been able to run it: the test command needed an approval that wasn't given, and I couldn't open a browser from here. I have only read through the code, tracing your "+10 twice" example by hand, so please double-click the file and try it before Spirit Week.
+
+A few things I decided that you didn't specify:
+
+- **House names**: I used Maple, Oak, Cedar and Birch as placeholders. The names and colours are in a short list at the top of the JavaScript, under the "Settings" comment, so you can change them there.
+- **Ties**: if two or more houses share the top score, each one shows Leader. Nobody shows Leader while every house is on 0.
+- **Bar length**: a full bar means 100 points. Once a house passes 100, the top house has the full bar and the others are drawn in proportion to it. A small note under the scoreboard says what a full bar currently stands for.
+- **Award box**: after a successful award the box is cleared, so a second click can't award the same points twice by accident. Pressing Enter in the box works the same as clicking Award.
+- **Friendly message**: it appears under the house whose box had the problem and disappears as soon as you start typing again.
+- **Reset**: it works straight away, with no "are you sure?" prompt.
+
+Scores are not saved: closing or refreshing the page puts every house back to 0. I kept it that way because you asked for every house to start at 0, but if the scoreboard needs to survive across the week, I can make it remember the scores on that computer.

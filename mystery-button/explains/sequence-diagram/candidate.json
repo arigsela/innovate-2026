@@ -1,0 +1,234 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "Mystery button: one click, step by step",
+    "locale": "en",
+    "output": "mystery-button/explain/sequence-diagram/mystery-button-click.html",
+    "quality_profile": "showcase",
+    "legend": {
+      "entries": {
+        "dashed": {
+          "label": "Only when a condition is true"
+        },
+        "return": {
+          "label": "What comes back to you"
+        }
+      }
+    }
+  },
+  "participants": [
+    {
+      "id": "you",
+      "type": "external",
+      "label": "You",
+      "sublabel": "mouse",
+      "icon": "person"
+    },
+    {
+      "id": "browser",
+      "type": "frontend",
+      "label": "Browser",
+      "sublabel": "CSS + events"
+    },
+    {
+      "id": "page",
+      "type": "frontend",
+      "label": "Page you see",
+      "sublabel": "colour, title, text"
+    },
+    {
+      "id": "repaint",
+      "type": "backend",
+      "label": "Repaint w()",
+      "sublabel": "lines 25-30"
+    },
+    {
+      "id": "handler",
+      "type": "backend",
+      "label": "Click handler",
+      "sublabel": "lines 31-36"
+    },
+    {
+      "id": "store",
+      "type": "database",
+      "label": "localStorage",
+      "sublabel": "key mb.n"
+    }
+  ],
+  "segments": [
+    {
+      "from": 150,
+      "to": 285,
+      "label": "Press and let go"
+    },
+    {
+      "from": 295,
+      "to": 525,
+      "label": "The script remembers"
+    },
+    {
+      "from": 535,
+      "to": 870,
+      "label": "The page repaints"
+    }
+  ],
+  "messages": [
+    {
+      "id": "press",
+      "from": "you",
+      "to": "browser",
+      "y": 170,
+      "label": "press and hold"
+    },
+    {
+      "id": "shrink",
+      "from": "browser",
+      "to": "page",
+      "y": 200,
+      "label": "shrink button to 97%",
+      "note": "CSS :active rule (line 11). It springs back when you let go."
+    },
+    {
+      "id": "release",
+      "from": "you",
+      "to": "browser",
+      "y": 265,
+      "label": "let go"
+    },
+    {
+      "id": "click",
+      "from": "browser",
+      "to": "handler",
+      "y": 310,
+      "label": "click event",
+      "variant": "emphasis"
+    },
+    {
+      "id": "save",
+      "from": "handler",
+      "to": "store",
+      "y": 345,
+      "label": "save count",
+      "note": "First it reads the clock: gap = ms since your last click (0 on the first). Then count + 1 (line 32). The count survives a reload."
+    },
+    {
+      "id": "call-w",
+      "from": "handler",
+      "to": "repaint",
+      "y": 430,
+      "label": "call w()",
+      "note": "Before this: fast streak + 1 if the gap was under 0.4 s, else back to 1. The secret unlocks after 3 fast, a pause of 1 s or more, then 2 fast (lines 33-34)."
+    },
+    {
+      "id": "hue",
+      "from": "repaint",
+      "to": "page",
+      "y": 560,
+      "label": "set background hue",
+      "note": "hue = 210 + 3 x count, fading in over 0.4 s (lines 24, 26). Too small to notice."
+    },
+    {
+      "id": "title",
+      "from": "repaint",
+      "to": "page",
+      "y": 645,
+      "label": "set tab title",
+      "note": "\"✦ 7\" when the count is a multiple of 7, else \"Click me\" (line 27)."
+    },
+    {
+      "id": "secret",
+      "from": "repaint",
+      "to": "page",
+      "y": 720,
+      "label": "show \"Mischief managed.\"",
+      "variant": "dashed",
+      "note": "Only once the secret is unlocked (line 28)."
+    },
+    {
+      "id": "reveal",
+      "from": "repaint",
+      "to": "page",
+      "y": 785,
+      "label": "refresh reveal panel",
+      "variant": "dashed",
+      "note": "Only when the address has ?reveal (line 29)."
+    },
+    {
+      "id": "notice",
+      "from": "page",
+      "to": "you",
+      "y": 850,
+      "label": "what you notice",
+      "variant": "return"
+    }
+  ],
+  "activations": [
+    {
+      "participant": "browser",
+      "from": 165,
+      "to": 316,
+      "type": "frontend"
+    },
+    {
+      "participant": "page",
+      "from": 195,
+      "to": 230,
+      "type": "frontend"
+    },
+    {
+      "participant": "handler",
+      "from": 305,
+      "to": 436,
+      "type": "backend"
+    },
+    {
+      "participant": "store",
+      "from": 340,
+      "to": 370,
+      "type": "database"
+    },
+    {
+      "participant": "repaint",
+      "from": 425,
+      "to": 800,
+      "type": "backend"
+    },
+    {
+      "participant": "page",
+      "from": 555,
+      "to": 856,
+      "type": "frontend"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "What you can see",
+      "items": [
+        "The button shrinks while you hold it down",
+        "The tab title changes on clicks 7, 14, 21 and so on",
+        "\"Mischief managed.\" appears after the secret pattern",
+        "The colour shift is real but too small to notice from one click"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "What stays hidden",
+      "items": [
+        "The gap between clicks, the fast streak and the secret live in the script's memory",
+        "Only the count is saved, in localStorage as mb.n",
+        "A reload forgets everything except the count"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Check it yourself",
+      "items": [
+        "Add ?reveal to the address to see the hidden numbers",
+        "DevTools > Application > Local Storage shows mb.n",
+        "DevTools > Network shows nothing is sent anywhere"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+#score-input {
+    width: 50%;
+    height: 30px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+#calculate-button {
+    width: 20%;
+    height: 30px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+#average-message, #grade-message {
+    margin-bottom: 20px;
+}

@@ -1,0 +1,74 @@
+[
+  {
+    "n": 1,
+    "group": "prompt",
+    "verdict": "PASS",
+    "reason": "shows 84.3 and grade B"
+  },
+  {
+    "n": 2,
+    "group": "prompt",
+    "verdict": "PASS",
+    "reason": "message shown, no grade"
+  },
+  {
+    "n": 3,
+    "group": "prompt",
+    "verdict": "PASS",
+    "reason": "message shown, no grade"
+  },
+  {
+    "n": 4,
+    "group": "prompt",
+    "verdict": "PASS",
+    "reason": "message shown, no grade"
+  },
+  {
+    "n": 5,
+    "group": "prompt",
+    "verdict": "PASS",
+    "reason": "message shown, no grade"
+  },
+  {
+    "n": 6,
+    "group": "prompt",
+    "verdict": "PASS",
+    "reason": "shows grade B"
+  },
+  {
+    "n": 7,
+    "group": "prompt",
+    "verdict": "PASS",
+    "reason": "shows grade A"
+  },
+  {
+    "n": 8,
+    "group": "project",
+    "verdict": "FAIL",
+    "reason": "expected \"dropped 40\", 84.3 and B; grade found: C; drop text: false"
+  },
+  {
+    "n": 9,
+    "group": "project",
+    "verdict": "FAIL",
+    "reason": "expected 89.5 and A; grade found: B"
+  },
+  {
+    "n": 10,
+    "group": "project",
+    "verdict": "FAIL",
+    "reason": "expected 66.5, D and \"Retake needed\"; grade found: D; retake line: false"
+  },
+  {
+    "n": 11,
+    "group": "project",
+    "verdict": "FAIL",
+    "reason": "nothing new shown on the page"
+  },
+  {
+    "n": 12,
+    "group": "project",
+    "verdict": "PASS",
+    "reason": "scrollWidth 360"
+  }
+]

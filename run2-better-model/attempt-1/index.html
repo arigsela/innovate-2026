@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Spirit Week House Points</title>
+
+  <style>
+    /* ---------- Page basics: colours, fonts and overall spacing ---------- */
+    :root {
+      --page: #f5f1e8;
+      --card: #ffffff;
+      --ink: #1e2330;
+      --muted: #5b6270;
+      --line: #e2dccf;
+      --track: #ece6d9;
+      --warn-bg: #fff4d6;
+      --warn-ink: #6b4a00;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 32px 20px 48px;
+      background: var(--page);
+      color: var(--ink);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.4;
+    }
+
+    .page {
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    /* ---------- Header: the title and the Reset button ---------- */
+    .page-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .eyebrow {
+      margin: 0 0 2px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.7rem, 4.5vw, 2.4rem);
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+    }
+
+    /* ---------- House cards: one card per house ---------- */
+    .house {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-left: 8px solid var(--house-colour);
+      border-radius: 14px;
+      padding: 18px 20px 12px;
+      margin-bottom: 14px;
+    }
+
+    .house-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .house-title {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .house-name {
+      margin: 0;
+      font-size: 1.4rem;
+      overflow-wrap: anywhere;
+    }
+
+    /* The Leader tag that appears next to the top house's name */
+    .leader-tag {
+      padding: 3px 11px 3px 9px;
+      border-radius: 999px;
+      background: var(--house-colour);
+      color: #ffffff;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .leader-tag::before {
+      content: "\2605\00a0"; /* a small star, for decoration only */
+    }
+
+    .leader-tag[hidden] {
+      display: none;
+    }
+
+    .house-score {
+      margin: 0;
+      white-space: nowrap;
+      color: var(--muted);
+    }
+
+    .points-number {
+      font-size: 2.1rem;
+      font-weight: 800;
+      color: var(--ink);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ---------- Bars: the fill gets wider as the points go up ---------- */
+    .bar-track {
+      height: 22px;
+      margin: 10px 0 14px;
+      background: var(--track);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      width: 0;
+      height: 100%;
+      background: var(--house-colour);
+      border-radius: 999px;
+      transition: width 0.35s ease;
+    }
+
+    /* ---------- Controls: buttons and the number box ---------- */
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      min-height: 44px;
+      min-width: 64px;
+      padding: 8px 16px;
+      border: 2px solid var(--ink);
+      border-radius: 10px;
+      background: var(--card);
+      color: var(--ink);
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #f1ede3;
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    .award-button {
+      background: var(--ink);
+      color: #ffffff;
+    }
+
+    .award-button:hover {
+      background: #343b4d;
+    }
+
+    .award-input {
+      width: 110px;
+      min-height: 44px;
+      padding: 8px 10px;
+      border: 2px solid #8a909c;
+      border-radius: 10px;
+      background: #ffffff;
+      color: var(--ink);
+    }
+
+    .award-input[aria-invalid="true"] {
+      border-color: #b7791f;
+      background: var(--warn-bg);
+    }
+
+    button:focus-visible,
+    input:focus-visible {
+      outline: 3px solid #2b6cb0;
+      outline-offset: 2px;
+    }
+
+    /* ---------- Messages: the friendly note shown for a bad number ---------- */
+    .message {
+      min-height: 1.5em;
+      margin: 10px 0 0;
+      font-size: 0.95rem;
+      color: var(--warn-ink);
+    }
+
+    .message:not(:empty) {
+      padding: 8px 12px;
+      background: var(--warn-bg);
+      border-radius: 8px;
+    }
+
+    .scale-note {
+      margin: 18px 0 0;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    /* Hides text from sight but keeps it for screen readers */
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* ---------- Small screens and reduced-motion settings ---------- */
+    @media (max-width: 520px) {
+      .house {
+        padding: 14px 14px 10px;
+      }
+
+      .points-number {
+        font-size: 1.7rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .bar-fill {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+
+    <!-- Header: the page title and the Reset button -->
+    <header class="page-header">
+      <div>
+        <p class="eyebrow">Spirit Week</p>
+        <h1>House Points Scoreboard</h1>
+      </div>
+      <button type="button" id="reset-button">Reset</button>
+    </header>
+
+    <!-- Scoreboard: the JavaScript below builds the four house cards in here -->
+    <main id="scoreboard"></main>
+
+    <!-- Footnote: explains how long a full bar is -->
+    <p class="scale-note" id="scale-note"></p>
+
+  </div>
+
+  <script>
+    // ---------- Settings: change the house names and colours here ----------
+    var HOUSES = [
+      { name: 'Maple', colour: '#c0392b' },
+      { name: 'Oak',   colour: '#2f7d4f' },
+      { name: 'Cedar', colour: '#2b6cb0' },
+      { name: 'Birch', colour: '#96610b' }
+    ];
+    var STEP = 10;            // how many points the +10 and -10 buttons change
+    var FULL_BAR_START = 100; // a full bar means 100 points until a house passes 100
+
+    // ---------- Scores: one number per house, every house starts at 0 ----------
+    var points = HOUSES.map(function () {
+      return 0;
+    });
+
+    // ---------- Helper: makes one page element with a class and some text ----------
+    function makeElement(tag, className, text) {
+      var element = document.createElement(tag);
+      if (className) {
+        element.className = className;
+      }
+      if (text !== undefined) {
+        element.textContent = text;
+      }
+      return element;
+    }
+
+    // ---------- Build: creates the card for one house and wires up its buttons ----------
+    function buildHouse(house, index) {
+      var card = makeElement('section', 'house');
+      card.style.setProperty('--house-colour', house.colour);
+      card.setAttribute('aria-labelledby', 'house-name-' + index);
+
+      // Top line: the name, the Leader tag and the points
+      var top = makeElement('div', 'house-top');
+      var title = makeElement('div', 'house-title');
+      var name = makeElement('h2', 'house-name', house.name);
+      name.id = 'house-name-' + index;
+      var leaderTag = makeElement('span', 'leader-tag');
+      leaderTag.hidden = true;
+      title.append(name, leaderTag);
+
+      var score = makeElement('p', 'house-score');
+      var pointsNumber = makeElement('span', 'points-number', '0');
+      var pointsWord = makeElement('span', 'points-word', ' points');
+      score.append(pointsNumber, pointsWord);
+      top.append(title, score);
+
+      // The bar
+      var barTrack = makeElement('div', 'bar-track');
+      barTrack.setAttribute('aria-hidden', 'true');
+      var barFill = makeElement('div', 'bar-fill');
+      barTrack.append(barFill);
+
+      // The +10 and -10 buttons
+      var controls = makeElement('div', 'controls');
+      var stepGroup = makeElement('div', 'control-group');
+      var plusButton = makeElement('button', 'plus-button', '+' + STEP);
+      plusButton.type = 'button';
+      var minusButton = makeElement('button', 'minus-button', '-' + STEP);
+      minusButton.type = 'button';
+      stepGroup.append(plusButton, minusButton);
+
+      // The number box and the Award button
+      var awardGroup = makeElement('div', 'control-group');
+      var label = makeElement('label', 'visually-hidden', 'Points to award to ' + house.name);
+      label.htmlFor = 'award-input-' + index;
+      var awardInput = makeElement('input', 'award-input');
+      awardInput.type = 'number';
+      awardInput.id = 'award-input-' + index;
+      awardInput.min = '1';
+      awardInput.step = '1';
+      awardInput.placeholder = 'e.g. 25';
+      awardInput.setAttribute('aria-describedby', 'message-' + index);
+      var awardButton = makeElement('button', 'award-button', 'Award');
+      awardButton.type = 'button';
+      awardGroup.append(label, awardInput, awardButton);
+      controls.append(stepGroup, awardGroup);
+
+      // The place where the friendly message appears
+      var message = makeElement('p', 'message');
+      message.id = 'message-' + index;
+      message.setAttribute('role', 'alert');
+
+      card.append(top, barTrack, controls, message);
+
+      // Remember the parts of this card that change later
+      var parts = {
+        leaderTag: leaderTag,
+        pointsNumber: pointsNumber,
+        pointsWord: pointsWord,
+        barFill: barFill,
+        awardInput: awardInput,
+        message: message
+      };
+
+      // What each button does when it is clicked
+      plusButton.addEventListener('click', function () {
+        clearMessage(parts);
+        changePoints(index, STEP);
+      });
+      minusButton.addEventListener('click', function () {
+        clearMessage(parts);
+        changePoints(index, -STEP);
+      });
+      awardButton.addEventListener('click', function () {
+        awardPoints(index, parts);
+      });
+      awardInput.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') {
+          awardPoints(index, parts);
+        }
+      });
+      awardInput.addEventListener('input', function () {
+        clearMessage(parts);
+      });
+
+      return { card: card, parts: parts };
+    }
+
+    // ---------- Change points: adds or removes points, never going below 0 ----------
+    function changePoints(index, amount) {
+      points[index] = Math.max(0, points[index] + amount);
+      render();
+    }
+
+    // ---------- Check the typed number: gives back the number, or null if it is not allowed ----------
+    function readAwardAmount(text) {
+      var trimmed = text.trim();
+      if (trimmed === '') {
+        return null;
+      }
+      var amount = Number(trimmed);
+      if (Number.isSafeInteger(amount) && amount > 0) {
+        return amount;
+      }
+      return null;
+    }
+
+    // ---------- Award: adds the typed points, or shows a friendly message instead ----------
+    function awardPoints(index, parts) {
+      var input = parts.awardInput;
+      var amount = readAwardAmount(input.value);
+
+      if (amount === null) {
+        var nothingTyped = input.value.trim() === '' && !input.validity.badInput;
+        showMessage(parts, nothingTyped
+          ? 'Type how many points to award first, then click Award.'
+          : 'Oops! Points must be a whole number greater than 0, like 5 or 25. No points were changed.');
+        input.focus();
+        return;
+      }
+
+      clearMessage(parts);
+      input.value = '';
+      changePoints(index, amount);
+    }
+
+    // ---------- Messages: show or clear the note under a house ----------
+    function showMessage(parts, text) {
+      parts.message.textContent = text;
+      parts.awardInput.setAttribute('aria-invalid', 'true');
+    }
+
+    function clearMessage(parts) {
+      parts.message.textContent = '';
+      parts.awardInput.removeAttribute('aria-invalid');
+    }
+
+    // ---------- Redraw: updates the numbers, the bars and the Leader tag ----------
+    function render() {
+      var topScore = Math.max.apply(null, points);
+      var fullBar = Math.max(FULL_BAR_START, topScore);
+
+      houseCards.forEach(function (houseCard, index) {
+        var parts = houseCard.parts;
+        var housePoints = points[index];
+
+        // The points number
+        parts.pointsNumber.textContent = housePoints.toLocaleString('en-US');
+        parts.pointsWord.textContent = housePoints === 1 ? ' point' : ' points';
+
+        // The bar length, as a share of a full bar
+        parts.barFill.style.width = (housePoints / fullBar * 100) + '%';
+
+        // The Leader tag: only for the top score, and only once someone has points.
+        // If houses are tied for the top score, each of them shows Leader.
+        var isLeader = topScore > 0 && housePoints === topScore;
+        parts.leaderTag.hidden = !isLeader;
+        parts.leaderTag.textContent = isLeader ? 'Leader' : '';
+      });
+
+      scaleNote.textContent = 'A full bar is ' + fullBar.toLocaleString('en-US') + ' points.';
+    }
+
+    // ---------- Reset: sets every house back to 0 and clears the boxes and messages ----------
+    function resetAll() {
+      points = points.map(function () {
+        return 0;
+      });
+      houseCards.forEach(function (houseCard) {
+        houseCard.parts.awardInput.value = '';
+        clearMessage(houseCard.parts);
+      });
+      render();
+    }
+
+    // ---------- Start: build the four houses and draw the scoreboard ----------
+    var scoreboard = document.getElementById('scoreboard');
+    var scaleNote = document.getElementById('scale-note');
+    var houseCards = HOUSES.map(buildHouse);
+
+    houseCards.forEach(function (houseCard) {
+      scoreboard.append(houseCard.card);
+    });
+    document.getElementById('reset-button').addEventListener('click', resetAll);
+    render();
+  </script>
+</body>
+</html>

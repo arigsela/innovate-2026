@@ -1,0 +1,114 @@
+# Transcript
+
+Model: `llama3.2:1b` through `ollama run llama3.2:1b --nowordwrap`.
+Captured from the tmux pane. Prompts and responses are unchanged.
+
+## Prompt 1
+
+~~~text
+make a grade calculator web page
+~~~
+
+## Response 1
+
+Here's a basic example of a grade calculator web page using HTML, CSS, and JavaScript.
+
+**index.html**
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Grade Calculator</h1>
+    <form id="grade-form">
+        <label for="student-name">Student Name:</label>
+        <input type="text" id="student-name" required>
+        <br><br>
+        <label for="course-name">Course Name:</label>
+        <input type="text" id="course-name" required>
+        <br><br>
+        <label for="grade">Enter your grade:</label>
+        <input type="number" id="grade" required>
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+    <div id="output">
+        <p id="result"></p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+```
+
+**style.css**
+```css
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+#grade-form {
+    margin-top: 20px;
+}
+
+#output {
+    margin-top: 20px;
+}
+```
+
+**script.js**
+```javascript
+const studentNameInput = document.getElementById('student-name');
+const courseNameInput = document.getElementById('course-name');
+const gradeInput = document.getElementById('grade');
+const resultParagraph = document.getElementById('result');
+
+const calculateGrade = (grade) => {
+    // Simple grade calculator that returns a grade from 0 to 100
+    if (grade >= 0 && grade <= 100) {
+        if (grade >= 90) {
+            return 'A';
+        } else if (grade >= 80) {
+            return 'B';
+        } else if (grade >= 70) {
+            return 'C';
+        } else if (grade >= 60) {
+            return 'D';
+        } else {
+            return 'F';
+        }
+    } else {
+        return 'Invalid grade';
+    }
+}
+
+const formSubmitHandler = () => {
+    const studentName = studentNameInput.value.trim();
+    const courseName = courseNameInput.value.trim();
+    const grade = parseFloat(gradeInput.value);
+
+    if (studentName && courseName && grade) {
+        const calculatedGrade = calculateGrade(grade);
+        resultParagraph.innerText = `Grade for ${courseName}: ${calculatedGrade}`;
+        resultParagraph.style.color = 'green';
+    } else {
+        resultParagraph.innerText = 'Please fill in all fields';
+        resultParagraph.style.color = 'red';
+    }
+}
+
+document.getElementById('grade-form').addEventListener('submit', formSubmitHandler);
+
+// Test the grade calculator
+console.log(calculateGrade(80));
+console.log(calculateGrade(92));
+console.log(calculateGrade(67));
+```
+
+This code creates a simple grade calculator that takes in a student's name, course name, and their grade as input. It then calculates the grade based on a simple formula and displays the result in the output paragraph. The code also includes basic styling and a form submission handler to update the output paragraph with the calculated grade.

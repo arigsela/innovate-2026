@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Page setup: the title, and the line that makes the page fit phone screens -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grade Checker</title>
+
+  <style>
+    /* Whole page: colors, font, and text that is never smaller than 18px */
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 16px;
+      background: #f3f5f9;
+      color: #1c2333;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 18px;
+      line-height: 1.5;
+    }
+
+    /* The white card in the middle that holds everything */
+    main {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #ffffff;
+      border: 1px solid #d5dae5;
+      border-radius: 12px;
+    }
+
+    h1 {
+      margin: 0 0 16px 0;
+      font-size: 28px;
+      line-height: 1.2;
+    }
+
+    /* The label, the text box and the Calculate button */
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    input,
+    button {
+      width: 100%;
+      min-height: 52px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 18px;
+    }
+
+    input {
+      border: 2px solid #6b7488;
+      background: #ffffff;
+      color: #1c2333;
+    }
+
+    button {
+      margin-top: 12px;
+      border: 2px solid #1d4ed8;
+      background: #1d4ed8;
+      color: #ffffff;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1a3fb0;
+    }
+
+    input:focus,
+    button:focus {
+      outline: 3px solid #f59e0b;
+      outline-offset: 2px;
+    }
+
+    /* The results area: lines with nothing in them stay hidden */
+    #result p {
+      margin: 16px 0 0 0;
+      overflow-wrap: anywhere;
+    }
+
+    #result p:empty {
+      display: none;
+    }
+
+    #message {
+      padding: 12px;
+      border-left: 6px solid #b45309;
+      background: #fff4e0;
+    }
+
+    #average,
+    #grade {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    #retake {
+      padding: 12px;
+      border-left: 6px solid #b91c1c;
+      background: #fde8e8;
+      color: #8f1414;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <!-- The heading, the text box for the scores, and the Calculate button -->
+    <h1>Grade Checker</h1>
+
+    <form id="score-form">
+      <label for="scores">Type your test scores, separated by commas</label>
+      <input id="scores" type="text" placeholder="85, 90, 78" autocomplete="off">
+      <button type="submit">Calculate</button>
+    </form>
+
+    <!-- The results area: each line is filled in by the code at the bottom of this page -->
+    <div id="result" aria-live="polite">
+      <p id="message"></p>
+      <p id="average"></p>
+      <p id="grade"></p>
+      <p id="dropped"></p>
+      <p id="retake"></p>
+    </div>
+  </main>
+
+  <!-- The grading logic lives in grader.js, which must stay in the same folder as this file -->
+  <script src="grader.js"></script>
+
+  <script>
+    // The parts of the page that this code reads from and writes to
+    const scoreForm = document.getElementById("score-form");
+    const scoreBox = document.getElementById("scores");
+    const messageLine = document.getElementById("message");
+    const averageLine = document.getElementById("average");
+    const gradeLine = document.getElementById("grade");
+    const droppedLine = document.getElementById("dropped");
+    const retakeLine = document.getElementById("retake");
+
+    // Empties every line in the results area.
+    function clearResult() {
+      messageLine.textContent = "";
+      averageLine.textContent = "";
+      gradeLine.textContent = "";
+      droppedLine.textContent = "";
+      retakeLine.textContent = "";
+    }
+
+    // Grades the typed scores and shows the result (or a friendly message) on the page.
+    function showResult() {
+      const result = checkGrade(scoreBox.value);
+      clearResult();
+
+      if (result.message !== "") {
+        messageLine.textContent = result.message;
+        return;
+      }
+
+      averageLine.textContent = "Average: " + result.average;
+      gradeLine.textContent = "Grade: " + result.letter;
+      if (result.dropped !== null) {
+        droppedLine.textContent = "Lowest score dropped: " + result.dropped;
+      }
+      if (result.retake) {
+        retakeLine.textContent = "Retake needed";
+      }
+    }
+
+    // Runs when Calculate is clicked or Enter is pressed in the text box.
+    function handleSubmit(event) {
+      event.preventDefault();
+      showResult();
+    }
+
+    // Connects the form to the code above
+    scoreForm.addEventListener("submit", handleSubmit);
+  </script>
+</body>
+</html>

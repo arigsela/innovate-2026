@@ -1,0 +1,1 @@
+Explain this code section by section for someone new to programming.

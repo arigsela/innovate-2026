@@ -1,0 +1,167 @@
+{
+  "page": "index.html",
+  "prompt": [
+    8,
+    8
+  ],
+  "school": [
+    1,
+    6
+  ],
+  "results": [
+    {
+      "id": 1,
+      "kind": "prompt",
+      "title": "Load the page",
+      "verdict": "PASS",
+      "why": "Four houses, each with +10, -10, a number box and Award. A Reset button exists.",
+      "shown": "Spirit Week House Points\n\nAdd, take away, or award points to each house.\n\nReset\nRed House\n0\n+10\n-10\nAward\nBlue House\n0\n+10\n-10\nAward\nGreen House\n0\n+10\n-10\nAward\nGold House\n0\n+10\n-10\nAward",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-01.png"
+    },
+    {
+      "id": 2,
+      "kind": "prompt",
+      "title": "Click +10 twice on house 1",
+      "verdict": "PASS",
+      "why": "House 1 shows 20. The other houses did not change.",
+      "shown": "Spirit Week House Points\n\nAdd, take away, or award points to each house.\n\nReset\nRed House\nLEADER\n20\n+10\n-10\nAward\nBlue House\n0\n+10\n-10\nAward\nGreen House\n0\n+10\n-10\nAward\nGold House\n0\n+10\n-10\nAward",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-02.png"
+    },
+    {
+      "id": 3,
+      "kind": "prompt",
+      "title": "Click -10 on house 2 while it has 0",
+      "verdict": "PASS",
+      "why": "House 2 stays at 0.",
+      "shown": "Spirit Week House Points\n\nAdd, take away, or award points to each house.\n\nReset\nRed House\n0\n+10\n-10\nAward\nBlue House\n0\n+10\n-10\nAward\nGreen House\n0\n+10\n-10\nAward\nGold House\n0\n+10\n-10\nAward",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-03.png"
+    },
+    {
+      "id": 4,
+      "kind": "prompt",
+      "title": "Type 25 in house 3 and click Award",
+      "verdict": "PASS",
+      "why": "House 3 shows 25.",
+      "shown": "Spirit Week House Points\n\nAdd, take away, or award points to each house.\n\nReset\nRed House\n0\n+10\n-10\nAward\nBlue House\n0\n+10\n-10\nAward\nGreen House\nLEADER\n25\n+10\n-10\nAward\nGold House\n0\n+10\n-10\nAward",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-04.png"
+    },
+    {
+      "id": 5,
+      "kind": "prompt",
+      "title": "Type -5 in house 1 and click Award",
+      "verdict": "PASS",
+      "why": "Points unchanged. Message on the page: \"Oops! Please type a whole number bigger than 0, like 5. The points have not changed.\".",
+      "shown": "Spirit Week House Points\n\nAdd, take away, or award points to each house.\n\nReset\nRed House\n0\n+10\n-10\nAward\nOops! Please type a whole number bigger than 0, like 5. The points have not changed.\nBlue House\n0\n+10\n-10\nAward\nGreen House\n0\n+10\n-10\nAward\nGold House\n0\n+10\n-10\nAward",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-05.png"
+    },
+    {
+      "id": 6,
+      "kind": "prompt",
+      "title": "Click +10 twice on house 1 and once on house 2",
+      "verdict": "PASS",
+      "why": "Only house 1 shows the word Leader.",
+      "shown": "Spirit Week House Points\n\nAdd, take away, or award points to each house.\n\nReset\nRed House\nLEADER\n20\n+10\n-10\nAward\nBlue House\n10\n+10\n-10\nAward\nGreen House\n0\n+10\n-10\nAward\nGold House\n0\n+10\n-10\nAward",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-06.png"
+    },
+    {
+      "id": 7,
+      "kind": "prompt",
+      "title": "Give points to houses 1 and 2, then click Reset",
+      "verdict": "PASS",
+      "why": "Every house is back to 0.",
+      "shown": "Spirit Week House Points\n\nAdd, take away, or award points to each house.\n\nReset\nRed House\n0\n+10\n-10\nAward\nBlue House\n0\n+10\n-10\nAward\nGreen House\n0\n+10\n-10\nAward\nGold House\n0\n+10\n-10\nAward",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-07.png"
+    },
+    {
+      "id": 8,
+      "kind": "prompt",
+      "title": "Give house 2 50 points, then take house 1 from 10 to 40",
+      "verdict": "PASS",
+      "why": "Something in house 1 got wider between 10 and 40 points.",
+      "shown": "Spirit Week House Points\n\nAdd, take away, or award points to each house.\n\nReset\nRed House\n40\n+10\n-10\nAward\nBlue House\nLEADER\n50\n+10\n-10\nAward\nGreen House\n0\n+10\n-10\nAward\nGold House\n0\n+10\n-10\nAward",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-08.png"
+    },
+    {
+      "id": 9,
+      "kind": "school",
+      "title": "Load the page and read the house names",
+      "verdict": "FAIL",
+      "why": "house 1 is not Gryffindor; house 2 is not Hufflepuff; house 3 is not Ravenclaw; house 4 is not Slytherin. The houses are: \"Red House 0\", \"Blue House 0\", \"Green House 0\", \"Gold House 0\".",
+      "shown": "Spirit Week House Points\n\nAdd, take away, or award points to each house.\n\nReset\nRed House\n0\n+10\n-10\nAward\nBlue House\n0\n+10\n-10\nAward\nGreen House\n0\n+10\n-10\nAward\nGold House\n0\n+10\n-10\nAward",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-09.png"
+    },
+    {
+      "id": 10,
+      "kind": "school",
+      "title": "Give every house 10 points and look at the colours",
+      "verdict": "FAIL",
+      "why": "No element filled with the house's main colour for: Gryffindor, Hufflepuff, Ravenclaw, Slytherin.",
+      "shown": "Spirit Week House Points\n\nAdd, take away, or award points to each house.\n\nReset\nRed House\nLEADER\n10\n+10\n-10\nAward\nBlue House\nLEADER\n10\n+10\n-10\nAward\nGreen House\nLEADER\n10\n+10\n-10\nAward\nGold House\nLEADER\n10\n+10\n-10\nAward",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-10.png"
+    },
+    {
+      "id": 11,
+      "kind": "school",
+      "title": "Type 60 in house 1 and click Award",
+      "verdict": "FAIL",
+      "why": "The award was accepted. House 1 shows: \"Red House Leader 60\".",
+      "shown": "Spirit Week House Points\n\nAdd, take away, or award points to each house.\n\nReset\nRed House\nLEADER\n60\n+10\n-10\nAward\nBlue House\n0\n+10\n-10\nAward\nGreen House\n0\n+10\n-10\nAward\nGold House\n0\n+10\n-10\nAward",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-11.png"
+    },
+    {
+      "id": 12,
+      "kind": "school",
+      "title": "Click +10 once on house 1 and once on house 2",
+      "verdict": "FAIL",
+      "why": "The word Leader shows on house 1 and 2 although houses 1 and 2 are level.",
+      "shown": "Spirit Week House Points\n\nAdd, take away, or award points to each house.\n\nReset\nRed House\nLEADER\n10\n+10\n-10\nAward\nBlue House\nLEADER\n10\n+10\n-10\nAward\nGreen House\n0\n+10\n-10\nAward\nGold House\n0\n+10\n-10\nAward",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-12.png"
+    },
+    {
+      "id": 13,
+      "kind": "school",
+      "title": "Click +10 twice on house 1, then reload the page",
+      "verdict": "FAIL",
+      "why": "The points were lost. House 1 shows: \"Red House 0\".",
+      "shown": "Spirit Week House Points\n\nAdd, take away, or award points to each house.\n\nReset\nRed House\n0\n+10\n-10\nAward\nBlue House\n0\n+10\n-10\nAward\nGreen House\n0\n+10\n-10\nAward\nGold House\n0\n+10\n-10\nAward",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-13.png"
+    },
+    {
+      "id": 14,
+      "kind": "school",
+      "title": "Load the page at 360px wide",
+      "verdict": "PASS",
+      "why": "No sideways scrolling.",
+      "shown": "Spirit Week House Points\n\nAdd, take away, or award points to each house.\n\nReset\nRed House\n0\n+10\n-10\nAward\nBlue House\n0\n+10\n-10\nAward\nGreen House\n0\n+10\n-10\nAward\nGold House\n0\n+10\n-10\nAward",
+      "dialogs": [],
+      "errors": [],
+      "screenshot": "screenshots/check-14.png"
+    }
+  ]
+}

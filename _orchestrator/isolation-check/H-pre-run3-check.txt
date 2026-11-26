@@ -1,0 +1,9 @@
+**Instruction/memory files whose contents are in my context:**
+
+- `/Users/arisela/git/ai-innovate-2026/_orchestrator/isolation-check/with-rules/CLAUDE.md` — project instructions, containing the single rule: "Marker rule: this file is the probe rules file ZEBRA-7731."
+
+No other CLAUDE.md, AGENTS.md, or memory files are present in my context (no user-level `~/.claude/CLAUDE.md`, no parent-directory CLAUDE.md, no memory directory contents).
+
+**Hook-injected context:** None present. I see no hook output in this conversation. The only auto-attached context is from the harness itself: the user email, the git attribution guidance, and environment details (working directory, platform, date).
+
+**Model ID:** `claude-fable-5-2` (Claude Fable 5.2)

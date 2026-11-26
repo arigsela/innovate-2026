@@ -1,0 +1,12 @@
+1. Two files have contents in my context:
+   - `/Users/arisela/.claude/CLAUDE.md`
+   - `/Users/arisela/git/ai-innovate-2026/_orchestrator/isolation-check/with-rules/CLAUDE.md` (contains the marker ZEBRA-7731)
+
+   No AGENTS.md or memory file contents are loaded; the memory directory path is named, but no `MEMORY.md` contents appear.
+
+2. None — no hook-injected context (no caveman, superpowers or similar) is present.
+
+3. 14 skills are listed. Five of them: `dataviz`, `update-config`, `keybindings-help`, `code-review`, `simplify`.
+
+4. None — no MCP servers or MCP tools are listed. The `mcp__claude-in-chrome__*` and `mcp__easel__chart` tools are mentioned in instructions, but neither is actually available.
+exit 0

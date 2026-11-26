@@ -1,0 +1,13 @@
+I built `index.html`, but I could not run it: the test command I tried needed approval and was not granted. I traced your example by hand through the code (85, 90, 78 → 253 ÷ 3 = 84.33… → "Average: 84.3" and "Grade: B"), but it has not been run in a browser or any other way.
+
+The page uses plain HTML, CSS and JavaScript in one file, with no libraries and nothing loaded from the internet. Each section of the code has a short comment above it.
+
+A few behaviours you might not assume:
+
+- **Grade uses the rounded average.** An average of 89.95 shows as "Average: 90.0" and "Grade: A", so the two lines never disagree. An average of 89.9 or lower is a B.
+- **Extra commas count as a mistake.** `85, 90,` or `85,,90` shows a friendly message asking the student to check their scores, rather than silently ignoring the gap.
+- **Decimal scores are accepted.** `85.5` is valid; things like `abc` or `1e2` are not, and the message names the entry that needs fixing.
+- **Enter works too.** Pressing Enter in the text box does the same as clicking Calculate.
+- **Grade scale shown on the page.** I added a small line under the calculator listing the A–F ranges, which you did not ask for.
+
+To check it yourself, double-click the file and try `85, 90, 78`, an empty box, and `85, abc, 90`.

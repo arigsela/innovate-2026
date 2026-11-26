@@ -1,0 +1,6 @@
+1. none
+2. none
+3. 14 skills are listed — e.g. dataviz, update-config, keybindings-help, code-review, simplify.
+4. No MCP servers or MCP tools are listed.
+5. none
+exit 0

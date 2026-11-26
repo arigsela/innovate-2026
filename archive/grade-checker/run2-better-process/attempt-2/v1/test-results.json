@@ -1,0 +1,44 @@
+[
+  {
+    "n": 1,
+    "group": "prompt",
+    "verdict": "FAIL",
+    "reason": "nothing new shown on the page"
+  },
+  {
+    "n": 2,
+    "group": "prompt",
+    "verdict": "FAIL",
+    "reason": "no message shown"
+  },
+  {
+    "n": 3,
+    "group": "prompt",
+    "verdict": "FAIL",
+    "reason": "no message shown"
+  },
+  {
+    "n": 4,
+    "group": "prompt",
+    "verdict": "FAIL",
+    "reason": "no message shown"
+  },
+  {
+    "n": 5,
+    "group": "prompt",
+    "verdict": "FAIL",
+    "reason": "no message shown"
+  },
+  {
+    "n": 6,
+    "group": "prompt",
+    "verdict": "FAIL",
+    "reason": "nothing new shown on the page"
+  },
+  {
+    "n": 7,
+    "group": "prompt",
+    "verdict": "FAIL",
+    "reason": "nothing new shown on the page"
+  }
+]

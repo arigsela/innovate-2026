@@ -1,0 +1,39 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spirit Week House Scoreboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="houses">
+    <div class="houses-name House 1">
+      <div class="houses-points">
+        <span id="points-1">0 points</span>
+        <button id="award-1" class="award">Award</button>
+      </div>
+    </div>
+    <div class="houses-name House 2">
+      <div class="houses-points">
+        <span id="points-2">0 points</span>
+        <button id="award-2" class="award">Award</button>
+      </div>
+    </div>
+    <div class="houses-name House 3">
+      <div class="houses-points">
+        <span id="points-3">0 points</span>
+        <button id="award-3" class="award">Award</button>
+      </div>
+    </div>
+    <div class="houses-name House 4">
+      <div class="houses-points">
+        <span id="points-4">0 points</span>
+        <button id="award-4" class="award">Award</button>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

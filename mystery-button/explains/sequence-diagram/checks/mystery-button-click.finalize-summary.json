@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "finalize",
+  "status": "pass",
+  "type": "sequence",
+  "quality": "showcase",
+  "specification": {
+    "path": "/Users/arisela/git/ai-innovate-2026/mystery-button/explain/sequence-diagram/candidate.json",
+    "sha256": "dda68b34a9c10e4efa08b740236a06b570c0dc9484e287a04cd495c2803ec87f",
+    "bytes": 5375
+  },
+  "artifact": {
+    "path": "/Users/arisela/git/ai-innovate-2026/mystery-button/explain/sequence-diagram/mystery-button-click.html",
+    "sha256": "8b933f953793bcca111aa5085a0bcbe7a338459948834148b5cf271785f1f038",
+    "bytes": 841017
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "pass"
+  },
+  "diagnostics": [],
+  "diagnosticSummary": {
+    "total": 0,
+    "shown": 0,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "/Users/arisela/git/ai-innovate-2026/mystery-button/explain/sequence-diagram/checks/mystery-button-click.finalize.json",
+    "summaryReceipt": "/Users/arisela/git/ai-innovate-2026/mystery-button/explain/sequence-diagram/checks/mystery-button-click.finalize-summary.json",
+    "browserCheckReceipt": "/Users/arisela/git/ai-innovate-2026/mystery-button/explain/sequence-diagram/checks/mystery-button-click.browser-check.json"
+  },
+  "update": {
+    "status": "current",
+    "installedVersion": "3.2.0",
+    "availableVersion": "3.2.0",
+    "releaseNotes": null,
+    "checkedAt": "2026-11-18T15:50:39.038Z",
+    "source": "cache",
+    "noticeRequired": false,
+    "noticeText": null
+  },
+  "visualReview": "not-requested",
+  "durationMs": 1542,
+  "browserCheck": {
+    "requested": true,
+    "ran": true
+  }
+}

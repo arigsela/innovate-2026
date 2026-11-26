@@ -1,0 +1,12 @@
+`index.html` is written, but I could not run it: my test command needed approval and was not granted. I traced your example through the code by hand (85, 90, 78 → 253 ÷ 3 → "Average: 84.3", "Grade: B"), so please double-click the file and try it once yourself.
+
+The page has one text box, a Calculate button, and a result area. It uses only plain HTML, CSS and JavaScript in the one file, so it works offline, and each section of the code has a short comment above it.
+
+A few behaviours you did not specify, which I chose:
+
+- **Grade boundaries:** the letter grade is based on the rounded average shown on the page, so the two always agree. An average of 89.95 shows as 90.0 and gets an A; 89.9 gets a B.
+- **Extra commas:** `85,,90` or `85, 90,` shows a friendly message about the extra comma rather than guessing.
+- **Decimals:** scores like 92.5 are accepted.
+- **Enter key:** pressing Enter in the text box works the same as clicking Calculate.
+
+Friendly messages appear on the page (no pop-ups) for an empty box and for any score that is not a number from 0 to 100; the message names the bad entry and no grade is shown.

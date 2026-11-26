@@ -1,0 +1,68 @@
+/* style.css */
+
+/* house1, house2, house3, house4 styles here */
+
+.house {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.button {
+  margin-bottom: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button {
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #3e8e41;
+}
+
+#house1-points, #house2-points, #house3-points, #house4-points {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+#house1-award, #house2-award, #house3-award, #house4-award {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+#house1-btn, #house2-btn, #house3-btn, #house4-btn {
+  margin-bottom: 10px;
+}
+
+#house1-btn2, #house2-btn2, #house3-btn2, #house4-btn2 {
+  margin-bottom: 10px;
+}
+
+#house1-reset-btn, #house2-reset-btn, #house3-reset-btn, #house4-reset-btn {
+  margin-bottom: 20px;
+}
+
+#reset-btn {
+  background-color: #f44336;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#reset-btn:hover {
+  background-color: #e91e63;
+}

@@ -1,0 +1,114 @@
+{
+  "page": "index.html",
+  "prompt": [
+    1,
+    8
+  ],
+  "school": null,
+  "results": [
+    {
+      "id": 1,
+      "kind": "prompt",
+      "title": "Load the page",
+      "verdict": "FAIL",
+      "why": "house 1 has no number box; house 2 has no number box; house 3 has no number box; house 4 has no number box; no Reset button.",
+      "shown": "Award 0 points +10 -10\nAward 0 points +10 -10\nAward 0 points +10 -10\nAward 0 points +10 -10",
+      "dialogs": [],
+      "errors": [
+        "Failed to execute 'querySelector' on 'Document': '.houses-name#1' is not a valid selector."
+      ],
+      "screenshot": "screenshots/check-01.png"
+    },
+    {
+      "id": 2,
+      "kind": "prompt",
+      "title": "Click +10 twice on house 1",
+      "verdict": "FAIL",
+      "why": "House 1 does not show 20. It shows: \"0 points\".",
+      "shown": "Award 0 points +10 -10\nAward 0 points +10 -10\nAward 0 points +10 -10\nAward 0 points +10 -10",
+      "dialogs": [],
+      "errors": [
+        "Failed to execute 'querySelector' on 'Document': '.houses-name#1' is not a valid selector."
+      ],
+      "screenshot": "screenshots/check-02.png"
+    },
+    {
+      "id": 3,
+      "kind": "prompt",
+      "title": "Click -10 on house 2 while it has 0",
+      "verdict": "PASS",
+      "why": "House 2 stays at 0.",
+      "shown": "Award 0 points +10 -10\nAward 0 points +10 -10\nAward 0 points +10 -10\nAward 0 points +10 -10",
+      "dialogs": [],
+      "errors": [
+        "Failed to execute 'querySelector' on 'Document': '.houses-name#1' is not a valid selector."
+      ],
+      "screenshot": "screenshots/check-03.png"
+    },
+    {
+      "id": 4,
+      "kind": "prompt",
+      "title": "Type 25 in house 3 and click Award",
+      "verdict": "FAIL",
+      "why": "Could not perform the check: no number box in house 3",
+      "shown": "Award 0 points +10 -10\nAward 0 points +10 -10\nAward 0 points +10 -10\nAward 0 points +10 -10",
+      "dialogs": [],
+      "errors": [
+        "Failed to execute 'querySelector' on 'Document': '.houses-name#1' is not a valid selector."
+      ],
+      "screenshot": "screenshots/check-04.png"
+    },
+    {
+      "id": 5,
+      "kind": "prompt",
+      "title": "Type -5 in house 1 and click Award",
+      "verdict": "FAIL",
+      "why": "Could not perform the check: no number box in house 1",
+      "shown": "Award 0 points +10 -10\nAward 0 points +10 -10\nAward 0 points +10 -10\nAward 0 points +10 -10",
+      "dialogs": [],
+      "errors": [
+        "Failed to execute 'querySelector' on 'Document': '.houses-name#1' is not a valid selector."
+      ],
+      "screenshot": "screenshots/check-05.png"
+    },
+    {
+      "id": 6,
+      "kind": "prompt",
+      "title": "Click +10 twice on house 1 and once on house 2",
+      "verdict": "FAIL",
+      "why": "No house shows the word Leader.",
+      "shown": "Award 0 points +10 -10\nAward 0 points +10 -10\nAward 0 points +10 -10\nAward 0 points +10 -10",
+      "dialogs": [],
+      "errors": [
+        "Failed to execute 'querySelector' on 'Document': '.houses-name#1' is not a valid selector."
+      ],
+      "screenshot": "screenshots/check-06.png"
+    },
+    {
+      "id": 7,
+      "kind": "prompt",
+      "title": "Give points to houses 1 and 2, then click Reset",
+      "verdict": "FAIL",
+      "why": "The +10 buttons did not change any points, so Reset could not be tested.",
+      "shown": "Award 0 points +10 -10\nAward 0 points +10 -10\nAward 0 points +10 -10\nAward 0 points +10 -10",
+      "dialogs": [],
+      "errors": [
+        "Failed to execute 'querySelector' on 'Document': '.houses-name#1' is not a valid selector."
+      ],
+      "screenshot": "screenshots/check-07.png"
+    },
+    {
+      "id": 8,
+      "kind": "prompt",
+      "title": "Give house 2 50 points, then take house 1 from 10 to 40",
+      "verdict": "FAIL",
+      "why": "Nothing in house 1 got wider between 10 and 40 points. No bar grows.",
+      "shown": "Award 0 points +10 -10\nAward 0 points +10 -10\nAward 0 points +10 -10\nAward 0 points +10 -10",
+      "dialogs": [],
+      "errors": [
+        "Failed to execute 'querySelector' on 'Document': '.houses-name#1' is not a valid selector."
+      ],
+      "screenshot": "screenshots/check-08.png"
+    }
+  ]
+}

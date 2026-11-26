@@ -1,0 +1,5 @@
+1. none — no CLAUDE.md, AGENTS.md, memory, or instruction file contents are in my context.
+2. none — no hook-injected context (no caveman, superpowers, or similar) is present.
+3. 15 skills are listed, including dataviz, update-config, keybindings-help, code-review, and simplify.
+4. No MCP servers or MCP tools are listed. The only mention is a conditional reference to `mcp__easel__chart`, which is not actually available.
+exit 0

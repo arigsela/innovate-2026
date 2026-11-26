@@ -1,0 +1,143 @@
+ollama run llama3.2:1b --nowordwrap
+~/git/ai-innovate-2026/run1-wrong-way/attempt-1 ❯ ollama run llama3.2:1b --nowordwrap                                                                                                                              18:11:56
+>>> make a grade calculator web page
+Here's a basic example of a grade calculator web page using HTML, CSS, and JavaScript:
+
+**index.html**
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Grade Calculator</h1>
+    <form id="calculator">
+        <label for="num1">Number 1:</label>
+        <input type="number" id="num1" name="num1"><br><br>
+        <label for="num2">Number 2:</label>
+        <input type="number" id="num2" name="num2"><br><br>
+        <label for="operator">Operator:</label>
+        <select id="operator" name="operator">
+            <option value="add">Add</option>
+            <option value="subtract">Subtract</option>
+            <option value="multiply">Multiply</option>
+            <option value="divide">Divide</option>
+        </select><br><br>
+        <label for="result">Result:</label>
+        <input type="number" id="result" name="result"><br><br>
+        <button id="calculate">Calculate</button>
+    </form>
+    <div id="output"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+```
+**styles.css**
+```css
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+#calculator {
+    width: 50%;
+    margin: 40px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#calculator label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+#calculator input[type="number"] {
+    width: 100%;
+    height: 30px;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#calculator button {
+    width: 100%;
+    height: 30px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#calculator button:hover {
+    background-color: #3e8e41;
+}
+
+#output {
+    width: 100%;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+```
+**script.js**
+```javascript
+let num1 = 0;
+let num2 = 0;
+let operator = null;
+let result = null;
+
+document.getElementById("calculator").addEventListener("submit", calculate);
+
+function calculate(event) {
+    event.preventDefault();
+    num1 = parseFloat(document.getElementById("num1").value);
+    num2 = parseFloat(document.getElementById("num2").value);
+    operator = document.getElementById("operator").value;
+    result = calculateNumbers(num1, num2, operator);
+    displayResult();
+}
+
+function calculateNumbers(num1, num2, operator) {
+    switch (operator) {
+        case "add":
+            return num1 + num2;
+        case "subtract":
+            return num1 - num2;
+        case "multiply":
+            return num1 * num2;
+        case "divide":
+            if (num2 !== 0) {
+                return num1 / num2;
+            } else {
+                return "Error: Division by zero!";
+            }
+        default:
+            return "Error: Invalid operator!";
+    }
+}
+
+function displayResult() {
+    document.getElementById("output").innerHTML = `Result: ${result}`;
+}
+```
+This code creates a basic grade calculator web page with the following features:
+
+*   A form with input fields for two numbers and an operator.
+*   A submit button to calculate the result.
+*   A div element to display the result.
+*   CSS styling for a clean and readable design.
+
+When the user submits the form, the `calculate` function is called, which prevents the default form submission behavior and retrieves the values of the input fields and operator. The `calculateNumbers` function is then called to perform the calculation, and the result is displayed in the output div element.
+
+>>> Send a message (/? for help)

@@ -1,0 +1,24 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+#score-input {
+    padding: 10px;
+    font-size: 16px;
+}
+
+#calculate-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#average-message, #grade-message {
+    font-size: 14px;
+    color: #666;
+}
+
+#calculate-button:hover {
+    background-color: #4CAF50;
+}

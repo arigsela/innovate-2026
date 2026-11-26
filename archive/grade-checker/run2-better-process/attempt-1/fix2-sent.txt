@@ -1,0 +1,1 @@
+Here is what happened when I typed nothing and clicked Calculate: the page showed "Average: 0.0" and "Grade: F". Fix it and show the complete corrected index.html.

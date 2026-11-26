@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spirit Week House Points</title>
+
+  <style>
+    /* ----- Base page look: font, background, and centred layout ----- */
+    body {
+      margin: 0;
+      padding: 24px;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      background: #f3f4f6;
+      color: #111827;
+    }
+
+    /* Hidden elements stay hidden, even when a class sets a display value */
+    [hidden] {
+      display: none !important;
+    }
+
+    /* ----- Page header: title and the Reset button ----- */
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      max-width: 1000px;
+      margin: 0 auto 20px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 1.6rem;
+    }
+
+    /* ----- Grid that holds the four house cards ----- */
+    #board {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    /* ----- One house card ----- */
+    .house {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* House name on the left, the Leader badge on the right */
+    .house-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .house-head h2 {
+      margin: 0;
+      font-size: 1.15rem;
+    }
+
+    /* The small "Leader" badge */
+    .leader {
+      background: #fde68a;
+      color: #78350f;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 999px;
+    }
+
+    /* Big point total */
+    .points {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .points .label {
+      font-size: 0.95rem;
+      font-weight: 400;
+      color: #6b7280;
+    }
+
+    /* Grey track that the coloured fill sits inside */
+    .bar {
+      height: 18px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    /* Coloured fill; its width is set by the script and animates smoothly */
+    .fill {
+      height: 100%;
+      width: 0;
+      border-radius: 999px;
+      transition: width 0.3s ease;
+    }
+
+    /* A row of controls (buttons and the number box) */
+    .row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    /* Buttons */
+    button {
+      font: inherit;
+      font-weight: 600;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    button:hover {
+      filter: brightness(0.95);
+    }
+
+    button:focus-visible,
+    input:focus-visible {
+      outline: 3px solid #93c5fd;
+      outline-offset: 2px;
+    }
+
+    .award {
+      background: #2563eb;
+      color: #ffffff;
+    }
+
+    .reset {
+      background: #dc2626;
+      color: #ffffff;
+    }
+
+    .row .plus {
+      background: #bbf7d0;
+    }
+
+    .row .minus {
+      background: #fecaca;
+    }
+
+    /* Number box for typing in points to award */
+    .amount {
+      flex: 1;
+      min-width: 0;
+      font: inherit;
+      padding: 8px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+    }
+
+    /* Friendly message area (used for invalid input) */
+    .message {
+      min-height: 1.2em;
+      margin: 0;
+      font-size: 0.9rem;
+      color: #b45309;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ----- Header: page title and the Reset button ----- -->
+  <header>
+    <h1>Spirit Week House Points</h1>
+    <button type="button" class="reset" id="reset">Reset</button>
+  </header>
+
+  <!-- ----- Empty container; the script fills it with the four house cards ----- -->
+  <main id="board"></main>
+
+  <script>
+    // ===== Data: the four houses. Every house starts at 0 points. =====
+    // To rename a house or change its colour, edit this list.
+    const houses = [
+      { name: "Red House",   color: "#dc2626", points: 0 },
+      { name: "Blue House",  color: "#2563eb", points: 0 },
+      { name: "Green House", color: "#16a34a", points: 0 },
+      { name: "Gold House",  color: "#ca8a04", points: 0 },
+    ];
+
+    // ===== Build the page: one card per house, with its controls =====
+    const board = document.getElementById("board");
+
+    // Keep a reference to each card's parts so we can update them later
+    const cards = houses.map((house, i) => {
+      const card = document.createElement("section");
+      card.className = "house";
+      card.innerHTML = `
+        <div class="house-head">
+          <h2>${house.name}</h2>
+          <span class="leader" hidden>Leader</span>
+        </div>
+        <div class="points"><span class="num">0</span> <span class="label">points</span></div>
+        <div class="bar"><div class="fill"></div></div>
+        <div class="row">
+          <button type="button" class="minus">-10</button>
+          <button type="button" class="plus">+10</button>
+        </div>
+        <div class="row">
+          <input type="number" class="amount" min="1" step="1"
+                 placeholder="Points" aria-label="Points to award to ${house.name}">
+          <button type="button" class="award">Award</button>
+        </div>
+        <p class="message" aria-live="polite"></p>
+      `;
+      board.appendChild(card);
+
+      const fill = card.querySelector(".fill");
+      fill.style.background = house.color;
+
+      return {
+        num: card.querySelector(".num"),
+        fill: fill,
+        leader: card.querySelector(".leader"),
+        input: card.querySelector(".amount"),
+        message: card.querySelector(".message"),
+        minus: card.querySelector(".minus"),
+        plus: card.querySelector(".plus"),
+        award: card.querySelector(".award"),
+      };
+    });
+
+    // ===== Update the page to match the data =====
+    // Sets each number, bar length, and Leader badge from the current points.
+    function render() {
+      const top = Math.max(...houses.map(h => h.points));
+      // Bars are drawn relative to the top house; the top house's bar is full.
+      // Using 1 when everything is 0 avoids dividing by zero.
+      const scale = top > 0 ? top : 1;
+
+      houses.forEach((house, i) => {
+        const ui = cards[i];
+        ui.num.textContent = house.points;
+        ui.fill.style.width = (house.points / scale * 100) + "%";
+        // Show "Leader" only when this house has the most points (and it is above 0)
+        ui.leader.hidden = !(top > 0 && house.points === top);
+      });
+    }
+
+    // ===== Change points for one house. Points never go below 0. =====
+    function setPoints(index, newValue) {
+      houses[index].points = Math.max(0, newValue);
+      cards[index].message.textContent = "";  // clear any old warning
+      render();
+    }
+
+    // ===== Button clicks for each house =====
+    houses.forEach((house, i) => {
+      const ui = cards[i];
+
+      // +10 adds 10 points
+      ui.plus.addEventListener("click", () => {
+        setPoints(i, house.points + 10);
+      });
+
+      // -10 takes 10 points away, but never below 0
+      ui.minus.addEventListener("click", () => {
+        setPoints(i, house.points - 10);
+      });
+
+      // Award adds the typed number, but only if it is a whole number greater than 0
+      ui.award.addEventListener("click", () => {
+        const typed = ui.input.value.trim();
+        const amount = Number(typed);
+        const isWholeNumber = /^\d+$/.test(typed);
+
+        if (!isWholeNumber || amount <= 0) {
+          // Show a friendly message and leave the points unchanged
+          ui.message.textContent =
+            "Please type a whole number greater than 0, like 5.";
+          return;
+        }
+
+        setPoints(i, house.points + amount);
+        ui.input.value = "";  // empty the box after a successful award
+      });
+    });
+
+    // ===== Reset: set every house back to 0 =====
+    document.getElementById("reset").addEventListener("click", () => {
+      houses.forEach((house, i) => {
+        house.points = 0;
+        cards[i].message.textContent = "";
+      });
+      render();
+    });
+
+    // ===== Start: show the starting state (all 0, no Leader) =====
+    render();
+  </script>
+
+</body>
+</html>

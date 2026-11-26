@@ -1,0 +1,7 @@
+Instruction files in my context:
+
+- `/Users/arisela/git/ai-innovate-2026/_orchestrator/isolation-check/with-rules/CLAUDE.md` (contains the marker rule ZEBRA-7731)
+
+No AGENTS.md or memory file contents are present.
+
+Hook-injected context: none present. The only other injected material is harness-provided context (your account email and git attribution guidance), not hook output.

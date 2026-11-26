@@ -1,0 +1,13 @@
+**Instruction files in my context**
+
+- `/Users/arisela/git/ai-innovate-2026/_orchestrator/isolation-check/with-rules/CLAUDE.md` — project instructions, containing the marker rule `ZEBRA-7731`.
+
+That is the only one. No AGENTS.md, user-level CLAUDE.md, or memory file contents are present, and this session doesn't show a memory directory.
+
+**Hook-injected context**
+
+None. No hook output appears in my context. The only automatically attached items are the harness's own reminders: the user email context and the git commit/PR attribution guidance.
+
+**Model ID**
+
+`claude-fable-5-2`

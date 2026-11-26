@@ -1,0 +1,74 @@
+[
+  {
+    "n": 1,
+    "group": "prompt",
+    "verdict": "PASS",
+    "reason": "shows 84.3 and grade B"
+  },
+  {
+    "n": 2,
+    "group": "prompt",
+    "verdict": "PASS",
+    "reason": "message shown, no grade"
+  },
+  {
+    "n": 3,
+    "group": "prompt",
+    "verdict": "PASS",
+    "reason": "message shown, no grade"
+  },
+  {
+    "n": 4,
+    "group": "prompt",
+    "verdict": "PASS",
+    "reason": "message shown, no grade"
+  },
+  {
+    "n": 5,
+    "group": "prompt",
+    "verdict": "PASS",
+    "reason": "message shown, no grade"
+  },
+  {
+    "n": 6,
+    "group": "prompt",
+    "verdict": "PASS",
+    "reason": "shows grade B"
+  },
+  {
+    "n": 7,
+    "group": "prompt",
+    "verdict": "PASS",
+    "reason": "shows grade A"
+  },
+  {
+    "n": 8,
+    "group": "project",
+    "verdict": "PASS",
+    "reason": "dropped 40, shows 84.3 and B"
+  },
+  {
+    "n": 9,
+    "group": "project",
+    "verdict": "PASS",
+    "reason": "shows 89.5 and grade A"
+  },
+  {
+    "n": 10,
+    "group": "project",
+    "verdict": "PASS",
+    "reason": "shows 66.5, D and \"Retake needed\""
+  },
+  {
+    "n": 11,
+    "group": "project",
+    "verdict": "PASS",
+    "reason": "shows 84.3 and grade B"
+  },
+  {
+    "n": 12,
+    "group": "project",
+    "verdict": "PASS",
+    "reason": "scrollWidth 360"
+  }
+]

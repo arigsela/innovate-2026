@@ -1,0 +1,195 @@
+{
+  "page": "index.html",
+  "prompt": [
+    2,
+    8
+  ],
+  "school": [
+    1,
+    6
+  ],
+  "results": [
+    {
+      "id": 1,
+      "kind": "prompt",
+      "title": "Load the page",
+      "verdict": "PASS",
+      "why": "Four houses, each with +10, -10, a number box and Award. A Reset button exists.",
+      "shown": "House 1\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 2\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 3\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 4\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset",
+      "dialogs": [],
+      "errors": [
+        "Unexpected token ']'"
+      ],
+      "screenshot": "screenshots/check-01.png"
+    },
+    {
+      "id": 2,
+      "kind": "prompt",
+      "title": "Click +10 twice on house 1",
+      "verdict": "FAIL",
+      "why": "House 1 does not show 20. It shows: \"House 1 Points: 0\".",
+      "shown": "House 1\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 2\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 3\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 4\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset",
+      "dialogs": [],
+      "errors": [
+        "Unexpected token ']'"
+      ],
+      "screenshot": "screenshots/check-02.png"
+    },
+    {
+      "id": 3,
+      "kind": "prompt",
+      "title": "Click -10 on house 2 while it has 0",
+      "verdict": "PASS",
+      "why": "House 2 stays at 0.",
+      "shown": "House 1\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 2\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 3\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 4\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset",
+      "dialogs": [],
+      "errors": [
+        "Unexpected token ']'"
+      ],
+      "screenshot": "screenshots/check-03.png"
+    },
+    {
+      "id": 4,
+      "kind": "prompt",
+      "title": "Type 25 in house 3 and click Award",
+      "verdict": "FAIL",
+      "why": "House 3 does not show 25. It shows: \"House 3 Points: 0\".",
+      "shown": "House 1\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 2\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 3\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 4\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset",
+      "dialogs": [],
+      "errors": [
+        "Unexpected token ']'"
+      ],
+      "screenshot": "screenshots/check-04.png"
+    },
+    {
+      "id": 5,
+      "kind": "prompt",
+      "title": "Type -5 in house 1 and click Award",
+      "verdict": "FAIL",
+      "why": "Points unchanged, but no message appeared on the page.",
+      "shown": "House 1\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 2\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 3\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 4\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset",
+      "dialogs": [],
+      "errors": [
+        "Unexpected token ']'"
+      ],
+      "screenshot": "screenshots/check-05.png"
+    },
+    {
+      "id": 6,
+      "kind": "prompt",
+      "title": "Click +10 twice on house 1 and once on house 2",
+      "verdict": "FAIL",
+      "why": "No house shows the word Leader.",
+      "shown": "House 1\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 2\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 3\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 4\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset",
+      "dialogs": [],
+      "errors": [
+        "Unexpected token ']'"
+      ],
+      "screenshot": "screenshots/check-06.png"
+    },
+    {
+      "id": 7,
+      "kind": "prompt",
+      "title": "Give points to houses 1 and 2, then click Reset",
+      "verdict": "FAIL",
+      "why": "The +10 buttons did not change any points, so Reset could not be tested.",
+      "shown": "House 1\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 2\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 3\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 4\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset",
+      "dialogs": [],
+      "errors": [
+        "Unexpected token ']'"
+      ],
+      "screenshot": "screenshots/check-07.png"
+    },
+    {
+      "id": 8,
+      "kind": "prompt",
+      "title": "Give house 2 50 points, then take house 1 from 10 to 40",
+      "verdict": "FAIL",
+      "why": "Nothing in house 1 got wider between 10 and 40 points. No bar grows.",
+      "shown": "House 1\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 2\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 3\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 4\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset",
+      "dialogs": [],
+      "errors": [
+        "Unexpected token ']'"
+      ],
+      "screenshot": "screenshots/check-08.png"
+    },
+    {
+      "id": 9,
+      "kind": "school",
+      "title": "Load the page and read the house names",
+      "verdict": "FAIL",
+      "why": "house 1 is not Gryffindor; house 2 is not Hufflepuff; house 3 is not Ravenclaw; house 4 is not Slytherin. The houses are: \"House 1 Points: 0\", \"House 2 Points: 0\", \"House 3 Points: 0\", \"House 4 Points: 0\".",
+      "shown": "House 1\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 2\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 3\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 4\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset",
+      "dialogs": [],
+      "errors": [
+        "Unexpected token ']'"
+      ],
+      "screenshot": "screenshots/check-09.png"
+    },
+    {
+      "id": 10,
+      "kind": "school",
+      "title": "Give every house 10 points and look at the colours",
+      "verdict": "FAIL",
+      "why": "No element filled with the house's main colour for: Gryffindor, Hufflepuff, Ravenclaw, Slytherin.",
+      "shown": "House 1\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 2\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 3\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 4\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset",
+      "dialogs": [],
+      "errors": [
+        "Unexpected token ']'"
+      ],
+      "screenshot": "screenshots/check-10.png"
+    },
+    {
+      "id": 11,
+      "kind": "school",
+      "title": "Type 60 in house 1 and click Award",
+      "verdict": "FAIL",
+      "why": "Points unchanged, but no message appeared on the page.",
+      "shown": "House 1\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 2\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 3\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 4\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset",
+      "dialogs": [],
+      "errors": [
+        "Unexpected token ']'"
+      ],
+      "screenshot": "screenshots/check-11.png"
+    },
+    {
+      "id": 12,
+      "kind": "school",
+      "title": "Click +10 once on house 1 and once on house 2",
+      "verdict": "FAIL",
+      "why": "No Leader, but houses 1 and 2 do not show the word Tied.",
+      "shown": "House 1\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 2\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 3\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 4\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset",
+      "dialogs": [],
+      "errors": [
+        "Unexpected token ']'"
+      ],
+      "screenshot": "screenshots/check-12.png"
+    },
+    {
+      "id": 13,
+      "kind": "school",
+      "title": "Click +10 twice on house 1, then reload the page",
+      "verdict": "FAIL",
+      "why": "The points were lost. House 1 shows: \"House 1 Points: 0\".",
+      "shown": "House 1\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 2\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 3\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 4\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset",
+      "dialogs": [],
+      "errors": [
+        "Unexpected token ']'"
+      ],
+      "screenshot": "screenshots/check-13.png"
+    },
+    {
+      "id": 14,
+      "kind": "school",
+      "title": "Load the page at 360px wide",
+      "verdict": "PASS",
+      "why": "No sideways scrolling.",
+      "shown": "House 1\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 2\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 3\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset\nHouse 4\n\nPoints: 0\n\n+10\n-10\nAward\n\nReset",
+      "dialogs": [],
+      "errors": [
+        "Unexpected token ']'"
+      ],
+      "screenshot": "screenshots/check-14.png"
+    }
+  ]
+}

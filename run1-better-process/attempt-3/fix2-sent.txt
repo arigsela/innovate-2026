@@ -1,0 +1,1 @@
+Here is what happened when I opened the new page: each house showed only an Award button and "0 points", with no name, no +10 button and no -10 button, and the browser console showed the same error "Failed to execute 'querySelector' on 'Document': '.houses-name#1' is not a valid selector." Fix it and show every file again in full.

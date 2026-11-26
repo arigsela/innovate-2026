@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Page setup: the title, and a viewport line so the page fits phone screens -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grade Checker</title>
+
+  <style>
+    /* Whole page: 18px text everywhere, and padding counted inside widths so nothing overflows */
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 18px;
+    }
+
+    body {
+      margin: 0;
+      padding: 16px;
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.5;
+      color: #1a1a2e;
+      background: #eef2f9;
+    }
+
+    /* The white card in the middle of the page that holds everything */
+    main {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #ffffff;
+      border-radius: 12px;
+    }
+
+    h1 {
+      margin: 0 0 12px 0;
+      font-size: 1.6rem;
+    }
+
+    /* The label, text box and Calculate button (font: inherit keeps them at 18px) */
+    label {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    input,
+    button {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      font: inherit;
+      border-radius: 8px;
+    }
+
+    input {
+      margin-bottom: 12px;
+      color: #1a1a2e;
+      background: #ffffff;
+      border: 2px solid #5b6478;
+    }
+
+    button {
+      font-weight: bold;
+      color: #ffffff;
+      background: #1d4ed8;
+      border: 2px solid #1d4ed8;
+      cursor: pointer;
+    }
+
+    input:focus,
+    button:focus {
+      outline: 3px solid #f59e0b;
+      outline-offset: 2px;
+    }
+
+    /* The results: the friendly message, average, grade, dropped score and retake line */
+    #results p {
+      margin: 16px 0 0 0;
+      overflow-wrap: anywhere;
+    }
+
+    #message {
+      color: #b00020;
+    }
+
+    #average,
+    #grade {
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+
+    #retake {
+      font-weight: bold;
+      color: #b00020;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <!-- Heading -->
+    <h1>Grade Checker</h1>
+
+    <!-- The form: one text box for the scores and the Calculate button -->
+    <form id="grade-form">
+      <label for="scores">Type your test scores, separated by commas</label>
+      <input id="scores" type="text" placeholder="85, 90, 78" autocomplete="off">
+      <button type="submit">Calculate</button>
+    </form>
+
+    <!-- The results: each line stays hidden until there is something to show in it -->
+    <div id="results" aria-live="polite">
+      <p id="message" hidden></p>
+      <p id="average" hidden></p>
+      <p id="grade" hidden></p>
+      <p id="dropped" hidden></p>
+      <p id="retake" hidden></p>
+    </div>
+  </main>
+
+  <!-- The grading logic lives in grader.js, in the same folder as this file -->
+  <script src="grader.js"></script>
+
+  <script>
+    // Puts text into one line of the results, and hides the line when the text is empty.
+    function showText(id, text) {
+      const line = document.getElementById(id);
+      line.textContent = text;
+      line.hidden = text === "";
+    }
+
+    // Reads the text box, asks grader.js for the result, and shows it on the page.
+    function calculate() {
+      const text = document.getElementById("scores").value;
+      const result = gradeScores(text);
+
+      // A friendly message means there is no grade to show, so the other lines are cleared.
+      if (result.message !== "") {
+        showText("message", result.message);
+        showText("average", "");
+        showText("grade", "");
+        showText("dropped", "");
+        showText("retake", "");
+        return;
+      }
+
+      showText("message", "");
+      showText("average", "Average: " + result.averageText);
+      showText("grade", "Grade: " + result.letter);
+
+      if (result.dropped === null) {
+        showText("dropped", "");
+      } else {
+        showText("dropped", "Lowest score dropped: " + result.dropped);
+      }
+
+      if (result.retakeNeeded) {
+        showText("retake", "Retake needed");
+      } else {
+        showText("retake", "");
+      }
+    }
+
+    // Runs calculate when the form is sent, which happens on a Calculate click and on Enter in the text box.
+    document.getElementById("grade-form").addEventListener("submit", function (event) {
+      event.preventDefault();
+      calculate();
+    });
+  </script>
+</body>
+</html>

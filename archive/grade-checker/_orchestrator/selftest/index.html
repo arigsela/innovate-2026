@@ -1,0 +1,13 @@
+<!doctype html><html><body><h1>Harness self-test fixture (written by the orchestrator, not a run)</h1>
+<input id="s" type="text"><button id="b">Calculate</button><p id="o"></p>
+<script>
+document.getElementById('b').onclick = function () {
+  var o = document.getElementById('o'), raw = document.getElementById('s').value.trim();
+  if (!raw) { o.textContent = 'Please type some scores.'; return; }
+  var parts = raw.split(',').map(function (p) { return Number(p.trim()); });
+  if (parts.some(function (n) { return isNaN(n) || n < 0 || n > 100; })) { o.textContent = 'Scores must be numbers from 0 to 100.'; return; }
+  var avg = parts.reduce(function (a, b) { return a + b; }, 0) / parts.length;
+  var g = avg >= 90 ? 'A' : avg >= 80 ? 'B' : avg >= 70 ? 'C' : avg >= 60 ? 'D' : 'F';
+  o.innerText = 'Average: ' + avg.toFixed(1) + '\nGrade: ' + g;
+};
+</script></body></html>

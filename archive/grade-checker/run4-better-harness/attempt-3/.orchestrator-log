@@ -1,0 +1,4 @@
+a3: allowed three inline node arithmetic checks; allowed node test_grader.js plus an inline rounding sweep that requires ./grader.js
+a3: denied 'Claude in Chrome wants to create a browser window and read your tabs' (acts on Ari's real browser, outside the attempt folder)
+a3: the denial interrupted the agent (its pending local web server command was cancelled with it), which asked what to do instead; sent the brief's fixed answer: Use your best judgment and follow the project rules.
+a3: allowed an inline node script that runs index.html's script against a stand-in page (reads only files in the attempt folder)

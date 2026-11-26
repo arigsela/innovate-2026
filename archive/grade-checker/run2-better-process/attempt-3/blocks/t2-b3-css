@@ -1,0 +1,36 @@
+/* Add styles to the container, input field, and button */
+.container {
+    width: 50%;
+    margin: 40px auto;
+}
+
+.input-field {
+    width: 50%;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+#calculate-btn {
+    width: 100%;
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#calculate-btn:hover {
+    background-color: #3e8e41;
+}
+
+.result {
+    padding: 20px;
+}
+
+#average, #grade {
+    font-weight: bold;
+}

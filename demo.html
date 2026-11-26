@@ -27,5 +27,12 @@
 <tr><td>Bug 3: title changes late, fixed</td><td><a href="mystery-button/debug/bug-3-title-late/fixed/index.html" target="_blank">open</a></td><td><a href="mystery-button/debug/bug-3-title-late/fixed/index.html?reveal" target="_blank">open with ?reveal</a></td></tr>
 </table>
 <p>Secret pattern: 3 fast clicks, wait 1 second or more, 2 fast clicks. The hidden numbers only show when the address ends in <code>?reveal</code>. All copies share one saved count in the browser, so a copy can start above 0. To start from 0, open the browser console and run <code>localStorage.removeItem('mb.n')</code>, then reload.</p>
+<h2>Mystery button: what we sent and what came back</h2>
+<table><tr><th>Bug</th><th>The prompt we sent</th><th>The agent's answer</th></tr>
+<tr><td>Bug 1: count resets on reload</td><td><a href="https://github.com/arigsela/innovate-2026/blob/main/mystery-button/debug/bug-1-count-resets/bug-report.md" target="_blank">bug report</a></td><td><a href="https://github.com/arigsela/innovate-2026/blob/main/mystery-button/debug/bug-1-count-resets/answer.md" target="_blank">cause and fix</a></td></tr>
+<tr><td>Bug 2: secret never shows</td><td><a href="https://github.com/arigsela/innovate-2026/blob/main/mystery-button/debug/bug-2-secret-never-shows/bug-report.md" target="_blank">bug report</a></td><td><a href="https://github.com/arigsela/innovate-2026/blob/main/mystery-button/debug/bug-2-secret-never-shows/answer.md" target="_blank">cause and fix</a></td></tr>
+<tr><td>Bug 3: title changes late</td><td><a href="https://github.com/arigsela/innovate-2026/blob/main/mystery-button/debug/bug-3-title-late/bug-report.md" target="_blank">bug report</a></td><td><a href="https://github.com/arigsela/innovate-2026/blob/main/mystery-button/debug/bug-3-title-late/answer.md" target="_blank">cause and fix</a></td></tr>
+</table>
+<p>These open on GitHub. Each bug report is the whole prompt: what I did, what I expected, what I saw, then the request to find the cause and fix it. Nothing else was sent.</p>
 <p>Worksheet: <a href="mystery-button/README.md">mystery-button/README.md</a>. Earlier Grade Checker runs: <a href="archive/grade-checker/demo.html">archive</a>.</p>
 </body></html>

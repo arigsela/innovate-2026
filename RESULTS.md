@@ -71,4 +71,4 @@ Run with `CLEAN_CLAUDE -p` in `_orchestrator/isolation-check/with-rules/` before
 
 ## Repository
 
-Not pushed yet.
+https://github.com/arigsela/innovate-2026 (public). `_orchestrator/isolation-check/clean-config/` is kept out of the repository.

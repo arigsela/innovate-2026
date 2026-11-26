@@ -1,0 +1,18 @@
+Warning: no stdin data received in 3s, proceeding without it. If piping from a slow command, redirect stdin explicitly: < /dev/null to skip, or wait longer.
+Warning: this sign-in ends between 2026-11-28 and 2026-12-01 (in 2 days at the earliest). Renewing it does not move those dates. Run claude auth login before then, or use claude setup-token for unattended jobs.
+**Instruction files whose contents are in my context**
+
+- `/Users/arisela/git/ai-innovate-2026/_orchestrator/isolation-check/with-rules/CLAUDE.md` is the only one. Its content is a single project rule: "Marker rule: this file is the probe rules file ZEBRA-7731."
+
+No AGENTS.md, memory file, or other instruction file contents are loaded.
+
+The git status snapshot lists an untracked `../../../CLAUDE.md`, which resolves to `/Users/arisela/git/ai-innovate-2026/CLAUDE.md`. Only its path appears; its contents are not in my context.
+
+**Hook-injected context**
+
+None is present. The only injected context is the standard harness material: the CLAUDE.md above, your email, the git status snapshot, and the commit/PR attribution reminder.
+
+**Model ID**
+
+`claude-fable-5-2`
+exit 0

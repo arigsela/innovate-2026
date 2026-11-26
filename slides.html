@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vibe Coding: Three Runs and a Mystery Button</title>
+<!--
+  Offline slide deck. Open this file in Chrome by double-clicking it. No internet needed.
+  Keys: Right / Space = next step, Left = back, N = speaker notes, F = full screen, Home / End.
+  The pages inside the slides are the real pages in this repo, loaded live.
+  Every slide is drawn on a fixed 1920 x 1080 stage that is scaled to fit the window.
+-->
+<style>
+/* === FONTS (files are in assets/fonts, so the deck works offline) === */
+@font-face { font-family: 'Inter'; font-weight: 100 900; font-display: swap; src: url(assets/fonts/Inter-1.woff2) format('woff2'); }
+@font-face { font-family: 'JetBrains Mono'; font-weight: 100 800; font-display: swap; src: url(assets/fonts/JetBrainsMono-1.woff2) format('woff2'); }
+@font-face { font-family: 'Space Grotesk'; font-weight: 300 700; font-display: swap; src: url(assets/fonts/SpaceGrotesk-1.woff2) format('woff2'); }
+
+/* === PAGE AND STAGE ===
+   Palette: ink #101828, panel #1B2540, line #33415F, paper #F6F3EC, card #FFFFFF,
+   orange #FF8A3D, blue #7FB0FF, soft text #B8C0D4 (on ink) and #475067 (on paper). */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; background: #070B14; }
+#stage { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
+
+/* === SLIDES === */
+.slide {
+  position: absolute; inset: 0;
+  padding: 128px;
+  background: radial-gradient(1300px 760px at 88% -12%, #24365F 0%, rgba(36,54,95,0) 62%), #101828;
+  color: #F6F3EC;
+  font-family: 'Inter', Arial, sans-serif;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+}
+.slide.active { display: flex; animation: fadein 350ms both; }
+.slide.light { background: radial-gradient(1200px 700px at 90% -10%, #FFFFFF 0%, rgba(255,255,255,0) 60%), #F6F3EC; color: #101828; }
+.slide.accent { background: #FF8A3D; color: #101828; justify-content: center; }
+.slide > aside { display: none; }
+@keyframes fadein { from { opacity: 0; } }
+
+/* === TYPE === */
+h1, h2, h3 { font-family: 'Space Grotesk', Arial, sans-serif; }
+h1 { font-size: 128px; font-weight: 700; line-height: 1.05; }
+h2 { font-size: 80px; font-weight: 700; line-height: 1.1; margin-bottom: 48px; }
+h3 { font-size: 44px; font-weight: 600; line-height: 1.15; }
+.eyebrow { font-size: 26px; font-weight: 600; letter-spacing: 4px; color: #FF8A3D; margin-bottom: 20px; }
+.light .eyebrow { color: #B4500F; }
+.lead { font-size: 34px; line-height: 1.4; color: #B8C0D4; }
+.light .lead { color: #475067; }
+.body { font-size: 32px; line-height: 1.4; }
+.small { font-size: 26px; line-height: 1.4; color: #B8C0D4; }
+.light .small { color: #475067; }
+.spacer { flex: 1; }
+a { color: inherit; }
+
+/* === PROMPTS AND TYPED TEXT === */
+.prompt {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 34px; line-height: 1.5;
+  background: #1B2540; border: 2px solid #33415F; border-radius: 16px;
+  padding: 28px 36px; color: #F6F3EC;
+}
+.light .prompt { background: #FFFFFF; border: 2px solid #D5D0C3; color: #101828; }
+.prompt-line { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 28px; line-height: 1.6; }
+.link-line { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 34px; line-height: 1.5; }
+
+/* === ROWS AND CARDS === */
+.row { display: flex; gap: 48px; }
+.col { display: flex; flex-direction: column; gap: 28px; flex: 1; min-width: 0; }
+.cards { display: flex; gap: 32px; }
+.card {
+  flex: 1; background: #1B2540; border: 2px solid #33415F; border-radius: 20px;
+  padding: 36px; display: flex; flex-direction: column; gap: 16px;
+}
+.light .card { background: #FFFFFF; border: 2px solid #D5D0C3; }
+.card .card-tag { font-size: 26px; font-weight: 600; letter-spacing: 3px; color: #FF8A3D; }
+.light .card .card-tag { color: #B4500F; }
+.card .card-text { font-size: 30px; line-height: 1.35; color: #B8C0D4; }
+.light .card .card-text { color: #475067; }
+.card .steps { font-family: 'Space Grotesk', Arial, sans-serif; font-size: 80px; font-weight: 700; line-height: 1.1; color: #7FB0FF; }
+.light .card .steps { color: #1D4FB8; }
+
+/* === BIG NUMBERS === */
+.big { font-family: 'Space Grotesk', Arial, sans-serif; font-size: 128px; font-weight: 700; line-height: 1; }
+.big-orange { color: #FF8A3D; }
+.big-blue { color: #7FB0FF; }
+.light .big-orange { color: #B4500F; }
+.light .big-blue { color: #1D4FB8; }
+
+/* === TABLES === */
+table { font-size: 30px; color: #F6F3EC; width: 100%; border-collapse: collapse; }
+.light table { color: #101828; }
+th, td { text-align: left; padding: 14px 20px; vertical-align: middle; line-height: 1.3; }
+tr.head { background: #1B2540; }
+tr.win { background: #23345C; }
+.light tr.head { background: #E9E4D8; }
+tr + tr td { border-top: 2px solid #33415F; }
+.light tr + tr td { border-top: 2px solid #D5D0C3; }
+table.mono { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 24px; }
+
+/* === ARRIVE: the plain rule is the finished look, the start is in the keyframes === */
+@keyframes rise { from { opacity: 0; transform: translateY(40px); } }
+@keyframes pop { from { opacity: 0; transform: scale(0.8); } }
+.rise { animation: rise 600ms both; animation-delay: calc(var(--i) * 120ms); }
+.pop { animation: pop 500ms both; animation-delay: calc(var(--i) * 120ms); }
+
+/* === CLICK STEPS the presenter paces === */
+.fragment { opacity: 0; transform: translateY(24px); transition: opacity 400ms, transform 400ms; }
+.fragment.visible { opacity: 1; transform: translateY(0); }
+
+/* === LIVE PAGES: a real page from this repo inside a slide === */
+.try { display: flex; flex-direction: column; gap: 20px; flex: 1; align-items: flex-start; }
+.caption { font-size: 28px; line-height: 1.35; }
+.live { position: relative; flex: none; border: 4px solid #33415F; border-radius: 16px; background: #FFFFFF; box-sizing: content-box; }
+.light .live { border-color: #D5D0C3; }
+.live .clip { width: 100%; height: 100%; overflow: hidden; border-radius: 12px; }
+.live iframe { border: 0; transform-origin: 0 0; display: block; background: #FFFFFF; }
+.live .reload {
+  position: absolute; top: -22px; right: -22px; width: 48px; height: 48px; border-radius: 50%;
+  border: 2px solid #33415F; background: #FF8A3D; color: #101828; font-size: 26px; font-weight: 700;
+  cursor: pointer; line-height: 1;
+}
+.live .reload:hover { background: #FFB27A; }
+
+/* === BUTTONS that choose what a live page shows === */
+.picks { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.picks .label { font-size: 24px; font-weight: 600; letter-spacing: 2px; color: #B8C0D4; margin-right: 6px; }
+.light .picks .label { color: #475067; }
+.pick {
+  font-family: 'Space Grotesk', Arial, sans-serif; font-size: 26px; font-weight: 600;
+  padding: 10px 22px; border-radius: 999px; border: 2px solid #33415F; background: #1B2540; color: #F6F3EC; cursor: pointer;
+}
+.light .pick { border-color: #D5D0C3; background: #FFFFFF; color: #101828; }
+.pick.on { background: #FF8A3D; border-color: #FF8A3D; color: #101828; }
+.light .pick.on { background: #B4500F; border-color: #B4500F; color: #FFFFFF; }
+
+/* === MOCK SCOREBOARD on "what we asked for". It works: click the buttons. === */
+.mock { background: #FFFFFF; border: 2px solid #D5D0C3; border-radius: 24px; padding: 36px 40px; display: flex; flex-direction: column; gap: 22px; width: 820px; }
+.sb-row { display: flex; align-items: center; gap: 16px; }
+.sb-name { font-family: 'Space Grotesk', Arial, sans-serif; font-size: 32px; font-weight: 600; color: #101828; width: 240px; }
+.sb-tag { font-size: 22px; font-weight: 600; color: #B4500F; margin-left: 10px; }
+.sb-track { flex: 1; height: 28px; border-radius: 14px; background: #E9E4D8; display: flex; }
+.sb-fill { height: 28px; border-radius: 14px; background: #1D4FB8; width: 0; transition: width 350ms; }
+.sb-pts { font-family: 'Space Grotesk', Arial, sans-serif; font-size: 36px; font-weight: 700; color: #101828; width: 80px; text-align: right; }
+.sb-btn { font-size: 24px; font-weight: 600; width: 76px; padding: 10px 0; border-radius: 12px; border: 0; background: #1D4FB8; color: #FFFFFF; cursor: pointer; }
+.sb-btn.minus { background: #475067; }
+.sb-reset { align-self: flex-start; font-size: 24px; font-weight: 600; padding: 10px 24px; border-radius: 12px; border: 2px solid #8792A8; background: #FFFFFF; color: #101828; cursor: pointer; }
+
+/* === SCORE BARS on the scoreboard slide: one bar per try === */
+.tri { display: flex; gap: 14px; align-items: flex-end; }
+.tri .t { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.tri .track { width: 44px; height: 68px; border-radius: 10px; background: #1B2540; border: 2px solid #33415F; display: flex; align-items: flex-end; overflow: hidden; }
+.tri .fill { width: 100%; height: 0; background: #7FB0FF; transition: height 900ms cubic-bezier(.2,.8,.2,1); }
+.tri.school .fill { background: #FF8A3D; }
+.tri .n { font-family: 'Space Grotesk', Arial, sans-serif; font-size: 28px; font-weight: 700; }
+
+/* === HOST SLIDE === */
+.avatar { width: 380px; height: 380px; flex: none; border-radius: 50%; border: 6px solid #B4500F; background: #E9E4D8; display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', Arial, sans-serif; font-size: 200px; font-weight: 700; color: #B4500F; }
+
+/* === CLAIMS the room ticks off === */
+table.claims { font-size: 26px; }
+table.claims tr.claim { cursor: pointer; }
+table.claims .tick { width: 70px; text-align: center; font-size: 36px; font-weight: 700; color: #7FB0FF; }
+table.claims tr.claim .tick::before { content: '☐'; color: #5A6785; }
+table.claims tr.claim.ok .tick::before { content: '✓'; color: #7FB0FF; }
+table.claims tr.claim.ok { background: #23345C; }
+
+/* === CONTROLS outside the stage === */
+#bar { position: fixed; left: 0; bottom: 0; height: 5px; background: #FF8A3D; width: 0; transition: width 300ms; z-index: 5; }
+#nav { position: fixed; right: 14px; bottom: 14px; display: flex; gap: 8px; align-items: center; z-index: 6; opacity: .35; transition: opacity 200ms; font: 600 14px 'Inter', Arial, sans-serif; color: #B8C0D4; }
+#nav:hover { opacity: 1; }
+#nav button { font: inherit; font-size: 18px; width: 40px; height: 34px; border-radius: 8px; border: 1px solid #33415F; background: #1B2540; color: #F6F3EC; cursor: pointer; }
+#count { background: #1B2540; border: 1px solid #33415F; border-radius: 8px; padding: 7px 12px; }
+#notes { position: fixed; left: 0; right: 0; bottom: 0; max-height: 34vh; overflow: auto; background: rgba(7,11,20,.96); color: #F6F3EC; border-top: 3px solid #FF8A3D; padding: 18px 28px 26px; font: 400 20px/1.5 'Inter', Arial, sans-serif; z-index: 4; display: none; }
+#notes.on { display: block; }
+#notes b { color: #FF8A3D; letter-spacing: 2px; font-size: 14px; display: block; margin-bottom: 6px; }
+
+/* === PRINT: one slide per page, every step shown. Live pages print empty. === */
+@media print {
+  @page { size: 1920px 1080px; margin: 0; }
+  html, body { height: auto; overflow: visible; background: none; }
+  #stage { position: static; transform: none !important; width: auto; height: auto; }
+  .slide { display: flex !important; position: relative; width: 1920px; height: 1080px; break-after: page; animation: none !important; }
+  .fragment { opacity: 1; transform: none; }
+  .rise, .pop { animation: none; }
+  #nav, #bar, #notes { display: none !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rise, .pop, .slide.active { animation: none; }
+  .fragment, .sb-fill, .tri .fill { transition: none; }
+}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- ===================== INTRO ===================== -->
+<section class="slide" id="cover">
+<p class="eyebrow rise" style="--i:0">VIBE CODING DEMO</p>
+<h1 class="rise" style="--i:1">Same app.<br>Three ways to ask.</h1>
+<div class="spacer"></div>
+<p class="lead rise" style="--i:3">One scoreboard, built three times by AI. Then one button that nobody understands.</p>
+<aside>Open with the question: if you ask an AI to build something, what decides whether it works? Today the same small app gets built three times, and only one thing changes between each run. In the second half we use an AI agent to explain and debug code we did not write. Keys: Right or Space for the next step, Left to go back, N for these notes, F for full screen. After clicking inside a live page, move the mouse off it before using the keys.</aside>
+</section>
+
+<section class="slide light" id="about">
+<p class="eyebrow">YOUR HOST</p>
+<h2>Hi, I’m Ari</h2>
+<div class="row" style="align-items:center; gap:80px">
+<div class="avatar pop" style="--i:1">A</div>
+<div class="col">
+<p class="body rise" style="--i:2">[One line about you: your job and what you build]</p>
+<p class="link-line rise" style="--i:3">GitHub · <a href="https://github.com/arigsela">github.com/arigsela</a></p>
+<p class="link-line rise" style="--i:4">LinkedIn · [your LinkedIn link]</p>
+<div class="card rise" style="--i:5">
+<p class="card-tag">EVERYTHING FROM TODAY IS PUBLIC</p>
+<h3>github.com/arigsela/innovate-2026</h3>
+<p class="card-text">Every prompt, every page the AI built, the rules file and the test results.</p>
+</div>
+</div>
+</div>
+<aside>Introduce yourself in two sentences. Tell students they do not need to take notes on the prompts: everything shown today is in the public repo, and the link comes back on the last slide.</aside>
+</section>
+
+<section class="slide light" id="app">
+<p class="eyebrow">THE APP · THIS ONE WORKS, CLICK IT</p>
+<h2>A house points scoreboard</h2>
+<div class="row">
+<div class="mock pop" style="--i:1" id="mock"></div>
+<div class="col">
+<p class="body rise" style="--i:2"><b>1.</b> Each house has a +10 and a -10 button.</p>
+<p class="body rise" style="--i:3"><b>2.</b> Or type a number and click Award.</p>
+<p class="body rise" style="--i:4"><b>3.</b> Bars grow, and the top house shows Leader.</p>
+<p class="small rise" style="--i:5">Points never go below 0 · A bad number gets a friendly message · Reset sets every house back to 0</p>
+</div>
+</div>
+<aside>This is what we asked for: a scoreboard for Spirit Week with four houses. The sketch on the left works, so click a few buttons. It was written by hand for this slide and leaves out the Award box. Buttons add and remove points, bars grow, the top house is marked. Notice what the request does not say: which houses, which colours, and any rule our school has about points. Keep that in mind.</aside>
+</section>
+
+<section class="slide" id="runs">
+<p class="eyebrow">THE EXPERIMENT</p>
+<h2>Three runs, one change at a time</h2>
+<div class="cards">
+<div class="card fragment">
+<p class="card-tag">RUN 1</p>
+<h3>Better process</h3>
+<p class="card-text">A small AI model, a clear request, and real errors pasted back.</p>
+</div>
+<div class="card fragment">
+<p class="card-tag">RUN 2</p>
+<h3>Better model</h3>
+<p class="card-text">A powerful model with the same clear request. One try.</p>
+</div>
+<div class="card fragment">
+<p class="card-tag">RUN 3</p>
+<h3>Better harness</h3>
+<p class="card-text">The same powerful model, plus a rules file that lives in the project.</p>
+</div>
+</div>
+<div class="spacer"></div>
+<p class="small">Each run was made three times. Every page was tested the same way: 8 checks from the request, 6 checks from the school’s own rules.</p>
+<aside>Click once per run. Stress that only one thing changes each time, like a science experiment. The small model is llama3.2:1b running on this laptop. The powerful model is Claude Fable 5.2 in Claude Code. “Harness” means everything around the model: the rules it reads and the tools it can use.</aside>
+</section>
+
+<!-- ===================== RUN 1 ===================== -->
+<section class="slide light" id="r1-prompt">
+<p class="eyebrow">RUN 1 · BETTER PROCESS</p>
+<h2>Say exactly what you want</h2>
+<div class="prompt rise" style="--i:1">
+<p class="prompt-line">- Each house has a button labelled +10 that adds 10 points, and a button labelled -10</p>
+<p class="prompt-line">- Points can never go below 0.</p>
+<p class="prompt-line">Example: if I click +10 twice on the first house, it shows 20 points and the word Leader.</p>
+<p class="prompt-line">Before writing code, list the steps you will take.</p>
+</div>
+<div class="spacer"></div>
+<div class="cards">
+<div class="card rise" style="--i:2"><p class="card-tag">WHAT IT DOES</p><p class="card-text">The houses, the buttons, the bars.</p></div>
+<div class="card rise" style="--i:3"><p class="card-tag">THE RULES</p><p class="card-text">What must never happen.</p></div>
+<div class="card rise" style="--i:4"><p class="card-tag">AN EXAMPLE</p><p class="card-text">Some clicks with their right result.</p></div>
+<div class="card rise" style="--i:5"><p class="card-tag">PLAN FIRST</p><p class="card-text">Steps before code.</p></div>
+</div>
+<aside>These four lines are taken from the real request, which is about twenty lines long. It is in prompt-1.md in the repo. Point at the four parts: what it does, the rules, an example, and asking for a plan first. All three runs get exactly this request. After the first answer we also asked the small model two questions: “explain this code” and “what could go wrong with this page?”</aside>
+</section>
+
+<section class="slide light" id="r1-loop">
+<p class="eyebrow">RUN 1 · BETTER PROCESS</p>
+<h2>Then paste back what really happened</h2>
+<div class="cards">
+<div class="card fragment">
+<p class="card-tag">TRY 1</p>
+<h3>Partly works</h3>
+<p class="card-text"><b>Works:</b> +10 on the first house.</p>
+<p class="card-text"><b>Fails:</b> the other houses, Award, Leader, Reset and the bars.</p>
+<p class="card-text"><b>Our feedback:</b> helped once, then nothing more.</p>
+</div>
+<div class="card fragment">
+<p class="card-tag">TRY 2</p>
+<h3>Nothing works</h3>
+<p class="card-text"><b>Fails:</b> every button. The page stops with an error as it opens.</p>
+<p class="card-text"><b>Our feedback:</b> we pasted the exact error twice. It sent back the same broken code.</p>
+</div>
+<div class="card fragment">
+<p class="card-tag">TRY 3</p>
+<h3>Nothing works</h3>
+<p class="card-text"><b>Fails:</b> every button. They appear, and none of them does anything.</p>
+<p class="card-text"><b>Our feedback:</b> two fixes, and the same error stayed.</p>
+</div>
+</div>
+<div class="spacer"></div>
+<p class="small">Same model and same request in every try. We only sent what the page really did, never the right answer.</p>
+<aside>One click per try. Each try is the same request to the same small model. After its first answer we tested the page and pasted back what really happened, twice. Try 1: the first page had one lonely set of buttons; after our report, +10 worked on the first house, and the second report changed nothing. Tries 2 and 3: the page stops with a script error, and the model could not use the error we gave it. Of the 8 checks from the request, the final pages pass 3, 0 and 1. All the messages are in all-prompts-1.md in the repo.</aside>
+</section>
+
+<section class="slide light" id="r1-tries">
+<p class="eyebrow">RUN 1 · LIVE PAGES · CLICK +10 ON THE FIRST THREE HOUSES</p>
+<h2>Same request. Three different pages.</h2>
+<div class="row">
+<div class="try">
+<div class="live" style="width:512px;height:450px" data-w="1000" data-src="run1-better-process/attempt-1/index.html"></div>
+<p class="caption fragment"><b>Try 1</b> · The first house counts. No names, no bars, no Leader.</p>
+</div>
+<div class="try">
+<div class="live" style="width:512px;height:450px" data-w="1000" data-src="run1-better-process/attempt-2/index.html"></div>
+<p class="caption fragment"><b>Try 2</b> · Two +10 buttons per house. Every house stays at 0.</p>
+</div>
+<div class="try">
+<div class="live" style="width:512px;height:450px" data-w="1000" data-src="run1-better-process/attempt-3/index.html"></div>
+<p class="caption fragment"><b>Try 3</b> · Four rows of buttons. Every row stays at 0.</p>
+</div>
+</div>
+<div class="spacer"></div>
+<p class="small fragment">These are the final pages, after both fixes. Best of three: 3 of 8 checks.</p>
+<aside>These are the real pages, live. Do the same clicks on all three, or let students call them: +10 three times on the first house, twice on the second, once on the third. Then click once per try for the captions. The orange button reloads a page. The small model wrote something different each time, and none of the three is a scoreboard you could use. A clear request and honest feedback are good habits, but they could not lift this model past its limit.</aside>
+</section>
+
+<!-- ===================== RUN 2 ===================== -->
+<section class="slide" id="r2-score">
+<p class="eyebrow">RUN 2 · BETTER MODEL</p>
+<h2>Same request. Bigger model.</h2>
+<div class="row">
+<div class="col">
+<p class="big big-blue pop" style="--i:1">8 of 8</p>
+<p class="body rise" style="--i:2">First try. Two to three minutes. No follow-ups.</p>
+<p class="small rise" style="--i:3">All three tries scored the same.</p>
+</div>
+<div class="col">
+<div class="card rise" style="--i:3"><p class="card-tag">+10 AND -10</p><p class="card-text">Every house counts, and never below 0.</p></div>
+<div class="card rise" style="--i:4"><p class="card-tag">AWARD</p><p class="card-text">Typed points are added. Typing -5 gets a friendly message.</p></div>
+<div class="card rise" style="--i:5"><p class="card-tag">LEADER AND BARS</p><p class="card-text">The top house is marked, and the bars grow.</p></div>
+</div>
+</div>
+<aside>Exactly the same words as run 1. The only change is the model: Claude Fable 5.2, one shot. Everything that broke in run 1 works here, in all three tries. Ask the room: so are we done? Is a better model the whole answer?</aside>
+</section>
+
+<section class="slide" id="r2-tries">
+<p class="eyebrow">RUN 2 · LIVE PAGES · THE SAME CLICKS</p>
+<h2>Wait. Who are Maple and Oak?</h2>
+<div class="row">
+<div class="try">
+<div class="live" style="width:512px;height:450px" data-w="800" data-src="run2-better-model/attempt-1/index.html"></div>
+<p class="caption"><b>Try 1</b> · Maple, Oak, Cedar, Birch</p>
+</div>
+<div class="try">
+<div class="live" style="width:512px;height:450px" data-w="800" data-src="run2-better-model/attempt-2/index.html"></div>
+<p class="caption"><b>Try 2</b> · Red, Blue, Green, Gold House</p>
+</div>
+<div class="try">
+<div class="live" style="width:512px;height:450px" data-w="800" data-src="run2-better-model/attempt-3/index.html"></div>
+<p class="caption"><b>Try 3</b> · Red, Blue, Green, Gold House</p>
+</div>
+</div>
+<div class="spacer"></div>
+<p class="body fragment">It works every time. But the houses are made up, and they change between tries.</p>
+<p class="body fragment" style="margin-top:16px"><b>Our houses were never in the request.</b> Nobody told the model.</p>
+<aside>The same clicks as before on the live pages, and this time the pages work. Let the room spot the problem before you click for the two lines. The model had to call the houses something, so it invented names and colours, and it invented different ones on different tries. It even said so in its answer: “I used Maple, Oak, Cedar and Birch as placeholders.” Whatever you leave out, the model fills in with a guess.</aside>
+</section>
+
+<section class="slide accent" id="statement">
+<h1 class="rise" style="--i:0">A model can’t know what nobody told it.</h1>
+<p class="body rise" style="--i:3; margin-top:48px">So where should that knowledge live?</p>
+<aside>Pause here. This is the main idea of the session. The model was not wrong, it was uninformed. We could paste the school rules into every prompt, but we would forget one sooner or later. Ask the room where the rules should go so nobody has to remember them.</aside>
+</section>
+
+<!-- ===================== RUN 3 ===================== -->
+<section class="slide light" id="rules">
+<p class="eyebrow">RUN 3 · BETTER HARNESS</p>
+<h2>Write it down once, in the project</h2>
+<div class="cards">
+<div class="card fragment">
+<p class="card-tag">OUR HOUSES</p>
+<p class="card-text">Gryffindor, Hufflepuff, Ravenclaw, Slytherin, in that order.</p>
+<p class="card-text">Each bar is filled with its house colour.</p>
+</div>
+<div class="card fragment">
+<p class="card-tag">SPIRIT WEEK RULES</p>
+<p class="card-text">One award is 50 points at most.</p>
+<p class="card-text">A shared top score shows Tied, not Leader.</p>
+<p class="card-text">Points survive a page reload.</p>
+</div>
+<div class="card fragment">
+<p class="card-tag">HOW WE WRITE CODE</p>
+<p class="card-text">Small functions, each with a comment.</p>
+<p class="card-text">Write tests for every rule.</p>
+<p class="card-text">Run the tests before saying it is done.</p>
+</div>
+</div>
+<div class="spacer"></div>
+<p class="small">The file is called CLAUDE.md. The agent reads it every time it starts in this folder. The request did not change by one word.</p>
+<aside>This is the rules file, about forty lines of plain English. Three parts: who our houses are, the rules of our Spirit Week, and how we want the code written. The important part: the request is exactly the same as in runs 1 and 2. The knowledge moved out of our heads and into the project. The file is rules-file.md in the repo.</aside>
+</section>
+
+<section class="slide" id="r3-tries">
+<p class="eyebrow">RUN 3 · LIVE PAGES · THE SAME CLICKS</p>
+<h2>Same model. One file added.</h2>
+<div class="row">
+<div class="try">
+<div class="live" style="width:512px;height:450px" data-w="620" data-src="run3-better-harness/attempt-1/index.html"></div>
+<p class="caption"><b>Try 1</b> · Our houses, our colours</p>
+</div>
+<div class="try">
+<div class="live" style="width:512px;height:450px" data-w="620" data-src="run3-better-harness/attempt-2/index.html"></div>
+<p class="caption"><b>Try 2</b> · Our houses, our colours</p>
+</div>
+<div class="try">
+<div class="live" style="width:512px;height:450px" data-w="620" data-src="run3-better-harness/attempt-3/index.html"></div>
+<p class="caption"><b>Try 3</b> · Our houses, our colours</p>
+</div>
+</div>
+<div class="spacer"></div>
+<p class="body fragment">Three tries: the same four houses, in the same order, in the right colours.</p>
+<p class="body fragment" style="margin-top:16px">The buttons and fonts still differ. <b>Nobody wrote a rule for those.</b></p>
+<aside>Same model as run 2, same request, same clicks. The only new thing is the rules file in the folder. Every try has Gryffindor, Hufflepuff, Ravenclaw and Slytherin with their colours, and every try calls the page House Cup, the name in the rules file. These pages keep their points after a reload, because the rules file asks for that, so click Reset on each one before the session. Second click: look at what still varies. Button shapes, fonts and layout are different in each try, because the rules file says nothing about them. What is written down comes out the same. What is not, the model still guesses.</aside>
+</section>
+
+<section class="slide" id="r3-cap">
+<p class="eyebrow">LIVE · TYPE 500, CLICK AWARD</p>
+<h2>One rule, written down</h2>
+<div class="row">
+<div class="try">
+<p class="small">RUN 2 · NO RULES FILE</p>
+<div class="live" style="width:780px;height:500px" data-w="900" data-src="run2-better-model/attempt-1/index.html"></div>
+<p class="body fragment"><b>500 points.</b> Accepted.</p>
+</div>
+<div class="try">
+<p class="small">RUN 3 · WITH THE RULES FILE</p>
+<div class="live" style="width:780px;height:500px" data-w="900" data-src="run3-better-harness/attempt-1/index.html"></div>
+<p class="body fragment"><b>Refused.</b> One award is 50 points at most.</p>
+</div>
+</div>
+<aside>Ask a student to pick a silly number of points. Type it into the first house on the left and click Award: run 2 takes it, because nothing in the request said there was a limit. First click shows the caption. Then type the same number on the right: run 3 refuses and explains why on the page. Second click shows that caption. Run 2 is not wrong here. It was never told. This is the same story as the house names, but now it is a rule that changes who wins.</aside>
+</section>
+
+<section class="slide" id="r3-score">
+<p class="eyebrow">RUN 3 · BETTER HARNESS</p>
+<h2>It knows the school. It checks its work.</h2>
+<div class="row">
+<div class="col">
+<p class="big big-blue pop" style="--i:1">14 of 14</p>
+<p class="body rise" style="--i:2">All 8 checks from the request and all 6 school checks, in all three tries.</p>
+</div>
+<div class="col">
+<div class="card fragment">
+<p class="card-tag">IT WROTE ITS OWN TESTS</p>
+<h3>31, 44 and 54 tests. All passed.</h3>
+<p class="card-text">One set per try. It ran them before it said it was done.</p>
+</div>
+<div class="card fragment">
+<p class="card-tag">IT ASKED FIRST</p>
+<p class="card-text">It stopped to ask before running any command. We said yes to its tests and no to anything outside its folder.</p>
+</div>
+</div>
+</div>
+<aside>Run 3 passes everything, three times out of three. The rules file also told it to write tests and run them before saying it was finished. Second card: the harness is also about control. The agent asked permission before every command. We allowed it to run its own tests, and declined when it wanted to open a browser or write files somewhere else. It took longer, thirteen to eighteen minutes, and most of that was the agent waiting for our answers.</aside>
+</section>
+
+<!-- ===================== RESULTS ===================== -->
+<section class="slide" id="scoreboard">
+<p class="eyebrow">THE SCOREBOARD</p>
+<h2>What each change bought us</h2>
+<table class="rise" style="--i:1">
+<tr class="head"><th style="width:22%">Run</th><th style="width:34%">What changed</th><th style="width:15%">Request checks, of 8</th><th style="width:15%">School checks, of 6</th><th style="width:14%">Time</th></tr>
+<tr><td>1 · Better process</td><td>Small model, clear request, real errors pasted back</td><td><div class="tri" data-v="3,0,1" data-max="8"></div></td><td><div class="tri school" data-v="0,1,1" data-max="6"></div></td><td>1 to 5 min per answer</td></tr>
+<tr><td>2 · Better model</td><td>Powerful model, one try</td><td><div class="tri" data-v="8,8,8" data-max="8"></div></td><td><div class="tri school" data-v="1,1,1" data-max="6"></div></td><td>2 to 3 min</td></tr>
+<tr class="win"><td>3 · Better harness</td><td>Same model, plus the rules file</td><td><div class="tri" data-v="8,8,8" data-max="8"></div></td><td><div class="tri school" data-v="6,6,6" data-max="6"></div></td><td>13 to 18 min</td></tr>
+</table>
+<div class="spacer"></div>
+<p class="small" style="margin-top:20px">The three bars are try 1, try 2 and try 3. Runs 1 and 2 were never told the school rules: the one they pass is by chance, because the page happens to fit a phone. Run 3’s time is mostly the agent waiting for our yes or no.</p>
+<aside>Read down the two score columns, then look inside each cell. The small model’s three tries disagree with each other. From run 2 on, the three tries match. A better model reached 8 of 8 in one try. The rules file took the school checks from 1 to 6. Be fair to run 2: it failed the school checks because it was never told them, not because it made mistakes.</aside>
+</section>
+
+<section class="slide" id="try-it">
+<p class="eyebrow">LIVE DEMO</p>
+<h2>Your turn: try to break it</h2>
+<div class="row" style="gap:40px">
+<div class="live" id="tryframe" style="width:900px;height:620px" data-w="1000" data-src="run2-better-model/attempt-1/index.html"></div>
+<div class="col" style="gap:22px">
+<div class="picks" id="pick-run"><span class="label">RUN</span><button class="pick" data-run="run1-better-process">1</button><button class="pick on" data-run="run2-better-model">2</button><button class="pick" data-run="run3-better-harness">3</button>
+<span class="label" style="margin-left:18px">TRY</span><span id="pick-try" style="display:flex;gap:12px"><button class="pick on" data-try="1">1</button><button class="pick" data-try="2">2</button><button class="pick" data-try="3">3</button></span></div>
+<table class="mono">
+<tr class="head"><th style="width:52%">Do this</th><th>What should happen</th></tr>
+<tr><td>+10 twice on house 1</td><td>20 points, Leader</td></tr>
+<tr><td>-10 on a house with 0</td><td>Stays at 0</td></tr>
+<tr><td>Type -5, click Award</td><td>A friendly message</td></tr>
+<tr><td>Type 500, click Award</td><td>Refused: 50 at most</td></tr>
+<tr><td>+10 once on two houses</td><td>Both show Tied</td></tr>
+<tr><td>Give points, reload</td><td>Points still there</td></tr>
+</table>
+<p class="small">The last three are school rules. Invent your own clicks and predict what each run will do.</p>
+</div>
+</div>
+<aside>Pick a run and a try with the buttons, let students call out what to click, and compare with the table. The orange button reloads the page, which is also the test in the last row. Run 2 against run 3 is the best pair for the school rules. Good ones to invent: award 50 exactly, award 2.5, click Reset by accident. demo.html in the repo opens every page in its own tab if you want more room.</aside>
+</section>
+
+<!-- ===================== MYSTERY BUTTON ===================== -->
+<section class="slide light" id="mystery">
+<p class="eyebrow">PART 2 · EXPLAIN AND DEBUG</p>
+<h2>One button. What does it do?</h2>
+<div class="row" style="align-items:flex-start; gap:64px">
+<div class="live" id="mysteryframe" style="width:720px;height:540px" data-w="720" data-src="mystery-button/app/index.html"></div>
+<div class="col">
+<p class="body rise" style="--i:2">Click it, and nothing seems to happen.</p>
+<p class="body fragment"><b>Behind the button, one click does eight things.</b></p>
+<p class="body fragment">The code has no comments and one-letter names:</p>
+<p class="prompt fragment" style="font-size:28px">if(g&amp;&amp;g&lt;400)s++;else{p=g&gt;=1000?s:0;s=1}</p>
+</div>
+</div>
+<aside>The button on the left is the real page. Let students tell you how to click it and guess what it does. Somebody may notice the colour after many clicks. Then click through the three lines and ask who can read that line of code. Real code you inherit often looks like this. We wrote this page on purpose for the demo; the AI did not build it. The tab title change cannot be seen inside a slide: open the page from demo.html to show it.</aside>
+</section>
+
+<section class="slide light" id="explain">
+<p class="eyebrow">ASK THE AGENT TO EXPLAIN</p>
+<h2>“List what I cannot see”</h2>
+<div class="prompt rise" style="--i:1">
+<p class="prompt-line">List everything that happens when I click the button once, including things I cannot see on the page.</p>
+<p class="prompt-line">For each one, tell me how I can check it myself in the browser.</p>
+</div>
+<div class="spacer"></div>
+<div class="cards">
+<div class="card fragment"><p class="card-tag">SAVES A COUNT</p><p class="card-text">In the browser. It survives a reload.</p></div>
+<div class="card fragment"><p class="card-tag">TIMES YOUR CLICKS</p><p class="card-text">Fast clicks build a streak.</p></div>
+<div class="card fragment"><p class="card-tag">SHIFTS THE COLOUR</p><p class="card-text">A tiny step on every click.</p></div>
+<div class="card fragment"><p class="card-tag">HIDES A SECRET</p><p class="card-text">3 fast clicks, a pause, 2 fast clicks.</p></div>
+</div>
+<div class="spacer"></div>
+<p class="small">The agent listed eight things in under a minute. It also told us it had read the code but not run the page.</p>
+<aside>This is the whole prompt, apart from a line asking it to write for a beginner. Notice the second sentence: we asked how to check each claim. One click per card. These are four of the eight things it found. The full answer is in mystery-button/explains/explain/answer.md. The last line matters: the agent was honest that it had only read the code. So who checks?</aside>
+</section>
+
+<section class="slide" id="verify">
+<p class="eyebrow">DO NOT TAKE ITS WORD · LIVE, WITH THE HIDDEN NUMBERS</p>
+<h2>Check every claim</h2>
+<div class="row" style="gap:48px">
+<div class="live" style="width:700px;height:580px" data-w="700" data-src="mystery-button/app/index.html?reveal"></div>
+<div class="col" style="gap:20px">
+<table class="claims">
+<tr class="head"><th>The agent said</th><th>How we check</th><th></th></tr>
+<tr class="claim"><td>The count survives a reload</td><td>Click 5 times, reload, read the count</td><td class="tick"></td></tr>
+<tr class="claim"><td>3 fast, a pause, 2 fast shows a secret</td><td>Do the pattern</td><td class="tick"></td></tr>
+<tr class="claim"><td>Each click moves the colour by 3</td><td>Watch the hue number go up</td><td class="tick"></td></tr>
+<tr class="claim"><td>A fast click adds 1 to a streak</td><td>Click fast, then slow</td><td class="tick"></td></tr>
+</table>
+<p class="body fragment" style="font-size:28px">The page shows its hidden numbers because the address ends in <b style="white-space:nowrap">?reveal</b>.</p>
+<p class="body fragment" style="font-size:28px">All eight claims were true. <b>We know because we checked</b>, not because it said so.</p>
+</div>
+</div>
+<aside>The page on the left is live, with ?reveal, so its hidden numbers show. Let students try each check, and click a row in the table to tick it once the room agrees. The orange button reloads the page for the first check. The secret pattern is fun: three fast clicks, wait a second, two fast clicks. The message is “Mischief managed.” The point of this slide is the habit. This time the agent was right about everything. It will not always be, and the only way to know is to check. The full list of eight for students is in claims-to-check.md.</aside>
+</section>
+
+<section class="slide light" id="debug">
+<p class="eyebrow">ASK THE AGENT TO DEBUG</p>
+<h2>A good bug report has three parts</h2>
+<div class="cards">
+<div class="card fragment">
+<p class="big big-orange">1</p>
+<h3>What I did</h3>
+<p class="card-text">I clicked the button 5 times and reloaded the page.</p>
+</div>
+<div class="card fragment">
+<p class="big big-orange">2</p>
+<h3>What I expected</h3>
+<p class="card-text">The saved count still shows 5.</p>
+</div>
+<div class="card fragment">
+<p class="big big-orange">3</p>
+<h3>What I saw</h3>
+<p class="card-text">The saved count shows 0.</p>
+</div>
+</div>
+<div class="spacer"></div>
+<p class="small">That is all we told the agent. No hint about the cause.</p>
+<aside>We broke the page on purpose, three times, by changing one line each time. One click per part. This is the same habit as run 1: say what really happened. Compare with “it’s broken, fix it”. The next slide has the broken and the fixed pages side by side.</aside>
+</section>
+
+<section class="slide" id="debug-fix">
+<p class="eyebrow">THREE BUGS, ONE CHANGED LINE EACH · LIVE</p>
+<h2>It found the line and said why</h2>
+<div class="picks" id="pick-bug" style="margin-bottom:20px"><span class="label">BUG</span>
+<button class="pick on" data-bug="0">1 · Count resets</button><button class="pick" data-bug="1">2 · Secret never shows</button><button class="pick" data-bug="2">3 · Title is late</button></div>
+<p class="body" id="bug-cause" style="min-height:48px"></p>
+<div class="row" style="margin-top:20px">
+<div class="try"><div class="live" id="bug-broken" style="width:780px;height:400px" data-w="1000"></div><p class="small"><b>BROKEN</b> · make the bug happen</p></div>
+<div class="try"><div class="live" id="bug-fixed" style="width:780px;height:400px" data-w="1000"></div><p class="small"><b>FIXED BY THE AGENT</b> · repeat the same steps</p></div>
+</div>
+<aside>Pick a bug with the buttons. On the left is the broken page, on the right the page after the agent’s fix, both live with their hidden numbers. Bug 1: click five times, reload with the orange button, and the count is back to zero on the left only. Bug 2: do the secret pattern on both. Bug 3 changes the tab title, which a slide cannot show: open it from demo.html if you want it. Three bug reports, three fixes, each in under half a minute. Its explanation of bug 1: “Think of the browser’s storage as a wall of lockers, each with a label.” The page puts the count in one locker and looks for it in another. We tested every fixed page ourselves: all three work, and each fix changed only the broken line. In all three answers the agent said it had not run the page. All copies share one saved count in the browser.</aside>
+</section>
+
+<!-- ===================== WRAP ===================== -->
+<section class="slide light" id="lessons">
+<p class="eyebrow">TAKE THESE WITH YOU</p>
+<h2>Four habits that changed the result</h2>
+<div class="cards">
+<div class="card fragment">
+<p class="big big-orange">1</p>
+<h3>Say what you want</h3>
+<p class="card-text">What it does, the rules, and one example.</p>
+</div>
+<div class="card fragment">
+<p class="big big-orange">2</p>
+<h3>Say what went wrong</h3>
+<p class="card-text">What I did, what I expected, what I saw.</p>
+</div>
+<div class="card fragment">
+<p class="big big-orange">3</p>
+<h3>Keep the rules in the project</h3>
+<p class="card-text">Then nobody has to remember them.</p>
+</div>
+<div class="card fragment">
+<p class="big big-orange">4</p>
+<h3>Check its work</h3>
+<p class="card-text">Tests, and your own eyes.</p>
+</div>
+</div>
+<aside>One click per habit. Habit 1 is the request all three runs shared. Habit 2 is the fix loop in run 1 and the bug reports for the mystery button. Habit 3 is the jump from run 2 to run 3. Habit 4 is the tests run 3 wrote and the claims we checked ourselves. A better model helps a lot, as run 2 showed, but it is the one thing on this list you do not control. The four habits are yours.</aside>
+</section>
+
+<section class="slide" id="real-job">
+<p class="eyebrow">ONE MORE THING</p>
+<h2>The same habits, at my job</h2>
+<p class="lead rise" style="--i:1">Last week I built a tool at work that reads security alerts and says which ones need a person. 107 saved changes in 7 days.</p>
+<div class="spacer"></div>
+<div class="cards">
+<div class="card fragment">
+<p class="card-tag">A RULES FILE</p>
+<h3>Written before any code</h3>
+<p class="card-text">Like run 3: the project holds the rules.</p>
+</div>
+<div class="card fragment">
+<p class="card-tag">A PLAN</p>
+<h3>One for every piece of work</h3>
+<p class="card-text">The agents wrote the code. I made the decisions.</p>
+</div>
+<div class="card fragment">
+<p class="card-tag">A REVIEW</p>
+<h3>A second agent checks the first</h3>
+<p class="card-text">Then I read what it found.</p>
+</div>
+</div>
+<aside>About three minutes for this slide and the next. This is not a demo, only the story. The tool is for my job, so there is no code and no screen to show. One click per card. Card 1 is habit 3. Card 2 is habit 1, done for every piece of work: I wrote down what I wanted before an agent started. Card 3 is habit 4: a fresh agent reviewed the work, and I read its findings before anything was accepted. A saved change is a commit. I ran several agents side by side, each in its own terminal, and one session kept track of them.</aside>
+</section>
+
+<section class="slide light" id="real-score">
+<p class="eyebrow">DID IT WORK?</p>
+<h2>Wrong at first. So we measured.</h2>
+<div class="cards">
+<div class="card rise" style="--i:1">
+<p class="card-tag">RIGHT ANSWERS, OF 12</p>
+<p class="steps">7 → 10 → 12</p>
+<p class="card-text">Practice alerts it answered the way a person had, over three rounds.</p>
+</div>
+<div class="card rise" style="--i:2">
+<p class="card-tag">BAD REQUESTS</p>
+<p class="steps">86 → 7</p>
+<p class="card-text">Times the agent asked its tools for something in the wrong way, first round to third.</p>
+</div>
+</div>
+<div class="spacer"></div>
+<h3 class="fragment">The model stayed the same. The instructions and the checks got better.</h3>
+<aside>The practice alerts were four past alerts, three tries each, so 12 in a round. A person had already answered each one, and that answer was the score sheet. Between rounds we changed only what the agent was told and what its tools said back when a request was wrong. Click for the last line: this is run 2 against run 3 again. Be honest if asked: this version was later replaced by a simpler one, and these were practice alerts, not live ones.</aside>
+</section>
+
+<section class="slide" id="repo">
+<p class="eyebrow">TAKE IT HOME</p>
+<h2>Everything is in the repo</h2>
+<p class="prompt rise" style="--i:1"><a href="https://github.com/arigsela/innovate-2026" target="_blank">github.com/arigsela/innovate-2026</a></p>
+<div class="spacer"></div>
+<div class="cards">
+<div class="card rise" style="--i:2"><p class="card-tag">THE PROMPTS</p><p class="card-text">The request, and every follow-up message we typed.</p></div>
+<div class="card rise" style="--i:3"><p class="card-tag">THE PAGES</p><p class="card-text">All 9 tries: the page, the full chat and screenshots.</p></div>
+<div class="card rise" style="--i:4"><p class="card-tag">THE RULES FILE</p><p class="card-text">The one file that separates run 2 from run 3.</p></div>
+<div class="card rise" style="--i:5"><p class="card-tag">THE MYSTERY BUTTON</p><p class="card-text">The page, the bugs and a worksheet to try it yourself.</p></div>
+</div>
+<aside>Leave this slide up at the end. The prompts are prompt-1.md to prompt-3.md in each run folder, with every message in all-prompts-1.md, all-prompts-2.md and all-prompts-3.md. The rules file is run3-better-harness/rules-file.md. The scores are in RESULTS.md, and demo.html opens every page. These slides are slides.html. The mystery button has its own README with steps students can follow at home.</aside>
+</section>
+
+</div>
+
+<!-- Controls outside the stage -->
+<div id="notes"><b>SPEAKER NOTES · N TO HIDE</b><span id="notes-text"></span></div>
+<div id="bar"></div>
+<div id="nav"><span id="count"></span><button id="b-notes" title="Speaker notes (N)">N</button><button id="b-prev" title="Back (Left)">←</button><button id="b-next" title="Next (Right or Space)">→</button></div>
+
+<script>
+/* === STAGE: scale the fixed 1920 x 1080 stage to fit the window === */
+const stage = document.getElementById('stage');
+function fit() {
+  const s = Math.min(innerWidth / 1920, innerHeight / 1080);
+  stage.style.transform = `translate(${(innerWidth - 1920 * s) / 2}px, ${(innerHeight - 1080 * s) / 2}px) scale(${s})`;
+}
+addEventListener('resize', fit); fit();
+
+/* === LIVE PAGES: build each frame and scale the page to fit its box ===
+   data-w is the width the page thinks it has; the box size is in the style. */
+function focusDeck() { if (document.activeElement && document.activeElement.blur) document.activeElement.blur(); window.focus(); }
+document.querySelectorAll('.live').forEach(box => {
+  const bw = parseFloat(box.style.width), bh = parseFloat(box.style.height);
+  const lw = +(box.dataset.w || 800), s = bw / lw;
+  const clip = document.createElement('div'); clip.className = 'clip';
+  const f = document.createElement('iframe'); f.title = 'Live page';
+  f.style.width = lw + 'px'; f.style.height = (bh / s) + 'px'; f.style.transform = `scale(${s})`;
+  clip.appendChild(f); box.appendChild(clip);
+  const r = document.createElement('button'); r.className = 'reload'; r.textContent = '↻'; r.title = 'Reload this page';
+  r.addEventListener('click', () => { loadLive(box); focusDeck(); });
+  box.appendChild(r);
+  // After a click inside a page the keys go to that page. Take them back when the mouse leaves.
+  box.addEventListener('mouseleave', focusDeck);
+});
+function loadLive(box) { const f = box.querySelector('iframe'); f.src = 'about:blank'; if (box.dataset.src) setTimeout(() => { f.src = box.dataset.src; }, 30); }
+function unloadLive(box) { box.querySelector('iframe').src = 'about:blank'; }
+
+/* === SLIDES: one at a time, with click steps === */
+const slides = [...document.querySelectorAll('.slide')];
+let cur = -1;
+const steps = s => [...s.querySelectorAll('.fragment')];
+function show(i, atEnd) {
+  if (i < 0 || i >= slides.length) return;
+  if (cur >= 0) slides[cur].querySelectorAll('.live').forEach(unloadLive);
+  cur = i;
+  slides.forEach((s, k) => s.classList.toggle('active', k === i));
+  steps(slides[i]).forEach(e => e.classList.toggle('visible', !!atEnd));
+  slides[i].querySelectorAll('.live').forEach(loadLive);
+  slides[i].querySelectorAll('.tri .fill').forEach(e => { e.style.height = '0'; requestAnimationFrame(() => requestAnimationFrame(() => { e.style.height = e.dataset.h; })); });
+  document.getElementById('bar').style.width = ((i + 1) / slides.length * 100) + '%';
+  document.getElementById('count').textContent = (i + 1) + ' / ' + slides.length;
+  const a = slides[i].querySelector(':scope > aside');
+  document.getElementById('notes-text').textContent = a ? a.textContent : '';
+  history.replaceState(null, '', '#' + (i + 1));
+}
+function next() { const f = steps(slides[cur]).find(e => !e.classList.contains('visible')); if (f) f.classList.add('visible'); else show(cur + 1); }
+function prev() { const v = steps(slides[cur]).filter(e => e.classList.contains('visible')); if (v.length) v[v.length - 1].classList.remove('visible'); else show(cur - 1, true); }
+function toggleNotes() { document.getElementById('notes').classList.toggle('on'); }
+
+addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' || e.metaKey || e.ctrlKey || e.altKey) return;
+  const k = e.key;
+  if (k === 'ArrowRight' || k === 'PageDown' || k === ' ') { e.preventDefault(); next(); }
+  else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); prev(); }
+  else if (k === 'Home') show(0);
+  else if (k === 'End') show(slides.length - 1);
+  else if (k === 'n' || k === 'N') toggleNotes();
+  else if (k === 'f' || k === 'F') { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); }
+});
+document.getElementById('b-next').addEventListener('click', e => { next(); e.currentTarget.blur(); });
+document.getElementById('b-prev').addEventListener('click', e => { prev(); e.currentTarget.blur(); });
+document.getElementById('b-notes').addEventListener('click', e => { toggleNotes(); e.currentTarget.blur(); });
+
+/* === MOCK SCOREBOARD on "what we asked for" === */
+(function () {
+  const pts = [0, 0, 0, 0], el = document.getElementById('mock');
+  function draw() {
+    const top = Math.max(...pts), lead = top > 0 && pts.filter(p => p === top).length === 1 ? pts.indexOf(top) : -1;
+    const scale = Math.max(50, top);
+    el.innerHTML = pts.map((p, i) => `<div class="sb-row"><p class="sb-name">House ${i + 1}${i === lead ? '<span class="sb-tag">Leader</span>' : ''}</p><div class="sb-track"><div class="sb-fill" style="width:${p / scale * 100}%"></div></div><p class="sb-pts">${p}</p><button class="sb-btn minus" data-i="${i}" data-d="-10">-10</button><button class="sb-btn" data-i="${i}" data-d="10">+10</button></div>`).join('') + '<button class="sb-reset">Reset</button>';
+  }
+  el.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    if (b.classList.contains('sb-reset')) pts.fill(0); else pts[+b.dataset.i] = Math.max(0, pts[+b.dataset.i] + (+b.dataset.d));
+    draw();
+  });
+  draw();
+})();
+
+/* === SCORE BARS: one bar per try === */
+document.querySelectorAll('.tri').forEach(t => {
+  const max = +t.dataset.max;
+  t.innerHTML = t.dataset.v.split(',').map(v => `<div class="t"><div class="track"><div class="fill" data-h="${(+v / max * 100)}%"></div></div><span class="n">${v}</span></div>`).join('');
+});
+
+/* === LIVE DEMO: choose a run and a try === */
+(function () {
+  const box = document.getElementById('tryframe'); let run = 'run2-better-model', n = '1';
+  function set() { box.dataset.src = `${run}/attempt-${n}/index.html`; loadLive(box); }
+  document.getElementById('pick-run').addEventListener('click', e => {
+    const b = e.target.closest('.pick'); if (!b) return;
+    if (b.dataset.run) { run = b.dataset.run; document.querySelectorAll('#pick-run .pick[data-run]').forEach(x => x.classList.toggle('on', x === b)); }
+    if (b.dataset.try) { n = b.dataset.try; document.querySelectorAll('#pick-try .pick').forEach(x => x.classList.toggle('on', x === b)); }
+    b.blur(); set();
+  });
+})();
+
+/* === DEBUG: choose a bug, see the broken and the fixed page === */
+(function () {
+  const bugs = [
+    { dir: 'bug-1-count-resets', cause: '<b>Cause:</b> the page saves the count under one name and reads it back under another. <b>15 seconds.</b>' },
+    { dir: 'bug-2-secret-never-shows', cause: '<b>Cause:</b> the gap between clicks is in milliseconds, but the code compares it with 0.4. <b>27 seconds.</b>' },
+    { dir: 'bug-3-title-late', cause: '<b>Cause:</b> the code checks for every 8th click, not every 7th. <b>19 seconds.</b>' }
+  ];
+  const broken = document.getElementById('bug-broken'), fixed = document.getElementById('bug-fixed');
+  function set(i, load) {
+    const b = bugs[i], base = `mystery-button/debug/${b.dir}/`;
+    broken.dataset.src = base + 'broken/index.html?reveal'; fixed.dataset.src = base + 'fixed/index.html?reveal';
+    document.getElementById('bug-cause').innerHTML = b.cause;
+    document.querySelectorAll('#pick-bug .pick').forEach((x, k) => x.classList.toggle('on', k === i));
+    if (load) { loadLive(broken); loadLive(fixed); }
+  }
+  document.getElementById('pick-bug').addEventListener('click', e => { const b = e.target.closest('.pick'); if (!b) return; b.blur(); set(+b.dataset.bug, true); });
+  set(0, false);
+})();
+
+/* === CLAIMS: click a row to tick it === */
+document.querySelectorAll('tr.claim').forEach(r => r.addEventListener('click', () => r.classList.toggle('ok')));
+
+/* === START on the slide in the address, or the first === */
+show(Math.min(slides.length - 1, Math.max(0, (parseInt(location.hash.slice(1), 10) || 1) - 1)));
+</script>
+</body>
+</html>

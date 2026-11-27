@@ -18,7 +18,7 @@ Neither needs internet or a web server.
 
 Keys in `slides.html`: Right or Space for the next step, Left to go back, `N` for speaker
 notes, `F` for full screen. After you click inside a live page, move the mouse off it before
-you use the keys.
+you use the keys. The Open button on a live page shows that page full size in a new tab.
 
 ## The experiment
 

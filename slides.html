@@ -122,7 +122,12 @@ table.mono { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size:
   border: 2px solid #33415F; background: #FF8A3D; color: #101828; font-size: 26px; font-weight: 700;
   cursor: pointer; line-height: 1;
 }
-.live .reload:hover { background: #FFB27A; }
+.live .reload:hover, .live .open:hover { background: #FFB27A; }
+.live .open {
+  position: absolute; top: -22px; right: 36px; height: 48px; padding: 0 18px; border-radius: 24px;
+  border: 2px solid #33415F; background: #FF8A3D; color: #101828; font: 700 22px 'Inter', Arial, sans-serif;
+  cursor: pointer; line-height: 1;
+}
 
 /* === BUTTONS that choose what a live page shows === */
 .picks { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
@@ -202,7 +207,7 @@ table.claims tr.claim.ok { background: #23345C; }
 <h1 class="rise" style="--i:1">Same app.<br>Three ways to ask.</h1>
 <div class="spacer"></div>
 <p class="lead rise" style="--i:3">One scoreboard, built three times by AI. Then one button that nobody understands.</p>
-<aside>Open with the question: if you ask an AI to build something, what decides whether it works? Today the same small app gets built three times by the same AI model, and only one thing changes between each run. In the second half we use an AI agent to explain and debug code we did not write. Keys: Right or Space for the next step, Left to go back, N for these notes, F for full screen. After clicking inside a live page, move the mouse off it before using the keys.</aside>
+<aside>Open with the question: if you ask an AI to build something, what decides whether it works? Today the same small app gets built three times by the same AI model, and only one thing changes between each run. In the second half we use an AI agent to explain and debug code we did not write. Keys: Right or Space for the next step, Left to go back, N for these notes, F for full screen. After clicking inside a live page, move the mouse off it before using the keys. Every live page has two orange buttons: Open shows the page full size in a new browser tab, and the round one reloads it. “All pages” at the bottom right opens demo.html.</aside>
 </section>
 
 <section class="slide light" id="about">
@@ -702,7 +707,7 @@ table.claims tr.claim.ok { background: #23345C; }
 <!-- Controls outside the stage -->
 <div id="notes"><b>SPEAKER NOTES · N TO HIDE</b><span id="notes-text"></span></div>
 <div id="bar"></div>
-<div id="nav"><span id="count"></span><button id="b-notes" title="Speaker notes (N)">N</button><button id="b-prev" title="Back (Left)">←</button><button id="b-next" title="Next (Right or Space)">→</button></div>
+<div id="nav"><a href="demo.html" target="_blank" title="Links to every page" style="color:inherit;background:#1B2540;border:1px solid #33415F;border-radius:8px;padding:7px 12px;text-decoration:none">All pages ↗</a><span id="count"></span><button id="b-notes" title="Speaker notes (N)">N</button><button id="b-prev" title="Back (Left)">←</button><button id="b-next" title="Next (Right or Space)">→</button></div>
 
 <script>
 /* === STAGE: scale the fixed 1920 x 1080 stage to fit the window === */
@@ -726,6 +731,10 @@ document.querySelectorAll('.live').forEach(box => {
   const r = document.createElement('button'); r.className = 'reload'; r.textContent = '↻'; r.title = 'Reload this page';
   r.addEventListener('click', () => { loadLive(box); focusDeck(); });
   box.appendChild(r);
+  // Open the same page full size in a new browser tab.
+  const o = document.createElement('button'); o.className = 'open'; o.textContent = 'Open ↗'; o.title = 'Open this page in a new tab';
+  o.addEventListener('click', () => { if (box.dataset.src) window.open(box.dataset.src, '_blank'); focusDeck(); });
+  box.appendChild(o);
   // After a click inside a page the keys go to that page. Take them back when the mouse leaves.
   box.addEventListener('mouseleave', focusDeck);
 });
